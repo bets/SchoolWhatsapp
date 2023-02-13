@@ -7,31 +7,39 @@
 </head>
 <body>
 
-    <div id="classSelector">
-        <div id="allCon">
-            <label for="all"><input id="all" type="checkbox">כל ביה"ס</label>
-        </div>
-        <div id="allGrades"></div>
+    <div id="main" class="">
+        <div id="classSelector" class="section">
+            <div id="allCon" class="slot">
+                <label for="all"><input id="all" type="checkbox">כל ביה"ס</label>
+            </div>
+            <div id="allGrades"></div>
 
-        <div id="template" style="display:none">
+            <div id="template" style="display:none">
+                <details class="slot">
+                    <summary><input type="checkbox" class="grade"></summary>
+                </details>
+                <label><input type="checkbox"></label>
+            </div>
+            <!--
+            Example of a grade
             <details>
-                <summary><input type="checkbox" class="grade"></summary>
-            </details>
-            <label><input type="checkbox"></label>
+                 <summary><input id="a" type="checkbox" class="grade"> Grade A</summary>
+                 <label for="a1"><input id="a1" type="checkbox">a1</label>
+                 <label for="a2"><input id="a2" type="checkbox">a2</label>
+                 <label for="a3"><input id="a3" type="checkbox">a3</label>
+            </details> -->
         </div>
-    </div>
-    <!--
-    Example of a grade
-    <details>
-         <summary><input id="a" type="checkbox" class="grade"> Grade A</summary>
-         <label for="a1"><input id="a1" type="checkbox">a1</label>
-         <label for="a2"><input id="a2" type="checkbox">a2</label>
-         <label for="a3"><input id="a3" type="checkbox">a3</label>
-    </details> -->
+        <div id="msgPan" class="section">
+            <label for="msg">תוכן ההודעה</label>
+            <textarea id="msg" rows="5" cols="33"></textarea>
+        <button onclick="sendHello()">שליחה</button>&nbsp;
+        </div>
 
-    <button onclick="sendHello()">Send Hello</button>
-    <!--<button onclick="start()">Start</button>-->
-    <button onclick="refetchSchool()">Refetch School</button>
+    </div>
+    <div class="section" style="margin:1em auto;height:100px;padding:1em;">
+        <button onclick="refetchSchool()">Refetch School</button>
+    </div>
+
 
     <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->

@@ -101,10 +101,6 @@ function setSelectEvents() {
                 gradeClasses.forEach((el) => {
                     el.checked = e.target.checked;
                 })
-                //let classesNum = e.target.closest("details").querySelectorAll("input").length;
-                //for (let i = 1; i < classesNum; i++)
-                //    document.querySelector("#" + grade + i).checked =
-                //        e.target.checked;
                 //If marking all school
             } else if (e.target.id == "all") {
                 boxes.forEach((el) => {

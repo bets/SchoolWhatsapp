@@ -2,10 +2,19 @@
     margin-top: 2em;
     /*direction: rtl;*/
 }
-
-#classSelector {
+#main {
+    margin: 1em;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    /*max-width:700px;*/
+}
+.section {
     max-width: 320px;
-    margin: 1em auto;
+    width: 100%;
+    margin: 1em;
+    border: 1px solid #f8f9fc;
+    border-radius: 5px;
 }
 
 details > label:first-of-type {
@@ -22,20 +31,30 @@ details label > input {
 }
 
 #allCon {
-    margin-bottom: 0.3em;
-    background: #f0efed;
-    border-radius: 3px;
-    padding: 0.5em 10px;
+    padding: 0.5em 0 0.9em 0;
 }
 
-details {
-    margin-bottom: 0.3em;
-    background: #f0efed;
-    border-radius: 3px;
+.slot {
+    margin: 0.1em auto;
+    /*background: #f0efed;*/
+    border-radius: 5px;
+    width: 95%;
     padding-bottom: 0.5em;
 }
+    .slot:hover {
+        background: #f8f9fc;
+    }
 
 summary {
     padding-top: 0.5em;
     margin: 0 15px 0.5em 1em;
+}
+#msgPan{
+    padding:1em;
+}
+#msg {
+    width: 95%;
+    margin: 1em auto;
+    border-color: #f8f9fc;
+    border-radius: 5px;
 }
