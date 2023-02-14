@@ -11,6 +11,7 @@ async function start() {
  * */
 function refetchSchool() {
     localStorage.removeItem('school');
+    localStorage.removeItem('schoolFlat');
     location.reload();
 }
 /** 
@@ -42,12 +43,12 @@ async function getSchool() {
             return accu;
         }, []).sort((a, b) => a.class.localeCompare(b.class));
 
+    localStorage.schoolFlat = JSON.stringify(cls);
     //console.table(cls);
 
     let school = cls.reduce((accu, curr, i) => {
         var grp = {
-            num: curr.num,
-            wid: curr.wid
+            num: curr.num
         };
         if (i == 0 || curr.letter != cls[i - 1].letter) {
             accu.push({
@@ -75,7 +76,6 @@ function createSchool(school) {
         gradeTemplate.querySelector("summary").innerHTML += "כיתות " + shichva.grade + "'";
         shichva.groups.forEach((cls) => {
             let labelClone = labelTemplate.cloneNode(true);
-            //labelClone.innerHTML += shichva.grade + cls.num;
             labelClone.innerHTML += `${shichva.grade}' <sub>${cls.num}</sub>`;
             labelClone.querySelector("input").id = shichva.grade + cls.num;
             gradeTemplate.append(labelClone);
@@ -148,15 +148,25 @@ function checkParents(s, boxes) {
 }
 
 /** 
+ * Get all checked ids and send to each group
+ * */
+function send() {
+    let schoolFlat = JSON.parse(localStorage.schoolFlat);
+    let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
+    checkedIds.forEach((id) => {
+        let wid = schoolFlat.find(x => x.class == id).wid;
+        sendOne(wid);
+    });
+}
+/** 
  * Send one group message
  * */
-async function sendHello() {
+async function sendOne(wid) {
     //"device": "63e7c1011e82ba57205a670a",
     let body = {
         "message": JSON.stringify(q("#msg").value),
-        "group": JSON.parse(localStorage.school)[0].groups[0].wid
+        "group": wid
     };
-    console.log(body);
 
     const options = {
         method: 'POST',
@@ -165,11 +175,6 @@ async function sendHello() {
         },
         body: JSON.stringify(body)
     };
-
-    //fetch('https://api.bulldog-wp.co.il/v1/messages', options)
-    //    .then(response => response.json())
-    //    .then(response => console.log(response))
-    //    .catch(err => console.error(err));
 
     console.log("Sending message through Bulldog");
     const response = await fetch('https://hook.eu1.make.com/wn61nqt5x714kqlftve78uj2xu5onwdv', options);
