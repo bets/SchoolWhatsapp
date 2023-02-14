@@ -9,6 +9,7 @@
 
     <div id="main" class="">
         <div id="classSelector" class="section">
+            <div class="sectionTitle">בחירת כיתות</div>
             <div id="allCon" class="slot">
                 <label for="all"><input id="all" type="checkbox">כל ביה"ס</label>
             </div>
@@ -31,7 +32,7 @@
             <div style="padding: 1em; border-top: 1px solid #f8f9fc"><a href="javascript:void()" style="color:gray;text-decoration:none;padding:0.5em;" onclick="refetchSchool()">ריענון כיתות</a></div>
         </div>
         <div id="msgPan" class="section">
-            <div>תוכן ההודעה</div>
+            <div class="sectionTitle">תוכן ההודעה</div>
             <textarea id="msg" rows="5" cols="33"></textarea>
             <div>
                 <span class="button" onclick="sendHello()">שליחה</span>
@@ -39,7 +40,11 @@
         </div>
 
     </div>
-
+    <div class="section" style="margin:3em auto;">
+        https://emoji-api.com/ <br />
+        "codePoint": "1F606" <br />
+        <span>&#x1F606</span> 
+    </div>
 
     <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->

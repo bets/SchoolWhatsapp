@@ -57,11 +57,12 @@ summary {
     /*padding: 1em;*/
     background: #f0ffea;
 }
-    #msgPan div:first-child {
-        background: white;
-        padding: 0.5em;
-        font-weight:bold;
-    }
+.sectionTitle {
+    background: white;
+    padding: 0.5em;
+    font-weight: bold;
+    border-bottom: 1px solid #f8f9fc
+}
     #msgPan *:not(:first-child) {
         margin: 1em 0.8em 0 0;
     }
