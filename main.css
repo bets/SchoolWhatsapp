@@ -1,6 +1,8 @@
 ﻿body {
     margin-top: 2em;
     /*direction: rtl;*/
+    background: #f0f0f0;
+    font-family: alef;
 }
 #main {
     margin: 1em;
@@ -12,9 +14,11 @@
 .section {
     max-width: 320px;
     width: 100%;
-    margin: 1em;
+    /*margin: 1em;*/
     border: 1px solid #f8f9fc;
     border-radius: 5px;
+    /*padding:0.4em 0;*/
+    background:white;
 }
 
 details > label:first-of-type {
@@ -49,12 +53,33 @@ summary {
     padding-top: 0.5em;
     margin: 0 15px 0.5em 1em;
 }
-#msgPan{
-    padding:1em;
+#msgPan {
+    /*padding: 1em;*/
+    background: #f0ffea;
 }
+    #msgPan div:first-child {
+        background: white;
+        padding: 0.5em;
+        font-weight:bold;
+    }
+    #msgPan *:not(:first-child) {
+        margin: 1em 0.8em 0 0;
+    }
 #msg {
-    width: 95%;
-    margin: 1em auto;
+    width: 80%;
     border-color: #f8f9fc;
     border-radius: 5px;
+    letter-spacing: 1px;
+    font-family: alef;
+    padding:8px;
 }
+.button {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    background: #f8f9fc;
+    padding:0.2em 0.5em;
+    cursor:pointer;
+}
+    .button:hover {
+        filter: brightness(90%);
+    }

@@ -75,7 +75,8 @@ function createSchool(school) {
         gradeTemplate.querySelector("summary").innerHTML += "כיתות " + shichva.grade + "'";
         shichva.groups.forEach((cls) => {
             let labelClone = labelTemplate.cloneNode(true);
-            labelClone.innerHTML += shichva.grade + cls.num;
+            //labelClone.innerHTML += shichva.grade + cls.num;
+            labelClone.innerHTML += `${shichva.grade}' <sub>${cls.num}</sub>`;
             labelClone.querySelector("input").id = shichva.grade + cls.num;
             gradeTemplate.append(labelClone);
         });
@@ -114,22 +115,6 @@ function setSelectEvents() {
 }
 
 
-function sendHello() {
-
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Token: 'ca686733b8fdbd9e848377d9b4bf0c722276e8b73102c54b5d64adb276e44f3e1e601e7034e1a311'
-        },
-        body: '{"group":"120363030110816193@g.us","message":"Sample group message"}'
-    };
-
-    fetch('https://api.bulldog-wp.co.il/v1/messages', options)
-        .then(response => response.json())
-        .then(response => console.log(response))
-        .catch(err => console.error(err));
-}
 
 /** 
  * Update grade if a class was marked or All School if it was marked
@@ -160,4 +145,45 @@ function checkParents(s, boxes) {
 
     if (s != "all") checkParents("all", boxes);
     return;
+}
+
+/** 
+ * Send one group message
+ * */
+async function sendHello() {
+    //"device": "63e7c1011e82ba57205a670a",
+    let body = {
+        "message": JSON.stringify(q("#msg").value),
+        "group": JSON.parse(localStorage.school)[0].groups[0].wid
+    };
+    console.log(body);
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+    };
+
+    //fetch('https://api.bulldog-wp.co.il/v1/messages', options)
+    //    .then(response => response.json())
+    //    .then(response => console.log(response))
+    //    .catch(err => console.error(err));
+
+    console.log("Sending message through Bulldog");
+    const response = await fetch('https://hook.eu1.make.com/wn61nqt5x714kqlftve78uj2xu5onwdv', options);
+    let jsonRe = await response.json();
+    if (response.status != 200)
+        console.log(response);
+    else
+        console.log(jsonRe);
+}
+
+
+function q(selector) {
+    return document.querySelector(selector);
+}
+function qa(selector) {
+    return document.querySelectorAll(selector);
 }

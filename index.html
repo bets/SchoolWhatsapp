@@ -28,16 +28,16 @@
                  <label for="a2"><input id="a2" type="checkbox">a2</label>
                  <label for="a3"><input id="a3" type="checkbox">a3</label>
             </details> -->
+            <div style="padding: 1em; border-top: 1px solid #f8f9fc"><a href="javascript:void()" style="color:gray;text-decoration:none;padding:0.5em;" onclick="refetchSchool()">ריענון כיתות</a></div>
         </div>
         <div id="msgPan" class="section">
-            <label for="msg">תוכן ההודעה</label>
+            <div>תוכן ההודעה</div>
             <textarea id="msg" rows="5" cols="33"></textarea>
-        <button onclick="sendHello()">שליחה</button>&nbsp;
+            <div>
+                <span class="button" onclick="sendHello()">שליחה</span>
+            </div>
         </div>
 
-    </div>
-    <div class="section" style="margin:1em auto;height:100px;padding:1em;">
-        <button onclick="refetchSchool()">Refetch School</button>
     </div>
 
 
