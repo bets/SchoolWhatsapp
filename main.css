@@ -1,9 +1,10 @@
 ﻿body {
     margin-top: 2em;
     /*direction: rtl;*/
-    background: #f0f0f0;
+    background: #eae6e6;
     font-family: alef;
 }
+
 #main {
     margin: 1em;
     display: flex;
@@ -11,16 +12,22 @@
     justify-content: center;
     /*max-width:700px;*/
 }
+
 .section {
-    max-width: 320px;
-    width: 100%;
     /*margin: 1em;*/
-    border: 1px solid #f8f9fc;
+    border: 1px solid #eee;
     border-radius: 5px;
     /*padding:0.4em 0;*/
-    background:white;
+    /*background:white;*/
+    background: #f0ffea;
 }
-
+.sectionTitle {
+    background: white;
+    padding: 0.5em;
+    font-weight: bold;
+    /*border-bottom: 1px solid #f8f9fc;*/
+    font-size: 1.2em;
+}
 details > label:first-of-type {
     margin-right: 40px;
 }
@@ -28,6 +35,10 @@ details > label:first-of-type {
 details label > input {
     margin-left: 5px;
     margin-right: 25px;
+}
+
+details label:last-of-type {
+    padding-left: 20px;
 }
 
 #classSelector input[type=checkbox] {
@@ -39,48 +50,53 @@ details label > input {
 }
 
 .slot {
-    margin: 0.1em auto;
+    margin: 0.1em 5px;
     /*background: #f0efed;*/
     border-radius: 5px;
-    width: 95%;
+    min-width: 300px;
     padding-bottom: 0.5em;
+    padding-left: 10px;
+    white-space: nowrap;
 }
+
     .slot:hover {
-        background: #f8f9fc;
+        background: #e4f4de;
     }
 
 summary {
     padding-top: 0.5em;
     margin: 0 15px 0.5em 1em;
 }
+
 #msgPan {
-    /*padding: 1em;*/
-    background: #f0ffea;
+    max-width: 450px;
+    width: 100%;
 }
-.sectionTitle {
-    background: white;
-    padding: 0.5em;
-    font-weight: bold;
-    border-bottom: 1px solid #f8f9fc
+
+
+
+#msgPan *:not(:first-child) {
+    margin: 1em 0.8em 0 0;
 }
-    #msgPan *:not(:first-child) {
-        margin: 1em 0.8em 0 0;
-    }
+
 #msg {
     width: 80%;
     border-color: #f8f9fc;
     border-radius: 5px;
     letter-spacing: 1px;
     font-family: alef;
-    padding:8px;
+    padding: 8px;
+    height:150px;
 }
+
 .button {
     border: 1px solid lightgray;
     border-radius: 5px;
     background: #f8f9fc;
-    padding:0.2em 0.5em;
-    cursor:pointer;
+    padding: 0.2em 0.5em;
+    cursor: pointer;
 }
+
     .button:hover {
         filter: brightness(90%);
     }
