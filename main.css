@@ -73,10 +73,8 @@ summary {
     width: 100%;
 }
 
-
-
-#msgPan *:not(:first-child) {
-    margin: 1em 0.8em 0 0;
+#sendCon {
+    margin: 0 0.8em 1em 0;
 }
 
 #msg {
@@ -86,7 +84,8 @@ summary {
     letter-spacing: 1px;
     font-family: alef;
     padding: 8px;
-    height:150px;
+    height: 150px;
+    margin: 1em 0.8em;
 }
 
 .button {
@@ -100,3 +99,11 @@ summary {
     .button:hover {
         filter: brightness(90%);
     }
+
+
+@media all and (max-width:825px){
+    .section {
+        width: 95%;
+        max-width: 450px;
+    }
+}
