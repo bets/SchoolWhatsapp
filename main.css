@@ -1,33 +1,49 @@
-﻿body {
-    margin-top: 2em;
-    /*direction: rtl;*/
-    background: #eae6e6;
+﻿:root {
+    --bg-color: #eafeff;
+}
+body {
+    background: #f2f2f2;
     font-family: alef;
+    max-width: 65%;
+    margin: 0.5em auto;
+}
+
+.pageTitle {
+    background: white !important;
+    /*background: #fdfcfc !important;*/
+    padding: 0.8em 0 !important;
 }
 
 #main {
-    margin: 1em;
+    /*margin: 0 1em;*/
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     /*max-width:700px;*/
+    /*background: #f0ffea;*/
+    background: var(--bg-color);
+    border: 1px solid #eee;
+    padding-bottom: 3px;
 }
 
 .section {
     /*margin: 1em;*/
-    border: 1px solid #eee;
+    /*border: 1px solid #eee;*/
     border-radius: 5px;
     /*padding:0.4em 0;*/
     /*background:white;*/
-    background: #f0ffea;
+    /*background: #f0ffea;*/
 }
+
 .sectionTitle {
-    background: white;
-    padding: 0.5em;
+    /*background: white;*/
+    padding: 1em 0.5em;
     font-weight: bold;
     /*border-bottom: 1px solid #f8f9fc;*/
     font-size: 1.2em;
+    text-align: center;
 }
+
 details > label:first-of-type {
     margin-right: 40px;
 }
@@ -60,7 +76,8 @@ details label:last-of-type {
 }
 
     .slot:hover {
-        background: #e4f4de;
+        /*background: #e4f4de;*/
+        background: #daf1f4;
     }
 
 summary {
@@ -71,10 +88,15 @@ summary {
 #msgPan {
     max-width: 450px;
     width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .sendCon {
-    margin: 1em 0.8em;
+    margin: 1em 2em;
+    display: flex;
+    justify-content: flex-end;
+    /*justify-content:space-around;*/
 }
 
 
@@ -86,42 +108,60 @@ summary {
     font-family: alef;
     padding: 8px;
     height: 150px;
-    margin: 1em 0.8em;
+    margin: 0 auto;
+    display: block;
 }
 
 .button {
-    border: 1px solid lightgray;
+    border: 1px solid var(--bg-color);
     border-radius: 5px;
-    background: #f8f9fc;
+    background: #b5dff0;
     padding: 0.2em 0.5em;
     cursor: pointer;
-    display: inline-block;
 }
 
     .button:hover {
-        filter: brightness(90%);
+        filter: brightness(105%);
+        border-color:white;
     }
+
+#linkList {
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: space-around;
+    margin-top: auto;
+}
+    #linkList a {
+        color: gray;
+        text-decoration: none;
+        padding: 0.5em;
+    }
+        #linkList a:hover {
+            text-shadow: 1px 1px 1px #ffdfdf;
+        }
 
 dialog {
     border: 1px solid lightgray;
     border-radius: 5px;
-    padding:0 1em;
+    padding: 0 1em;
 }
+
     dialog .sendCon {
         text-align: center;
     }
+
     dialog input {
-       border-radius:5px;
-       padding:4px;
+        border-radius: 5px;
+        padding: 4px;
     }
 
-dialog::backdrop {
-    background: rgba(0,0,0,0.6);
-}
+    dialog::backdrop {
+        background: rgba(0,0,0,0.6);
+    }
 
 
 
-@media all and (max-width:825px){
+@media all and (max-width:825px) {
     .section {
         width: 100%;
         max-width: 450px;

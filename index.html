@@ -6,7 +6,7 @@
     <title>ביה"ס זקס - Whatsapp</title>
 </head>
 <body>
-
+    <div class="sectionTitle pageTitle" style="">Whatsapp Group Control</div>
     <div id="main" class="">
         <div id="classSelector" class="section">
             <div class="sectionTitle">בחירת כיתות</div>
@@ -38,9 +38,9 @@
             <div class="sendCon">
                 <span class="button" onclick="send()">שליחה</span>
             </div>
-            <div style="border-top: 1px solid #eee; display:flex;justify-content:space-around;">
-                <a href="javascript:void(0)" style="color:gray;text-decoration:none;padding:0.5em;" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
-                <a href="javascript:void(0)" style="color:gray;text-decoration:none;padding:0.5em;" onclick="signOff()" title="הפעלת כניסה עם סיסמה במחשב זה">יציאת משתמש</a>
+            <div id="linkList">
+                <a href="javascript:void(0)" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
+                <a href="javascript:void(0)" onclick="signOff()" title="הפעלת כניסה עם סיסמה במחשב זה">יציאת משתמש</a>
             </div>
         </div>
     </div>
