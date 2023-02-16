@@ -73,9 +73,10 @@ summary {
     width: 100%;
 }
 
-#sendCon {
-    margin: 0 0.8em 1em 0;
+.sendCon {
+    margin: 1em 0.8em;
 }
+
 
 #msg {
     width: 80%;
@@ -94,11 +95,31 @@ summary {
     background: #f8f9fc;
     padding: 0.2em 0.5em;
     cursor: pointer;
+    display: inline-block;
 }
 
     .button:hover {
         filter: brightness(90%);
     }
+
+dialog {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding:0 1em;
+}
+    dialog .sendCon {
+        text-align: center;
+    }
+    dialog input {
+       border-radius:5px;
+       padding:4px;
+    }
+
+dialog::backdrop {
+    background: rgba(0,0,0,0.5);
+    /*opacity: 0.5;*/
+}
+
 
 
 @media all and (max-width:825px){

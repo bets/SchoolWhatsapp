@@ -1,9 +1,14 @@
 ﻿start();
 var Make;
-async function start() {
-    if (localStorage.basics == null)
-        if (!(await getBasics()))
-            return;
+function start() {
+    if (localStorage.basics == null) {
+        q("dialog").showModal();
+        return;
+    }
+    continueStart();
+}
+
+async function continueStart() {
     Make = JSON.parse(localStorage.basics);
 
     if (localStorage.school == null)
@@ -13,14 +18,17 @@ async function start() {
     createSchool(school);
     setSelectEvents();
 }
+
+//If press enter send password too
+q("dialog input[type=password]").addEventListener("keyup", (e) => { if (e.keyCode == 13) getBasics(); });
+
 /** 
- * Get webhooks from make after password check
+ * Get webhooks from Make after password check
  * */
 async function getBasics() {
     let body = {
-        "password": "אלישבע",
+        "password": q('input[type=password]').value,
     };
-    //"password": q('input[type=password]').value,
 
     const options = {
         method: 'POST',
@@ -35,6 +43,7 @@ async function getBasics() {
     let jsonRe = await response.json();
     if (response.status == 401) {
         console.log(response);
+        q("dialog input").style.borderColor = "red";
     } else if (response.status != 200) {
         console.log("שגיאה בכניסה לחשבון");
         console.log(response);
@@ -43,6 +52,8 @@ async function getBasics() {
         console.log("סיסמה תקינה");
         console.log(jsonRe);
         localStorage.basics = JSON.stringify(jsonRe);
+        q("dialog").close();
+        continueStart();
         return true;
     }
     return false;
@@ -69,7 +80,6 @@ function refetchSchool() {
 async function getSchool() {
     console.log("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
     const response = await fetch(Make.getSchool);
-        //const response = await fetch('https://hook.eu1.make.com/atmfm8irkgay5awury124275zcrgcidb')
     let groups = await response.json();
     //NEED TO CHECK AND RESPONED IF BAD
     //console.table(groups);
@@ -195,9 +205,17 @@ function checkParents(s, boxes) {
  * Get all checked ids and send to each group
  * */
 function send() {
+    if (q("#msg").value.length < 4) {
+        console.log("נא להוסיף תוכן להודעה");
+        return;
+    }
+    let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
+    if (checkedIds.length == 0) {
+        console.log("נא לבחור כיתה");
+        return;
+    }
     console.log("קליטת הודעות מתבצעת");
     let schoolFlat = JSON.parse(localStorage.schoolFlat);
-    let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
     let sentNum = 0;
     checkedIds.every((id, i) => {
         let wid = schoolFlat.find(x => x.class == id).wid;
@@ -219,7 +237,6 @@ function send() {
  * Send one group message
  * */
 async function sendOne(wid) {
-    //"device": "63e7c1011e82ba57205a670a",
     let body = {
         "message": JSON.stringify(q("#msg").value),
         "group": wid
@@ -235,7 +252,6 @@ async function sendOne(wid) {
 
     console.log("Sending message through Bulldog");
     const response = await fetch(Make.sendOne, options);
-    //const response = await fetch('https://hook.eu1.make.com/wn61nqt5x714kqlftve78uj2xu5onwdv', options);
     let jsonRe = await response.json();
     if (response.status != 200) {
         console.log(response);
@@ -246,7 +262,6 @@ async function sendOne(wid) {
         return true;
     }
 }
-
 
 function q(selector) {
     return document.querySelector(selector);
