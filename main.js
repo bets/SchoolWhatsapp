@@ -1,10 +1,59 @@
 ﻿start();
+var Make;
 async function start() {
+    if (localStorage.basics == null)
+        if (!(await getBasics()))
+            return;
+    Make = JSON.parse(localStorage.basics);
+
     if (localStorage.school == null)
         await getSchool();
     let school = JSON.parse(localStorage.school);
+
     createSchool(school);
     setSelectEvents();
+}
+/** 
+ * Get webhooks from make after password check
+ * */
+async function getBasics() {
+    let body = {
+        "password": "אלישבע",
+    };
+    //"password": q('input[type=password]').value,
+
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body)
+    };
+
+    console.log("בדיקת סיסמה");
+    const response = await fetch('https://hook.eu1.make.com/byeoipdssunukstesd153infg5s3v2f5', options);
+    let jsonRe = await response.json();
+    if (response.status == 401) {
+        console.log(response);
+    } else if (response.status != 200) {
+        console.log("שגיאה בכניסה לחשבון");
+        console.log(response);
+    }
+    else {
+        console.log("סיסמה תקינה");
+        console.log(jsonRe);
+        localStorage.basics = JSON.stringify(jsonRe);
+        return true;
+    }
+    return false;
+}
+
+/** 
+ * Sign off by removing basics
+ * */
+function signOff() {
+    localStorage.removeItem('basics');
+    location.reload();
 }
 /** 
  * When school is saved but groups chaged, clear storage and fetch groups
@@ -18,14 +67,11 @@ function refetchSchool() {
  * Get class groups from bulldog whatsapp through Make
  * */
 async function getSchool() {
-    console.log("Fetching school groups from Bulldog");
-    const response = await fetch('https://hook.eu1.make.com/atmfm8irkgay5awury124275zcrgcidb')
-        .catch(err => console.error(err));
+    console.log("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
+    const response = await fetch(Make.getSchool);
+        //const response = await fetch('https://hook.eu1.make.com/atmfm8irkgay5awury124275zcrgcidb')
     let groups = await response.json();
-    //.then(response => response.json())
-    //    .then(response => console.table(response))
-    //    .catch(err => console.error(err));
-
+    //NEED TO CHECK AND RESPONED IF BAD
     //console.table(groups);
 
     var cls = groups
@@ -114,8 +160,6 @@ function setSelectEvents() {
     });
 }
 
-
-
 /** 
  * Update grade if a class was marked or All School if it was marked
  * */
@@ -151,12 +195,25 @@ function checkParents(s, boxes) {
  * Get all checked ids and send to each group
  * */
 function send() {
+    console.log("קליטת הודעות מתבצעת");
     let schoolFlat = JSON.parse(localStorage.schoolFlat);
     let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
-    checkedIds.forEach((id) => {
+    let sentNum = 0;
+    checkedIds.every((id, i) => {
         let wid = schoolFlat.find(x => x.class == id).wid;
-        sendOne(wid);
+        let sentOk = sendOne(wid);
+        if (sentOk)
+            sentNum++;
+        return sentOk;
     });
+
+    if (sentNum > 0)
+        console.log(`${sentNum} הודעות נקלטו וישלחו בדקות הקרובות`);
+    if (sentNum == 0)
+        console.log("שגיאה - לא נקלטו ההודעות");
+    else if (sentNum != checkedIds.length) {
+        console.log(`שגיאה - לא נקלטו כל ההודעת`);
+    }
 }
 /** 
  * Send one group message
@@ -177,12 +234,17 @@ async function sendOne(wid) {
     };
 
     console.log("Sending message through Bulldog");
-    const response = await fetch('https://hook.eu1.make.com/wn61nqt5x714kqlftve78uj2xu5onwdv', options);
+    const response = await fetch(Make.sendOne, options);
+    //const response = await fetch('https://hook.eu1.make.com/wn61nqt5x714kqlftve78uj2xu5onwdv', options);
     let jsonRe = await response.json();
-    if (response.status != 200)
+    if (response.status != 200) {
         console.log(response);
-    else
+        return false;
+    }
+    else {
         console.log(jsonRe);
+        return true;
+    }
 }
 
 
