@@ -168,20 +168,23 @@ dialog {
         content: "🗙";
         font-size: 1.5em;
         position: absolute;
-        right: 8px;
-        top: 0;
+        right: 20px;
+        top: 7px;
         color: gray;
         font-weight: bold;
+        /*background:white;*/
     }
-#emojiModel .sectionTitle{
+/*#emojiModel .sectionTitle{
     position:sticky;
-}
-    #emojiModel div:not(.sectionTitle) {
+}*/
+    #emojiModel div {
         text-align: center;
         padding: 0.5em;
         font-weight: bold;
         background: #f8f9fc;
-        margin-bottom:0.5em;
+        margin-bottom: 0.5em;
+        margin-top: 0.5em;
+        /*border-top:1px solid lightgray;*/
     }
     #emojiModel span {
         padding: 3px;
