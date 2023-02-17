@@ -159,7 +159,39 @@ dialog {
         background: rgba(0,0,0,0.6);
     }
 
-
+#emojiModel{
+    max-width:400px;
+    margin:4em auto;
+    position:relative;
+}
+    #emojiModel:after {
+        content: "🗙";
+        font-size: 1.5em;
+        position: absolute;
+        right: 8px;
+        top: 0;
+        color: gray;
+        font-weight: bold;
+    }
+#emojiModel .sectionTitle{
+    position:sticky;
+}
+    #emojiModel div:not(.sectionTitle) {
+        text-align: center;
+        padding: 0.5em;
+        font-weight: bold;
+        background: #f8f9fc;
+        margin-bottom:0.5em;
+    }
+    #emojiModel span {
+        padding: 3px;
+        /*margin: 3px;*/
+        font-size: 1.1em;
+        cursor: pointer;
+    }
+    #emojiModel span:hover {
+        background: lightgray;
+    }
 
 @media all and (max-width:825px) {
     .section {

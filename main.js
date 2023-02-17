@@ -2,7 +2,7 @@
 var Make;
 function start() {
     if (localStorage.basics == null) {
-        q("dialog").showModal();
+        q("#loginModel").showModal();
         return;
     }
     continueStart();
@@ -20,7 +20,7 @@ async function continueStart() {
 }
 
 //If press enter send password too
-q("dialog input[type=password]").addEventListener("keyup", (e) => { if (e.keyCode == 13) getBasics(); });
+q("#loginModel input[type=password]").addEventListener("keyup", (e) => { if (e.keyCode == 13) getBasics(); });
 
 /** 
  * Get webhooks from Make after password check
@@ -43,7 +43,7 @@ async function getBasics() {
     let jsonRe = await response.json();
     if (response.status == 401) {
         console.log(response);
-        q("dialog input").style.borderColor = "red";
+        q("#loginModel input").style.borderColor = "red";
     } else if (response.status != 200) {
         console.log("שגיאה בכניסה לחשבון");
         console.log(response);
@@ -52,7 +52,7 @@ async function getBasics() {
         console.log("סיסמה תקינה");
         console.log(jsonRe);
         localStorage.basics = JSON.stringify(jsonRe);
-        q("dialog").close();
+        q("#loginModel").close();
         continueStart();
         return true;
     }
