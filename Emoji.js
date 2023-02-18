@@ -16,10 +16,7 @@
         emojiStr: "🌂 ☂️ 🧵 🪡 👓 🕶 🥼 👕 👖 🧣 🧤 🧦 👗 👘 🥻 🩴 🩱 🩲 🩳 👚 🎒 👞 👟 🥾 🥿 👡 🩰 👢 👑 👒 🎩 💄 💍 🎨 🚀"
     }
 ];
-//,{
-//    title: "",
-//    emojiStr: ""
-//}
+
 
 function emojiModel() {
     q("#emojiModel").showModal();
@@ -29,12 +26,12 @@ function emojiModel() {
         let divTitle = document.createElement('div');
         let divText = document.createTextNode(eGroup.title);
         divTitle.appendChild(divText);
-        q("#emojiModel").append(divTitle);
+        q("#emojiModel grid").append(divTitle);
         [...eGroup.emojiStr].filter((str) => str != " ").forEach((emoji, i) => {
             let spanEmoji = document.createElement('span');
             let spanText = document.createTextNode(emoji);
             spanEmoji.appendChild(spanText);
-            q("#emojiModel").append(spanEmoji);
+            q("#emojiModel grid").append(spanEmoji);
         });
     });
 
@@ -43,6 +40,7 @@ function emojiModel() {
             //console.log(emoji);
             q("#msg").value += e.target.innerText;
             q("#emojiModel").close();
+
         })
     });
 }

@@ -1,6 +1,7 @@
 ﻿:root {
     --bg-color: #eafeff;
 }
+
 body {
     background: #f2f2f2;
     font-family: alef;
@@ -33,7 +34,7 @@ body {
     /*padding:0.4em 0;*/
     /*background:white;*/
     /*background: #f0ffea;*/
-/*    border-bottom: 9px solid transparent;
+    /*    border-bottom: 9px solid transparent;
     border-image: linear-gradient(to bottom, var(--bg-color)99%, #95c9cc 100%) 4;*/
 }
 
@@ -95,7 +96,7 @@ summary {
 }
 
 .sendCon {
-    margin-top:9px;
+    margin-top: 9px;
     display: flex;
     justify-content: flex-end;
     /*justify-content: space-between;*/
@@ -122,12 +123,12 @@ summary {
     background: #b5dff0;
     padding: 0.2em 0.5em;
     cursor: pointer;
-    margin-right:4px;
+    margin-right: 4px;
 }
 
     .button:hover {
         filter: brightness(105%);
-        border-color:white;
+        border-color: white;
     }
 
 #linkList {
@@ -136,11 +137,13 @@ summary {
     justify-content: space-around;
     margin-top: auto;
 }
+
     #linkList a {
         color: gray;
         text-decoration: none;
         padding: 0.5em;
     }
+
         #linkList a:hover {
             text-shadow: 1px 1px 1px #ffdfdf;
         }
@@ -148,7 +151,6 @@ summary {
 dialog {
     border: 1px solid lightgray;
     border-radius: 5px;
-    padding: 0 1em;
 }
 
     dialog .sendCon {
@@ -164,22 +166,35 @@ dialog {
         background: rgba(0,0,0,0.6);
     }
 
-#emojiModel{
-    max-width:400px;
-    margin:4em auto;
-    position:relative;
+#loginModel {
+    padding: 0 1em;
 }
+#emojiModel {
+    width: 310px;
+    margin: 4em auto;
+    position: relative;
+    /*min-height: 525px;*/
+
+    padding: 0 7px;
+    height: 500px;
+}
+    #emojiModel grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 1px;
+    }
+
     #emojiModel:after {
-        content: "🗙";
-        font-size: 1.5em;
+        content: "×";
+        font-size: 3em;
         position: absolute;
         right: 20px;
-        top: 7px;
+        top: -8px;
         color: gray;
         font-weight: bold;
         /*background:white;*/
     }
-/*#emojiModel .sectionTitle{
+    /*#emojiModel .sectionTitle{
     position:sticky;
 }*/
     #emojiModel div {
@@ -190,16 +205,19 @@ dialog {
         margin-bottom: 0.5em;
         margin-top: 0.5em;
         /*border-top:1px solid lightgray;*/
+        grid-column: 1 / -1;
     }
+
     #emojiModel span {
-        padding: 3px;
+        padding: 2px;
         /*margin: 3px;*/
-        font-size: 1.1em;
+        font-size: 1.2em;
         cursor: pointer;
     }
-    #emojiModel span:hover {
-        background: lightgray;
-    }
+
+        #emojiModel span:hover {
+            background: lightgray;
+        }
 
 @media all and (max-width:825px) {
     .section {
