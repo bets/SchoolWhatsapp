@@ -1,4 +1,4 @@
-﻿start();
+﻿//start();
 var Make;
 function start() {
     if (localStorage.basics == null) {
@@ -90,18 +90,18 @@ async function getSchool() {
     //console.table(groups);
 
     var cls = groups.reduce((accu, curr) => {
-            if (!curr.name.includes('טסט')) return accu;
-            let m = curr.name.match(/[\u05D0-\u05EA]{1,2}'?"?[\u05D0-\u05EA]?(\d)/);
-            let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
-            //var m = curr.name.match(/([\u05D0-\u05EA])(\d)/);
-            accu.push({
-                class: letter + m[1],
-                letter: letter,
-                num: m[1],
-                wid: curr.wid
-            });
-            return accu;
-        }, []).sort((a, b) => a.class.localeCompare(b.class));
+        if (!curr.name.includes('טסט')) return accu;
+        let m = curr.name.match(/[\u05D0-\u05EA]{1,2}'?"?[\u05D0-\u05EA]?(\d)/);
+        let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
+        //var m = curr.name.match(/([\u05D0-\u05EA])(\d)/);
+        accu.push({
+            class: letter + m[1],
+            letter: letter,
+            num: m[1],
+            wid: curr.wid
+        });
+        return accu;
+    }, []).sort((a, b) => a.class.localeCompare(b.class));
 
     localStorage.schoolFlat = JSON.stringify(cls);
     //console.table(cls);
@@ -266,6 +266,53 @@ async function sendOne(wid) {
         return true;
     }
 }
+
+/** 
+ * Add bold or italic char to selected text
+ * */
+function strEdit(char, isEmoji) {
+    let textarea = document.querySelector("#msg");
+    let textAr = [...textarea.value];
+
+    textAr.splice(selectionStart, 0, char);
+    if (!isEmoji)
+        textAr.splice(selectionEnd, 0, char);
+
+    // console.log(textAr.join(''));curserPosition
+    textarea.value = textAr.join("");
+}
+
+//document.addEventListener( saveSelectPosition); 
+["click", "select", "keyup"].forEach((eventType) => {
+    q("#msg").addEventListener(eventType, savePosition);
+});
+var selectionStart;
+var selectionEnd;
+var curserPosition;
+/** 
+ * Save position of selected text for bold or italic
+ * */
+function savePosition(e) {
+    selectionStart = document.activeElement.selectionStart;
+    selectionEnd = document.activeElement.selectionEnd + 1;
+
+    //fix position when emoji exits (it addes a fake char to position)
+    // Regular expression to match emoji
+    const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
+    selectionStart -= (q('#msg').value.substring(0, selectionStart).match(regexExp) || []).length;
+    selectionEnd -= (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
+    
+    console.log(e.type);
+    console.log(selectionStart);
+    console.log(selectionEnd);
+    console.log("----");
+
+}
+//function savePosition(e) {
+//    curserPosition = document.activeElement.selectionStart;
+//    console.log(e.type);
+//}
+
 
 function q(selector) {
     return document.querySelector(selector);

@@ -36,12 +36,15 @@
             <div class="sectionTitle">תוכן ההודעה</div>
             <textarea id="msg" rows="5" cols="33"></textarea>
             <div class="sendCon">
+                <span class="button" onclick="strEdit('*')" style="font-weight:bold" title="הדגשת הטקסט המסומן">B</span>
+                <span class="button" onclick="strEdit('_')" title="הטהיית הטקסט המסומן">𝑰</span><!--style="font-style: italic"-->
                 <span class="button" onclick="emojiModel()">😉</span>
                 <span class="button" onclick="send()">שליחה</span>
 
             </div>            
             
             <div id="linkList">
+             
                 <a href="javascript:void(0)" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
                 <a href="javascript:void(0)" onclick="signOff()" title="הפעלת כניסה עם סיסמה במחשב זה">יציאת משתמש</a>
             </div>

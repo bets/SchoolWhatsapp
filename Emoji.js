@@ -39,7 +39,8 @@ function emojiModel() {
     qa("#emojiModel span").forEach((el) => {
         el.addEventListener("click", (e) => {
             //console.log(emoji);
-            q("#msg").value += e.target.innerText;
+            //q("#msg").value += e.target.innerText;
+            strEdit(e.target.innerText, true);
             q("#emojiModel").close();
 
         })
