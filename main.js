@@ -80,12 +80,16 @@ function refetchSchool() {
 async function getSchool() {
     console.log("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
     const response = await fetch(Make.getSchool);
+
+    if (response.status != 200) {
+        console.log(response);
+        console.log("שגיאה בקבלת הקבוצות מבולדוג");
+        return false;
+    }
     let groups = await response.json();
-    //NEED TO CHECK AND RESPONED IF BAD
     //console.table(groups);
 
-    var cls = groups
-        .reduce((accu, curr) => {
+    var cls = groups.reduce((accu, curr) => {
             if (!curr.name.includes('טסט')) return accu;
             let m = curr.name.match(/[\u05D0-\u05EA]{1,2}'?"?[\u05D0-\u05EA]?(\d)/);
             let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
