@@ -186,12 +186,11 @@ dialog {
 
     #emojiModel:after {
         content: "×";
-        font-size: 3em;
+        font-size: 2.7em;
         position: absolute;
-        right: 20px;
+        right: 13px;
         top: -8px;
         color: gray;
-        font-weight: bold;
         /*background:white;*/
     }
     /*#emojiModel .sectionTitle{
