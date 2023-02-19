@@ -40,7 +40,7 @@ body {
 
 .sectionTitle {
     /*background: white;*/
-    padding: 1em 0.5em;
+    padding: 0.7em;
     font-weight: bold;
     /*border-bottom: 1px solid #f8f9fc;*/
     font-size: 1.2em;
@@ -96,7 +96,7 @@ summary {
 }
 
 .sendCon {
-    margin-top: 9px;
+    margin: 9px 0;
     display: flex;
     justify-content: flex-end;
     /*justify-content: space-between;*/
@@ -153,22 +153,29 @@ dialog {
     border-radius: 5px;
 }
 
-    dialog .sendCon {
-        text-align: center;
-    }
-
-    dialog input {
-        border-radius: 5px;
-        padding: 4px;
-    }
-
     dialog::backdrop {
         background: rgba(0,0,0,0.6);
     }
+/*    dialog .sendCon {
+        text-align: center;
+    }*/
 
 #loginModel {
     padding: 0 1em;
 }
+
+    #loginModel input {
+        border-radius: 5px;
+        padding: 4px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    #loginModel .sendCon {
+        justify-content: space-around
+    }
+
 #emojiModel {
     width: 310px;
     margin: 4em auto;
@@ -177,6 +184,7 @@ dialog {
     padding: 0 7px 7px 7px;
     height: 500px;
 }
+
     #emojiModel grid {
         display: grid;
         grid-template-columns: repeat(8, 1fr);
@@ -200,7 +208,7 @@ dialog {
         padding: 0.4em;
         font-weight: bold;
         background: #f8f9fc;
-        margin: 0.3em 0 ;
+        margin: 0.3em 0;
         /*margin-top: 0.5em;*/
         /*border-top:1px solid lightgray;*/
         grid-column: 1 / -1;
