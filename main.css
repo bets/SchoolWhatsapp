@@ -191,14 +191,14 @@ dialog {
 }
 
     #emojiModel:after {
-        top: -13px!important;
+        top: -13px !important;
     }
 
     #emojiModel grid {
         display: grid;
         grid-template-columns: repeat(8, 1fr);
         gap: 1px;
-        margin:4px 9px;
+        margin: 4px 9px;
     }
 
     #emojiModel div {
@@ -226,9 +226,13 @@ dialog {
     padding: 0.5em;
 }
 
-#msgTitles div {
-    padding: 2px 1em;
+#msgTitles {
+    margin: 5px;
 }
+
+    #msgTitles div {
+        padding: 2px 1em;
+    }
 
 @media all and (max-width:825px) {
     .section {
