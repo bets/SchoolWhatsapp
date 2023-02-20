@@ -219,6 +219,8 @@ dialog {
         /*margin: 3px;*/
         font-size: 1.2em;
         cursor: pointer;
+        border-radius: 3px;
+        text-align: center;
     }
 
         #emojiModel span:hover {
