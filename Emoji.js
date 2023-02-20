@@ -18,31 +18,33 @@
     }
 ];
 
-
+/** 
+ * Open emoji model
+ * */
 function emojiModel() {
     q("#emojiModel").showModal();
+    //if already created emoji list so stop here
     if (qa("#emojiModel div").length > 1)
         return;
     EmojiGroups.forEach((eGroup) => {
         let divTitle = document.createElement('div');
         let divText = document.createTextNode(eGroup.title);
         divTitle.appendChild(divText);
-        q("#emojiModel grid").append(divTitle);
+        q("#emojiModel").append(divTitle);
+        let grid = document.createElement('grid');
         [...eGroup.emojiStr].filter((str) => str != " ").forEach((emoji, i) => {
             let spanEmoji = document.createElement('span');
             let spanText = document.createTextNode(emoji);
             spanEmoji.appendChild(spanText);
-            q("#emojiModel grid").append(spanEmoji);
+            grid.append(spanEmoji);
         });
+        q("#emojiModel").append(grid);
     });
 
     qa("#emojiModel span").forEach((el) => {
         el.addEventListener("click", (e) => {
-            //console.log(emoji);
-            //q("#msg").value += e.target.innerText;
             strEdit(e.target.innerText, true);
             q("#emojiModel").close();
-
         })
     });
 }

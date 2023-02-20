@@ -151,14 +151,21 @@ summary {
 dialog {
     border: 1px solid lightgray;
     border-radius: 5px;
+    padding: 0;
 }
 
     dialog::backdrop {
         background: rgba(0,0,0,0.6);
     }
-/*    dialog .sendCon {
-        text-align: center;
-    }*/
+
+    dialog:not(#loginModel):after {
+        content: "×";
+        font-size: 2.6em;
+        position: absolute;
+        right: 10px;
+        top: -8px;
+        color: gray;
+    }
 
 #loginModel {
     padding: 0 1em;
@@ -180,41 +187,28 @@ dialog {
     width: 310px;
     margin: 4em auto;
     position: relative;
-    /*min-height: 525px;*/
-    padding: 0 7px 7px 7px;
     height: 500px;
 }
+
+    #emojiModel:after {
+        top: -13px!important;
+    }
 
     #emojiModel grid {
         display: grid;
         grid-template-columns: repeat(8, 1fr);
         gap: 1px;
+        margin:4px 9px;
     }
 
-    #emojiModel:after {
-        content: "×";
-        font-size: 2.7em;
-        position: absolute;
-        right: 13px;
-        top: -12px;
-        color: gray;
-        /*background:white;*/
-    }
-    /*#emojiModel .sectionTitle{
-    position:sticky;
-}*/
     #emojiModel div {
         text-align: center;
         padding: 0.4em;
         font-weight: bold;
         background: #f8f9fc;
-        margin: 0.3em 0;
-        /*margin-top: 0.5em;*/
-        /*border-top:1px solid lightgray;*/
-        grid-column: 1 / -1;
     }
 
-    #emojiModel span {
+    #emojiModel span, #msgTitles div {
         padding: 2px;
         /*margin: 3px;*/
         font-size: 1.2em;
@@ -223,9 +217,18 @@ dialog {
         text-align: center;
     }
 
-        #emojiModel span:hover {
+        #emojiModel span:hover, #msgTitles div:hover {
             background: lightgray;
         }
+
+#titleModel .sectionTitle {
+    background: #f8f9fc;
+    padding: 0.5em;
+}
+
+#msgTitles div {
+    padding: 2px 1em;
+}
 
 @media all and (max-width:825px) {
     .section {

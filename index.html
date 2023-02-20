@@ -36,15 +36,14 @@
             <div class="sectionTitle">תוכן ההודעה</div>
             <textarea id="msg" rows="5" cols="33"></textarea>
             <div class="sendCon">
+                <span class="button" onclick="titleModel()" title="הוספה מכתרות קבועות">כותרת</span>
                 <span class="button" onclick="strEdit('*')" style="font-weight:bold" title="הדגשת הטקסט המסומן">B</span>
-                <span class="button" onclick="strEdit('_')" title="הטהיית הטקסט המסומן">𝑰</span><!--style="font-style: italic"-->
+                <span class="button" onclick="strEdit('_')" title="הטהיית הטקסט המסומן">𝑰</span>
                 <span class="button" onclick="emojiModel()">😉</span>
                 <span class="button" onclick="send()">שליחה</span>
+            </div>
 
-            </div>            
-            
             <div id="linkList">
-             
                 <a href="javascript:void(0)" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
                 <a href="javascript:void(0)" onclick="signOff()" title="הפעלת כניסה עם סיסמה במחשב זה">יציאת משתמש</a>
             </div>
@@ -58,17 +57,21 @@
             <span class="button" onclick="getBasics()">כניסה</span>
         </div>
     </dialog>
+
     <dialog id="emojiModel" onclick="event.target==this && this.close()">
-        <!--<div class="sectionTitle">בחירת אימוג'י</div>-->
-        <grid></grid>
     </dialog>
 
-    <!--<div class="section" style="margin:3em auto;">
-        https://emoji-api.com/ <br />
-        "codePoint": "1F606" <br />
-        <span>&#x1F606</span>
-        https://getemoji.com/
-    </div>-->
+    <dialog id="titleModel" onclick="event.target==this && this.close()">
+        <div class="sectionTitle">הוספת כותרת</div>
+        <div id="msgTitles">
+            <div>הודעת מנהל</div>
+            <div>הודעת מזכירות</div>
+            <div>הודעת צהרון</div>
+            <div>הודעה לשכבת א'</div>
+            <div>הודעה לשכבת ב'</div>
+            <div>הודעה מהמורה של א'2</div>
+        </div>
+    </dialog>
 
     <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->

@@ -1,6 +1,7 @@
-﻿//start();
+﻿start();
 var Make;
 function start() {
+    console.log(localStorage.basics == null);
     if (localStorage.basics == null) {
         q("#loginModel").showModal();
         return;
@@ -63,6 +64,7 @@ async function getBasics() {
  * Sign off by removing basics
  * */
 function signOff() {
+    console.log("signOff");
     localStorage.removeItem('basics');
     location.reload();
 }
@@ -282,13 +284,11 @@ function strEdit(char, isEmoji) {
     textarea.value = textAr.join("");
 }
 
-//document.addEventListener( saveSelectPosition); 
 ["click", "select", "keyup"].forEach((eventType) => {
     q("#msg").addEventListener(eventType, savePosition);
 });
 var selectionStart;
 var selectionEnd;
-var curserPosition;
 /** 
  * Save position of selected text for bold or italic
  * */
@@ -308,11 +308,25 @@ function savePosition(e) {
     console.log("----");
 
 }
-//function savePosition(e) {
-//    curserPosition = document.activeElement.selectionStart;
-//    console.log(e.type);
-//}
 
+/** 
+ * Open predefined title model
+ * */
+function titleModel() {
+    q("#titleModel").showModal();
+}
+
+qa("#msgTitles div").forEach((el) => {
+    el.addEventListener("click", insertTitle);
+});
+/** 
+ * Add bold predefined title to text message
+ * */
+function insertTitle(e) {
+    let title = `*${e.target.innerText}*\r\n\r\n`;
+    q("#msg").value = title + q("#msg").value;
+    q("#titleModel").close();
+}
 
 function q(selector) {
     return document.querySelector(selector);
