@@ -11,9 +11,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{345C327A-2
 		main.js = main.js
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{20CD8526-5BDD-4473-935B-8EC2143C0D17}"
+	ProjectSection(SolutionItems) = preProject
+		resources\send-svgrepo-com.svg = resources\send-svgrepo-com.svg
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{20CD8526-5BDD-4473-935B-8EC2143C0D17} = {345C327A-238C-444A-84BE-BB7A313C5D05}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {88B7117C-1616-476B-B53E-45361E2F8ACF}

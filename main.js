@@ -150,7 +150,7 @@ function createSchool(school) {
  * Attach events to class selector UI
  * */
 function setSelectEvents() {
-    let boxes = document.querySelectorAll("input");
+    let boxes = document.querySelectorAll("#classSelector input");
     boxes.forEach((el) => {
         el.addEventListener("click", (e) => {
             // console.log("click " + e.target.className);
@@ -210,11 +210,26 @@ function checkParents(s, boxes) {
 /** 
  * Get all checked ids and send to each group
  * */
-function send() {
+function send(hasTime) {
+    //alert("hay");
+    //return;
     if (q("#msg").value.length < 4) {
         console.log("נא להוסיף תוכן להודעה");
         return;
     }
+    if (hasTime) {
+        let inputDate = new Date(q("#deliverAt").value);
+        if (inputDate == "") {
+            console.log("נא להוסיף זמן לתזמון");
+            return;
+        }
+        let currentDate = new Date();
+        if (inputDate.getTime() < currentDate.getTime() + 5 * 60000) {
+            console.log("התזמון חייב להיות לפחות 5 דקות מעכשיו ולא בעבר");
+            return;
+        }
+    }
+
     let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
     if (checkedIds.length == 0) {
         console.log("נא לבחור כיתה");
@@ -223,16 +238,18 @@ function send() {
     console.log("קליטת הודעות מתבצעת");
     let schoolFlat = JSON.parse(localStorage.schoolFlat);
     let sentNum = 0;
-    checkedIds.every((id, i) => {
+    checkedIds.every((id) => {
         let wid = schoolFlat.find(x => x.class == id).wid;
-        let sentOk = sendOne(wid);
+        let sentOk = sendOne(wid, hasTime);
         if (sentOk)
             sentNum++;
         return sentOk;
     });
 
-    if (sentNum > 0)
+    if (sentNum > 0) {
         console.log(`${sentNum} הודעות נקלטו וישלחו בדקות הקרובות`);
+        resetMsg();
+    }
     if (sentNum == 0)
         console.log("שגיאה - לא נקלטו ההודעות");
     else if (sentNum != checkedIds.length) {
@@ -240,14 +257,25 @@ function send() {
     }
 }
 /** 
+ * After send empty msg and close deliverAt
+ * */
+function resetMsg() {
+    q('#msg').value = "";
+    if (!q("#sendSelect").classList.contains('hide'))
+        showDeliverAt();
+}
+/** 
  * Send one group message
  * */
-async function sendOne(wid) {
+async function sendOne(wid, hasTime) {
     let body = {
         "message": JSON.stringify(q("#msg").value),
         "group": wid
     };
-
+    if (hasTime) {
+        body.deliverAt = q("deliverAt").value + ":00.000z";
+    }
+    
     const options = {
         method: 'POST',
         headers: {
@@ -301,12 +329,6 @@ function savePosition(e) {
     const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
     selectionStart -= (q('#msg').value.substring(0, selectionStart).match(regexExp) || []).length;
     selectionEnd -= (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
-    
-    console.log(e.type);
-    console.log(selectionStart);
-    console.log(selectionEnd);
-    console.log("----");
-
 }
 
 /** 
@@ -326,6 +348,26 @@ function insertTitle(e) {
     let title = `*${e.target.innerText}*\r\n\r\n`;
     q("#msg").value = title + q("#msg").value;
     q("#titleModel").close();
+}
+
+/** 
+ * Show\hide datetime picker and send options
+ * */
+function showDeliverAt() {
+    //["#eliverAt", "sendAt", "sendNowAt"]
+    qa(".tuggle").forEach((el) => {
+        el.classList.toggle('hide');
+        if (q("#sendSelect").classList.contains('hide'))
+            q(".button.sendImg").classList.remove('disable')
+        else
+            q(".button.sendImg").classList.add('disable')
+        //el.style.display = window.getComputedStyle(el).display === 'none' ? 'inline' : 'none';
+    })
+}
+
+function sendBoth() {
+    send();
+    send(true);
 }
 
 function q(selector) {

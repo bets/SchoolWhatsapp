@@ -35,13 +35,46 @@
         <div id="msgPan" class="section">
             <div class="sectionTitle">תוכן ההודעה</div>
             <textarea id="msg" rows="5" cols="33"></textarea>
-            <div class="sendCon">
+
+            <div class="btnCon msgActions">
                 <span class="button" onclick="titleModel()" title="הוספה מכתרות קבועות">כותרת</span>
                 <span class="button" onclick="strEdit('*')" style="font-weight:bold" title="הדגשת הטקסט המסומן">B</span>
                 <span class="button" onclick="strEdit('_')" title="הטהיית הטקסט המסומן">𝑰</span>
                 <span class="button" onclick="emojiModel()">😉</span>
-                <span class="button" onclick="send()">שליחה</span>
+                <!--<input id="deliverAt" class="hide tuggle" type="datetime-local" />-->
+                <div class="">
+                    <span class="button" onclick="showDeliverAt()" title="תזמון שליחה">🕑</span>
+                    <span class="button sendImg" onclick="send()" title="שליחת הודעה"></span>
+                </div>
             </div>
+
+            <div class="btnCon sendCon">
+                <!--<span class="button tuggle hide" onclick="showDeliverAt()" title="סגירת תזמון שליחה">🕑</span>-->
+                <input id="deliverAt" class="hide tuggle" type="datetime-local" />
+
+                <select class="tuggle hide sendImg" id="sendSelect" autocomplete="off">
+                    <optgroup label="מתי לשלוח?">
+                        <option hidden selected value></option>
+                        <option onclick="send(true)" title="ההודעה תישלח בזמן הנבחר">בתזמון</option>
+                        <option onclick="sendBoth()" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון</option>
+                        <option onclick="send()" title="ההודעה תשלח עכשיו">עכשיו</option>
+                    </optgroup>
+                </select>
+                <!--<span id="sendAt" class="button hide tuggle sendImg" onclick="sendDeliverAt()" title="ההודעה תישלח בזמן הנבחר">בתזמון&nbsp;&nbsp;</span>
+    <span id="sendNowAt" class="button hide tuggle sendImg" onclick="sendBoth()" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון&nbsp;&nbsp;</span>
+    <span class="button tuggle hide sendImg" onclick="send()" title="ההודעה תשלח עכשיו בלבד"></span>-->
+            </div>
+
+            <!--<div class="btnCon">
+                <select id="sendSelect" class="sendImg">
+                    <optgroup label="מתי לשלוח?">
+                        <option hidden disabled selected value></option>
+                        <option onclick="sendDeliverAt()" title="ההודעה תישלח בזמן הנבחר">בתזמון</option>
+                        <option onclick="sendBoth()" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון</option>
+                        <option onclick="send()" title="ההודעה תשלח עכשיו בלבד">עכשיו</option>
+                    </optgroup>
+                </select>
+            </div>-->
 
             <div id="linkList">
                 <a href="javascript:void(0)" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
