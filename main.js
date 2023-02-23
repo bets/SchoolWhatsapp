@@ -415,6 +415,13 @@ function getTimestamp() {
     //return `${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
+/** 
+ * Open settings model
+ * */
+function settingsModel() {
+    q("#settingsModel").showModal();
+} 
+
 function q(selector) {
     return document.querySelector(selector);
 }

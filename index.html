@@ -6,7 +6,11 @@
     <title>ביה"ס זקס - Whatsapp</title>
 </head>
 <body>
-    <div class="sectionTitle pageTitle" style="">Whatsapp Group Control</div>
+    <header class="">
+        <a href="javascript:void(0)" onclick="settingsModel()" title="הגדרות"><img src="./resources/settings-svgrepo-com.svg" alt="הגדרות" /></a>
+        <div class="pageTitle">Whatsapp Group Control</div>
+        <a href="javascript:void(0)" onclick="signOff()" title="יצאה מהחשבון"><img src="./resources/session-leave-svgrepo-com.svg" alt="יציאת משתמש" /></a>
+    </header>
     <div id="main" class="">
         <div id="groupSelector" class="section">
             <div class="sectionTitle">בחירת כיתות</div>
@@ -61,10 +65,10 @@
                 </select>
             </div>
 
-            <div id="linkList">
+            <!--<div id="linkList">
                 <a href="javascript:void(0)" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
                 <a href="javascript:void(0)" onclick="signOff()" title="הפעלת כניסה עם סיסמה במחשב זה">יציאת משתמש</a>
-            </div>
+            </div>-->
         </div>
 
         <div id="statusPan" class="section">
@@ -99,6 +103,20 @@
     <dialog id="errorModel" onclick="event.target==this && this.close()">
         <div class="sectionTitle">שגיאה</div>
         <div class="error"></div>
+    </dialog>
+
+    <dialog id="settingsModel" onclick="event.target==this && this.close()">
+        <div class="sectionTitle">הגדרות</div>
+        <div id="settingsList">
+            <div class="settItem">
+                <a href="javascript:void(0)" onclick="refetchSchool()">ריענון כיתות</a>
+                <div>אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן</div>
+            </div>
+            <div class="settItem">
+                <a href="javascript:void(0)" onclick="">הגדרה נוספת</a>
+                <div>הגדרות נוספות יהיו כנראה בהמשך</div>
+            </div>
+        </div>
     </dialog>
 
     <link rel="stylesheet" href="./main.css">

@@ -1,7 +1,9 @@
+TODO
 Notify that scheduled messages can not be canceled yet.
 Save a list of scheduled messages and have option to cancel them.
 Attach image or file to message
 
+TODO UPSCALE
 Build a whatsapp web server
 Save session info of client by saving browser with session info or just session itself and loading to browser as needed.
 option to choose relevant groups and save 
@@ -12,3 +14,4 @@ User and access manager
 
 DONE
 Status line (/box/popup) to display feedback, error, etc.
+Moved signOff and make settings model
