@@ -1,7 +1,6 @@
 ﻿start();
 var Make;
 function start() {
-    console.log(localStorage.basics == null);
     if (localStorage.basics == null) {
         q("#loginModel").showModal();
         return;
@@ -39,19 +38,19 @@ async function getBasics() {
         body: JSON.stringify(body)
     };
 
-    console.log("בדיקת סיסמה");
+    displayStatus("בדיקת סיסמה");
     const response = await fetch('https://hook.eu1.make.com/byeoipdssunukstesd153infg5s3v2f5', options);
     let jsonRe = await response.json();
     if (response.status == 401) {
-        console.log(response);
+        displayStatus(response, true);
         q("#loginModel input").style.borderColor = "red";
     } else if (response.status != 200) {
-        console.log("שגיאה בכניסה לחשבון");
-        console.log(response);
+        displayStatus("שגיאה בכניסה לחשבון",true);
+        displayStatus(response, true);
     }
     else {
-        console.log("סיסמה תקינה");
-        console.log(jsonRe);
+        displayStatus("סיסמה תקינה");
+        //console.log(jsonRe);
         localStorage.basics = JSON.stringify(jsonRe);
         q("#loginModel").close();
         continueStart();
@@ -64,7 +63,7 @@ async function getBasics() {
  * Sign off by removing basics
  * */
 function signOff() {
-    console.log("signOff");
+    displayStatus("יציאת משתמש");
     localStorage.removeItem('basics');
     location.reload();
 }
@@ -80,15 +79,15 @@ function refetchSchool() {
  * Get class groups from bulldog whatsapp through Make
  * */
 async function getSchool() {
-    alert('משיכת קבוצות מצריכה פתיחת חשבון בולדוג');
+    displayStatus('משיכת קבוצות מצריכה פתיחת חשבון בולדוג', true);
     return;
 
-    console.log("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
+    displayStatus("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
     const response = await fetch(Make.getSchool);
 
     if (response.status != 200) {
-        console.log(response);
-        console.log("שגיאה בקבלת הקבוצות מבולדוג");
+        displayStatus(response, true);
+        displayStatus("שגיאה בקבלת הקבוצות מבולדוג", true);
         return false;
     }
     let groups = await response.json();
@@ -153,7 +152,7 @@ function createSchool(school) {
  * Attach events to class selector UI
  * */
 function setSelectEvents() {
-    let boxes = document.querySelectorAll("#classSelector input");
+    let boxes = document.querySelectorAll("#groupSelector input");
     boxes.forEach((el) => {
         el.addEventListener("click", (e) => {
             // console.log("click " + e.target.className);
@@ -215,28 +214,29 @@ function checkParents(s, boxes) {
  * */
 function send(hasTime) {
     if (q("#msg").value.length < 4) {
-        console.log("נא להוסיף תוכן להודעה");
+        displayStatus("נא להוסיף תוכן להודעה", true);
         return;
     }
     if (hasTime) {
+        q("#sendSelect").value = "";//clear select for next time
         let inputDate = new Date(q("#deliverAt").value);
         if (inputDate == "") {
-            console.log("נא להוסיף זמן לתזמון");
+            displayStatus("נא להוסיף זמן לתזמון", true);
             return;
         }
         let currentDate = new Date();
         if (inputDate.getTime() < currentDate.getTime() + 5 * 60000) {
-            console.log("התזמון חייב להיות לפחות 5 דקות מעכשיו ולא בעבר");
+            displayStatus("התזמון חייב להיות לפחות 5 דקות מעכשיו ולא בעבר", true);
             return;
         }
     }
 
     let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
     if (checkedIds.length == 0) {
-        console.log("נא לבחור כיתה");
+        displayStatus("נא לבחור כיתה", true);
         return;
     }
-    console.log("קליטת הודעות מתבצעת");
+    displayStatus("קליטת הודעות מתבצעת");
     let schoolFlat = JSON.parse(localStorage.schoolFlat);
     let sentNum = 0;
     checkedIds.every((id) => {
@@ -248,13 +248,13 @@ function send(hasTime) {
     });
 
     if (sentNum > 0) {
-        console.log(`${sentNum} הודעות נקלטו וישלחו בדקות הקרובות`);
+        displayStatus(`${sentNum} הודעות נקלטו וישלחו בדקות הקרובות`);
         resetMsg();
     }
     if (sentNum == 0)
-        console.log("שגיאה - לא נקלטו ההודעות");
+        displayStatus("שגיאה - לא נקלטו ההודעות", true);
     else if (sentNum != checkedIds.length) {
-        console.log(`שגיאה - לא נקלטו כל ההודעת`);
+        displayStatus(`שגיאה - לא נקלטו כל ההודעת`, true);
     }
 }
 /** 
@@ -286,16 +286,16 @@ async function sendOne(wid, hasTime) {
     };
 
     console.log("Sending message through Bulldog");
-    alert('שליחה מצריכה פתיחת חשבון בולדוג');
+    displayStatus('שליחה מצריכה פתיחת חשבון בולדוג', true);
     return;
     const response = await fetch(Make.sendOne, options);
     let jsonRe = await response.json();
     if (response.status != 200) {
-        console.log(response);
+        displayStatus(response, true);
         return false;
     }
     else {
-        console.log(jsonRe);
+        //console.log(jsonRe);
         return true;
     }
 }
@@ -311,7 +311,7 @@ function strEdit(char, isEmoji) {
     if (!isEmoji)
         textAr.splice(selectionEnd, 0, char);
 
-    // console.log(textAr.join(''));curserPosition
+    // console.log(textAr.join(''));
     textarea.value = textAr.join("");
     q('#msg').focus();
     if (selectionStart + 1 == selectionEnd) {
@@ -381,6 +381,38 @@ function showDeliverAt() {
 function sendBoth() {
     send();
     send(true);
+}
+
+/** 
+ * Show\hide datetime picker and send options
+ * */
+function displayStatus(msg, error) {
+    if (error) {
+        q("#errorModel .error").innerHTML = msg;
+        q("#errorModel").showModal();
+    }
+
+    //all the rest is hidden and waiting for a futuer option to see the log
+    let div = document.createElement('div');
+
+    let textSpan = document.createElement('span');
+    textSpan.append(msg);
+    if (error)
+        textSpan.classList.add('error');
+
+    let timeSpan = document.createElement('span');
+    timeSpan.append(getTimestamp());
+
+    div.append(timeSpan);
+    div.append(textSpan);
+    q("#statusPan p").prepend(div);
+}
+function getTimestamp() {
+    const pad = (n, s = 2) => (`${new Array(s).fill(0)}${n}`).slice(-s);
+    const d = new Date();
+
+    return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${pad(d.getMinutes()) }`;
+    //return `${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
 function q(selector) {

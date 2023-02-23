@@ -8,7 +8,7 @@
 <body>
     <div class="sectionTitle pageTitle" style="">Whatsapp Group Control</div>
     <div id="main" class="">
-        <div id="classSelector" class="section">
+        <div id="groupSelector" class="section">
             <div class="sectionTitle">בחירת כיתות</div>
             <div id="allCon" class="slot">
                 <label for="all"><input id="all" type="checkbox">כל ביה"ס</label>
@@ -59,27 +59,18 @@
                         <option onclick="sendBoth()" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון</option>
                     </optgroup>
                 </select>
-                <!--<span id="sendAt" class="button hide tuggle sendImg" onclick="sendDeliverAt()" title="ההודעה תישלח בזמן הנבחר">בתזמון&nbsp;&nbsp;</span>
-    <span id="sendNowAt" class="button hide tuggle sendImg" onclick="sendBoth()" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון&nbsp;&nbsp;</span>
-    <span class="button tuggle hide sendImg" onclick="send()" title="ההודעה תשלח עכשיו בלבד"></span>-->
             </div>
-
-            <!--<div class="btnCon">
-                <select id="sendSelect" class="sendImg">
-                    <optgroup label="מתי לשלוח?">
-                        <option hidden disabled selected value></option>
-                        <option onclick="sendDeliverAt()" title="ההודעה תישלח בזמן הנבחר">בתזמון</option>
-                        <option onclick="sendBoth()" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון</option>
-                        <option onclick="send()" title="ההודעה תשלח עכשיו בלבד">עכשיו</option>
-                    </optgroup>
-                </select>
-            </div>-->
 
             <div id="linkList">
                 <a href="javascript:void(0)" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
                 <a href="javascript:void(0)" onclick="signOff()" title="הפעלת כניסה עם סיסמה במחשב זה">יציאת משתמש</a>
             </div>
         </div>
+
+        <div id="statusPan" class="section">
+            <p></p>
+        </div>
+
     </div>
 
     <dialog id="loginModel">
@@ -103,6 +94,11 @@
             <div>הודעה לכיתות ב'</div>
             <div>הודעה מהמורה של א'2</div>
         </div>
+    </dialog>
+
+    <dialog id="errorModel" onclick="event.target==this && this.close()">
+        <div class="sectionTitle">שגיאה</div>
+        <div class="error"></div>
     </dialog>
 
     <link rel="stylesheet" href="./main.css">

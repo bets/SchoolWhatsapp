@@ -14,6 +14,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{20CD8526-5BDD-4473-935B-8EC2143C0D17}"
 	ProjectSection(SolutionItems) = preProject
 		resources\send-svgrepo-com.svg = resources\send-svgrepo-com.svg
+		ToDo.txt = ToDo.txt
 	EndProjectSection
 EndProject
 Global
