@@ -80,7 +80,7 @@ function refetchSchool() {
  * Get class groups from bulldog whatsapp through Make
  * */
 async function getSchool() {
-    alert('אין משיכת קבוצות בשלב זה');
+    alert('משיכת קבוצות מצריכה פתיחת חשבון בולדוג');
     return;
 
     console.log("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
@@ -214,8 +214,6 @@ function checkParents(s, boxes) {
  * Get all checked ids and send to each group
  * */
 function send(hasTime) {
-    //alert("hay");
-    //return;
     if (q("#msg").value.length < 4) {
         console.log("נא להוסיף תוכן להודעה");
         return;
@@ -288,7 +286,7 @@ async function sendOne(wid, hasTime) {
     };
 
     console.log("Sending message through Bulldog");
-    alert('אין שליחה בשלב זה');
+    alert('שליחה מצריכה פתיחת חשבון בולדוג');
     return;
     const response = await fetch(Make.sendOne, options);
     let jsonRe = await response.json();
