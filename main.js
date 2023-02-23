@@ -80,6 +80,9 @@ function refetchSchool() {
  * Get class groups from bulldog whatsapp through Make
  * */
 async function getSchool() {
+    alert('אין משיכת קבוצות בשלב זה');
+    return;
+
     console.log("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
     const response = await fetch(Make.getSchool);
 
@@ -275,7 +278,7 @@ async function sendOne(wid, hasTime) {
     if (hasTime) {
         body.deliverAt = q("deliverAt").value + ":00.000z";
     }
-    
+
     const options = {
         method: 'POST',
         headers: {
@@ -285,6 +288,8 @@ async function sendOne(wid, hasTime) {
     };
 
     console.log("Sending message through Bulldog");
+    alert('אין שליחה בשלב זה');
+    return;
     const response = await fetch(Make.sendOne, options);
     let jsonRe = await response.json();
     if (response.status != 200) {
@@ -310,6 +315,12 @@ function strEdit(char, isEmoji) {
 
     // console.log(textAr.join(''));curserPosition
     textarea.value = textAr.join("");
+    q('#msg').focus();
+    if (selectionStart + 1 == selectionEnd) {
+        let position = selectionEnd + (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
+        if (isEmoji) position++;
+        q('#msg').selectionEnd = position;
+    }
 }
 
 ["click", "select", "keyup"].forEach((eventType) => {
@@ -317,6 +328,7 @@ function strEdit(char, isEmoji) {
 });
 var selectionStart;
 var selectionEnd;
+const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
 /** 
  * Save position of selected text for bold or italic
  * */
@@ -326,9 +338,11 @@ function savePosition(e) {
 
     //fix position when emoji exits (it addes a fake char to position)
     // Regular expression to match emoji
-    const regexExp = /(\u00a9|\u00ae|[\u2000-\u3300]|\ud83c[\ud000-\udfff]|\ud83d[\ud000-\udfff]|\ud83e[\ud000-\udfff])/gi;
     selectionStart -= (q('#msg').value.substring(0, selectionStart).match(regexExp) || []).length;
     selectionEnd -= (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
+
+    //console.log(selectionStart);
+    //console.log(selectionEnd);
 }
 
 /** 
@@ -348,6 +362,7 @@ function insertTitle(e) {
     let title = `*${e.target.innerText}*\r\n\r\n`;
     q("#msg").value = title + q("#msg").value;
     q("#titleModel").close();
+    q('#msg').focus();
 }
 
 /** 

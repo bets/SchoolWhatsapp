@@ -45,6 +45,7 @@ function emojiModel() {
         el.addEventListener("click", (e) => {
             strEdit(e.target.innerText, true);
             q("#emojiModel").close();
+            q('#msg').focus();
         })
     });
 }

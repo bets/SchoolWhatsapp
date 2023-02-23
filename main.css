@@ -148,9 +148,10 @@ summary {
     border: 1px solid var(--bg-color);
     border-radius: 5px;
     padding: 6px 6px 6px 23px;
-    background-color: #b5dff0;
+    background-color: #70dbd1;
     appearance: none;
     height: 30px;
+    cursor:pointer;
     /*padding: 0.5em;*/
 }
 
@@ -276,6 +277,7 @@ dialog {
     display: none!important;
 }
 .sendImg {
+    background-color: #70dbd1;
     background-image: url("./resources/send-svgrepo-com.svg");
     background-position: center;
     background-size: contain;
