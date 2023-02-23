@@ -56,11 +56,11 @@
                 <!--<span class="button tuggle hide" onclick="showDeliverAt()" title="סגירת תזמון שליחה">🕑</span>-->
                 <input id="deliverAt" class="hide tuggle" type="datetime-local" />
 
-                <select class="tuggle hide sendImg" id="sendSelect" autocomplete="off">
+                <select class="tuggle hide sendImg" id="sendSelect" autocomplete="off" onchange="deliverAtSend(this.value);">
                     <optgroup label="מתי לשלוח?">
                         <option hidden selected value></option>
-                        <option onclick="send(true)" title="ההודעה תישלח בזמן הנבחר">בתזמון</option>
-                        <option onclick="sendBoth()" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון</option>
+                        <option value="sendAt" title="ההודעה תישלח בזמן הנבחר">בתזמון</option>
+                        <option value="sendBoth" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון</option>
                     </optgroup>
                 </select>
             </div>

@@ -218,9 +218,9 @@ function send(hasTime) {
         return;
     }
     if (hasTime) {
-        q("#sendSelect").value = "";//clear select for next time
         let inputDate = new Date(q("#deliverAt").value);
-        if (inputDate == "") {
+        let timestamp = Date.parse(inputDate);              
+        if (isNaN(timestamp) == true) {
             displayStatus("נא להוסיף זמן לתזמון", true);
             return;
         }
@@ -377,11 +377,17 @@ function showDeliverAt() {
         //el.style.display = window.getComputedStyle(el).display === 'none' ? 'inline' : 'none';
     })
 }
+function deliverAtSend(val) {
+    q("#sendSelect").value = "";//clear select for next time
 
-function sendBoth() {
-    send();
     send(true);
+    if (val == "sendBoth")
+        send();
 }
+//function sendBoth() {
+//    send();
+//    send(true);
+//}
 
 /** 
  * Show\hide datetime picker and send options

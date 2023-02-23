@@ -351,23 +351,28 @@ dialog {
     }
 
 #statusPan {
-    display: none;
+    /*display: none;*/
 }
 
     #statusPan p {
         max-height: 4em;
         background-color: #ffffffa8;
-        overflow-y: auto;
+        overflow-y: scroll;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
         padding: 0.5em;
         width: 100%;
         border-radius: 5px;
         font-size: 0.8em;
         color: gray;
     }
+        #statusPan p::-webkit-scrollbar {
+            display: none;
+        }
 
-    #statusPan div {
-        white-space: nowrap;
-    }
+        #statusPan div {
+            white-space: nowrap;
+        }
 
         #statusPan div span {
             padding: 0.5em;

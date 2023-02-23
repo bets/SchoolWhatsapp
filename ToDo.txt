@@ -13,5 +13,6 @@ User and access manager
 
 
 DONE
+Readd status line to get feedback that messages are ecccepted etc.
 Status line (/box/popup) to display feedback, error, etc.
 Moved signOff and make settings model
