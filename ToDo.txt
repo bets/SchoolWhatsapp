@@ -1,4 +1,5 @@
 TODO
+Add small status that that updates as group messages are recived at bulldog (2/3...) and "sent succsesful" when done.
 Notify that scheduled messages can not be canceled yet.
 Save a list of scheduled messages and have option to cancel them.
 Attach image or file to message
@@ -13,6 +14,7 @@ User and access manager
 
 
 DONE
+Removed status line again (to messey, will add something else)
 Readd status line to get feedback that messages are ecccepted etc.
 Status line (/box/popup) to display feedback, error, etc.
 Moved signOff and make settings model
