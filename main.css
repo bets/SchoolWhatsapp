@@ -277,7 +277,7 @@ dialog {
 }
 .sendImg {
     background-image: url("./resources/send-svgrepo-com.svg");
-    background-position: left;
+    background-position: center;
     background-size: contain;
     background-repeat: no-repeat;
     display: inline-block;
