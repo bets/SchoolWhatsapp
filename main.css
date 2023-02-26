@@ -12,6 +12,7 @@ header {
     header a {
         line-height: 49px;
     }
+
         header a:hover {
             background-color: #fbfadf;
         }
@@ -254,22 +255,37 @@ dialog {
     padding: 0 1em 1em 1em;
     min-width: 200px;
 }
-#settingsModel a {
-    text-decoration: none;
-    /*padding: 0.5em;*/
+
+.settItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-    #settingsModel a:hover {
-        text-shadow: 1px 1px 1px #ffdfdf;
+    .settItem b {
+        white-space: nowrap;
     }
-    .settItem{
-        display:flex;
+
+    .settItem img {
+        height: 30px;
+        padding: 7px;
+        border-radius: 4px;
+        background-color: #f9f9f9;
     }
-    .settItem *{
-        margin:0.5em;
+
+        .settItem img:hover {
+            /*background-color: #ffdfdf;*/
+            background-color: #fbfadf;
+        }
+
+
+    .settItem > * {
+        margin: 0.5em;
     }
-    .settItem div{
-        color:gray;
+
+    .settItem div {
+        color: gray;
+        width: 100%;
     }
 
 #emojiModel {
@@ -366,13 +382,14 @@ dialog {
         font-size: 0.8em;
         color: gray;
     }
+
         #statusPan p::-webkit-scrollbar {
             display: none;
         }
 
-        #statusPan div {
-            white-space: nowrap;
-        }
+    #statusPan div {
+        white-space: nowrap;
+    }
 
         #statusPan div span {
             padding: 0.5em;
