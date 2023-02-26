@@ -45,7 +45,7 @@ async function getBasics() {
         displayStatus(response, true);
         q("#loginModel input").style.borderColor = "red";
     } else if (response.status != 200) {
-        displayStatus("שגיאה בכניסה לחשבון",true);
+        displayStatus("שגיאה בכניסה לחשבון", true);
         displayStatus(response, true);
     }
     else {
@@ -219,7 +219,7 @@ function send(hasTime) {
     }
     if (hasTime) {
         let inputDate = new Date(q("#deliverAt").value);
-        let timestamp = Date.parse(inputDate);              
+        let timestamp = Date.parse(inputDate);
         if (isNaN(timestamp) == true) {
             displayStatus("נא להוסיף זמן לתזמון", true);
             return;
@@ -368,14 +368,15 @@ function insertTitle(e) {
  * */
 function showDeliverAt() {
     //["#eliverAt", "sendAt", "sendNowAt"]
-    qa(".tuggle").forEach((el) => {
+    qa(".toggle").forEach((el) => {
         el.classList.toggle('hide');
-        if (q("#sendSelect").classList.contains('hide'))
-            q(".button.sendImg").classList.remove('disable')
-        else
-            q(".button.sendImg").classList.add('disable')
-        //el.style.display = window.getComputedStyle(el).display === 'none' ? 'inline' : 'none';
-    })
+    //if (q("#sendSelect").classList.contains('hide'))
+    //    q(".button.sendImg").classList.remove('disable')
+    //else
+    //    q(".button.sendImg").classList.add('disable')
+    });
+    q("#showDeliverAt").classList.toggle('insetBtn');
+    q(".button.sendImg").classList.toggle('disable');
 }
 function deliverAtSend(val) {
     q("#sendSelect").value = "";//clear select for next time
@@ -417,7 +418,7 @@ function getTimestamp() {
     const pad = (n, s = 2) => (`${new Array(s).fill(0)}${n}`).slice(-s);
     const d = new Date();
 
-    return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${pad(d.getMinutes()) }`;
+    return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${pad(d.getMinutes())}`;
     //return `${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
@@ -426,7 +427,7 @@ function getTimestamp() {
  * */
 function settingsModel() {
     q("#settingsModel").showModal();
-} 
+}
 
 function q(selector) {
     return document.querySelector(selector);
