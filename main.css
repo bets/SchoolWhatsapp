@@ -259,11 +259,13 @@ dialog {
 .settItem {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
 }
 
-    .settItem b {
-        white-space: nowrap;
+    .settItem div:first-child {
+        /*white-space: nowrap;*/
+        width: 130px;
+        color: black;
     }
 
     .settItem img {
@@ -407,6 +409,10 @@ dialog {
 
 .insetBtn {
     border: 1px inset white;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 @media all and (max-width:825px) {
