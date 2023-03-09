@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{345C327A-2
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{20CD8526-5BDD-4473-935B-8EC2143C0D17}"
 	ProjectSection(SolutionItems) = preProject
+		class names regex.txt = class names regex.txt
 		resources\group-refresh.svg = resources\group-refresh.svg
 		resources\send-svgrepo-com.svg = resources\send-svgrepo-com.svg
 		resources\session-leave-svgrepo-com.svg = resources\session-leave-svgrepo-com.svg

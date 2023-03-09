@@ -79,8 +79,8 @@ function refetchSchool() {
  * Get class groups from bulldog whatsapp through Make
  * */
 async function getSchool() {
-    displayStatus('משיכת קבוצות מצריכה פתיחת חשבון בולדוג', true);
-    return;
+    //displayStatus('משיכת קבוצות מצריכה פתיחת חשבון בולדוג', true);
+    //return;
 
     displayStatus("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
     const response = await fetch(Make.getSchool);
@@ -94,8 +94,15 @@ async function getSchool() {
     //console.table(groups);
 
     var cls = groups.reduce((accu, curr) => {
-        if (!curr.name.includes('טסט')) return accu;
-        let m = curr.name.match(/[\u05D0-\u05EA]{1,2}'?"?[\u05D0-\u05EA]?(\d)/);
+        const queryString = new URLSearchParams(window.location.search);
+        if (queryString.has('test')) {
+            if (!curr.name.includes('טסט')) return accu;
+        } else {
+            if (curr.name.includes('טסט')) return accu;
+        }
+
+        let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?\s?(\d)/);
+        //let m = curr.name.match(/[\u05D0-\u05EA]{1,2}'?"?[\u05D0-\u05EA]?(\d)/);
         let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
         //var m = curr.name.match(/([\u05D0-\u05EA])(\d)/);
         accu.push({
@@ -286,8 +293,8 @@ async function sendOne(wid, hasTime) {
     };
 
     console.log("Sending message through Bulldog");
-    displayStatus('שליחה מצריכה פתיחת חשבון בולדוג', true);
-    return;
+    //displayStatus('שליחה מצריכה פתיחת חשבון בולדוג', true);
+    //return;
     const response = await fetch(Make.sendOne, options);
     let jsonRe = await response.json();
     if (response.status != 200) {
