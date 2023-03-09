@@ -103,6 +103,7 @@ async function getSchool() {
 
         let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?\s?(\d)/);
         //let m = curr.name.match(/[\u05D0-\u05EA]{1,2}'?"?[\u05D0-\u05EA]?(\d)/);
+        if (m == null) return accu;
         let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
         //var m = curr.name.match(/([\u05D0-\u05EA])(\d)/);
         accu.push({
@@ -377,10 +378,10 @@ function showDeliverAt() {
     //["#eliverAt", "sendAt", "sendNowAt"]
     qa(".toggle").forEach((el) => {
         el.classList.toggle('hide');
-    //if (q("#sendSelect").classList.contains('hide'))
-    //    q(".button.sendImg").classList.remove('disable')
-    //else
-    //    q(".button.sendImg").classList.add('disable')
+        //if (q("#sendSelect").classList.contains('hide'))
+        //    q(".button.sendImg").classList.remove('disable')
+        //else
+        //    q(".button.sendImg").classList.add('disable')
     });
     q("#showDeliverAt").classList.toggle('insetBtn');
     q(".button.sendImg").classList.toggle('disable');
