@@ -1,6 +1,6 @@
 TODO
-Add small status that that updates as group messages are recived at bulldog (2/3...) and "sent succsesful" when done.
-Notify that scheduled messages can not be canceled yet.
+When send both if error on time schdual, it will still send the immedet one. so need to cancel both 
+Clear group selection after send !
 Save a list of scheduled messages and have option to cancel them.
 Attach image or file to message
 
@@ -14,6 +14,9 @@ User and access manager
 
 
 DONE
+
+fix Make to deal with message with/out schdual
+Add small status that that updates as group messages are recived at bulldog (2/3...) and "sent succsesful" when done. | ~
 Removed status line again (to messey, will add something else)
 Readd status line to get feedback that messages are ecccepted etc.
 Status line (/box/popup) to display feedback, error, etc.

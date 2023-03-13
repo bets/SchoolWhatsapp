@@ -6,25 +6,19 @@
     <title>Whatsapp Group Control</title>
 </head>
 <body>
+    <div id="testIndicator" class="hide"></div>
     <header class="">
         <a href="javascript:void(0)" onclick="settingsModel()" title="הגדרות"><img src="./resources/settings-svgrepo-com.svg" alt="הגדרות" /></a>
         <div class="pageTitle">Whatsapp Group Control</div>
         <a href="javascript:void(0)" onclick="signOff()" title="יצאה מהחשבון"><img src="./resources/session-leave-svgrepo-com.svg" alt="יציאת משתמש" /></a>
     </header>
-    <div id="main" class="">
+    <div id="main">
         <div id="groupSelector" class="section">
             <div class="sectionTitle">בחירת כיתות</div>
             <div id="allCon" class="slot">
                 <label for="all"><input id="all" type="checkbox">כל ביה"ס</label>
             </div>
             <div id="allGrades"></div>
-
-            <div id="template" style="display:none">
-                <details class="slot">
-                    <summary><input type="checkbox" class="grade"></summary>
-                </details>
-                <label><input type="checkbox"></label>
-            </div>
             <!--
             Example of a grade
             <details>
@@ -62,17 +56,17 @@
                     </optgroup>
                 </select>
             </div>
-
-            <!--<div id="linkList">
-                <a href="javascript:void(0)" onclick="refetchSchool()" title="אם נוספה כיתה או שונה שם הקבוצה ניתן לרענן כאן">ריענון כיתות</a>
-                <a href="javascript:void(0)" onclick="signOff()" title="הפעלת כניסה עם סיסמה במחשב זה">יציאת משתמש</a>
-            </div>-->
+            <div id="statusPan" class="">
+                <div id="statusList"></div>
+            </div>
         </div>
 
-        <div id="statusPan" class="section">
-            <p></p>
-        </div>
 
+        <div id="queuePan" class="section">
+            <div class="sectionTitle">הודעות מתוזמנות</div>
+            <div id="queueList">
+            </div>
+        </div>
     </div>
 
     <dialog id="loginModel">
@@ -118,6 +112,31 @@
             </div>
         </div>
     </dialog>
+
+    <div id="templates">
+        <div class="groupSelector">
+            <details class="slot">
+                <summary><input type="checkbox" class="grade"></summary>
+            </details>
+            <label><input type="checkbox"></label>
+        </div>
+        <div class="queuePan">
+            <details>
+                <summary>
+                    <div class="queueGrid">
+                        <quTitle>הודעת מזכירות</quTitle><quTime>4/5/2027 13:00</quTime><quCancel>ביטול</quCancel>
+                    </div>
+                </summary>
+                <quGroups>מען: א1, ב2, ג3</quGroups>
+                <quMsg>
+                    *הודעת פיתוח*
+
+                    אם ראיתם הודעה זו, *אנא* דווחו למפתח.
+                    יום נעים 😎
+                </quMsg>
+            </details>
+        </div>
+    </div>
 
     <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->

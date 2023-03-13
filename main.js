@@ -5,6 +5,10 @@ function start() {
         q("#loginModel").showModal();
         return;
     }
+    const queryString = new URLSearchParams(window.location.search);
+    if (queryString.has('test'))
+        q('#testIndicator').classList.remove('hide');
+
     continueStart();
 }
 
@@ -17,6 +21,7 @@ async function continueStart() {
 
     createSchool(school);
     setSelectEvents();
+    displayQueued();
 }
 
 //If press enter send password too
@@ -102,10 +107,9 @@ async function getSchool() {
         }
 
         let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?\s?(\d)/);
-        //let m = curr.name.match(/[\u05D0-\u05EA]{1,2}'?"?[\u05D0-\u05EA]?(\d)/);
         if (m == null) return accu;
         let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
-        //var m = curr.name.match(/([\u05D0-\u05EA])(\d)/);
+
         accu.push({
             class: letter + m[1],
             letter: letter,
@@ -142,8 +146,8 @@ async function getSchool() {
  * */
 function createSchool(school) {
     [...school].forEach((shichva) => {
-        let gradeTemplate = document.querySelector("#template details").cloneNode(true);
-        let labelTemplate = document.querySelector("#template label").cloneNode(true);
+        let gradeTemplate = document.querySelector("#templates .groupSelector details").cloneNode(true);
+        let labelTemplate = document.querySelector("#templates .groupSelector label").cloneNode(true);
         gradeTemplate.querySelector("summary input").id = shichva.grade;
         gradeTemplate.querySelector("summary").innerHTML += "כיתות " + shichva.grade + "'";
         shichva.groups.forEach((cls) => {
@@ -154,7 +158,7 @@ function createSchool(school) {
         });
         document.querySelector("#allGrades").append(gradeTemplate);
     });
-    document.querySelector("#template").remove();
+    //document.querySelector("#template").remove();
 }
 /** 
  * Attach events to class selector UI
@@ -220,7 +224,7 @@ function checkParents(s, boxes) {
 /** 
  * Get all checked ids and send to each group
  * */
-function send(hasTime) {
+async function send(hasTime) {
     if (q("#msg").value.length < 4) {
         displayStatus("נא להוסיף תוכן להודעה", true);
         return;
@@ -245,18 +249,27 @@ function send(hasTime) {
         return;
     }
     displayStatus("קליטת הודעות מתבצעת");
+    let groupMsgLocalId = new Date().getTime();
     let schoolFlat = JSON.parse(localStorage.schoolFlat);
     let sentNum = 0;
-    checkedIds.every((id) => {
-        let wid = schoolFlat.find(x => x.class == id).wid;
-        let sentOk = sendOne(wid, hasTime);
-        if (sentOk)
+
+    for await (const groupIdName of checkedIds) {
+        let wid = schoolFlat.find(x => x.class == groupIdName).wid;
+        const response = await sendOne(wid, hasTime);
+        let jsonRe = await response.json();
+        if (response.status != 200) {
+            displayStatus(jsonRe.message, true);
+            break;
+        }
+        else {
+            //console.log(jsonRe);
             sentNum++;
-        return sentOk;
-    });
+            if (hasTime) addQueuedToList(groupMsgLocalId, groupIdName, q("#deliverAt").value, jsonRe.message, jsonRe.id);
+        }
+    }
 
     if (sentNum > 0) {
-        displayStatus(`${sentNum} הודעות נקלטו וישלחו בדקות הקרובות`);
+        displayStatus(`${sentNum} הודעות נקלטו לשליחה`);
         resetMsg();
     }
     if (sentNum == 0)
@@ -266,23 +279,16 @@ function send(hasTime) {
     }
 }
 /** 
- * After send empty msg and close deliverAt
- * */
-function resetMsg() {
-    q('#msg').value = "";
-    if (!q("#sendSelect").classList.contains('hide'))
-        showDeliverAt();
-}
-/** 
  * Send one group message
  * */
-async function sendOne(wid, hasTime) {
+function sendOne(wid, hasTime) {
     let body = {
         "message": JSON.stringify(q("#msg").value),
         "group": wid
     };
     if (hasTime) {
-        body.deliverAt = q("deliverAt").value + ":00.000z";
+        let time = new Date(q("#deliverAt").value);
+        body.deliverAt = time.toISOString();
     }
 
     const options = {
@@ -296,16 +302,75 @@ async function sendOne(wid, hasTime) {
     console.log("Sending message through Bulldog");
     //displayStatus('שליחה מצריכה פתיחת חשבון בולדוג', true);
     //return;
-    const response = await fetch(Make.sendOne, options);
-    let jsonRe = await response.json();
-    if (response.status != 200) {
-        displayStatus(response, true);
-        return false;
+    return fetch(Make.sendOne, options);
+}
+/** 
+ * After send empty msg and close deliverAt
+ * */
+function resetMsg() {
+    q('#msg').value = "";
+    if (!q("#sendSelect").classList.contains('hide'))
+        showDeliverAt();
+    displayQueued();
+}
+/** 
+ * Add one message to local queue list.
+ * If this is part of a cluster so add msg id to it
+ * */
+function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msg, msgId) {
+    let queuedMsgs;
+    if (localStorage.queuedMsgs == null)
+        localStorage.queuedMsgs = JSON.stringify([]);
+    queuedMsgs = JSON.parse(localStorage.queuedMsgs);
+    //find groupMsgLocalId in queuedMsgs
+    let queued = queuedMsgs.find(x => x.id == groupMsgLocalId);
+    // if not found create an object in array with all params and empty msgIds array
+    if (queued == null) {
+        queued = {};
+        queued.id = groupMsgLocalId;
+        queued.deliverAt = deliverAt;
+        queued.msg = msg;
+        queued.msgIds = [msgId];
+        queued.groupNames = [groupName];
+        queuedMsgs.push(queued);
     }
     else {
-        //console.log(jsonRe);
-        return true;
+        queued.msgIds.push(msgId);
+        queued.groupNames.push(groupName);
     }
+    localStorage.queuedMsgs = JSON.stringify(queuedMsgs);
+}
+
+/** 
+ * Check if queued messages are storad localy and display them if deliver time has not passed
+ * */
+function displayQueued() {
+    q("#queueList").replaceChildren();
+    let queuedMsgs;
+    if (localStorage.queuedMsgs != null)
+        queuedMsgs = JSON.parse(localStorage.queuedMsgs);
+    if (localStorage.queuedMsgs == null || queuedMsgs.length == 0) {
+        q("#queueList").insertAdjacentHTML('afterbegin', "<div style='text-align:center;color:gray;'>לא קיימות הודעות מתוזמנות</div>");
+        return;
+    }
+
+    queuedMsgs.sort((a, b) => a.deliverAt.localeCompare(b.deliverAt)).forEach((queue) => {
+        if (new Date(queue.deliverAt).getTime() > new Date().getTime()) {
+            let queueItem = document.querySelector("#templates .queuePan details").cloneNode(true);
+            queueItem.id = queue.id;
+
+            let reg = /^\*(.+)\*/;
+            queueItem.querySelector("quTitle").innerHTML = reg.exec(queue.msg)?.[1] ?? "ללא כותרת";
+            queueItem.querySelector("quTime").innerHTML = getTimestamp(new Date(queue.deliverAt));
+            queueItem.querySelector("quGroups").innerHTML = "מען: " + queue.groupNames.join(', ');
+            queueItem.querySelector("quMsg").innerHTML = queue.msg.replace(/(?:\r\n|\r|\n)/g, "<br>");
+
+            q("#queueList").append(queueItem);
+        } else {
+            //remove item that date passed
+            localStorage.queuedMsgs = JSON.stringify(queuedMsgs.filter(item => item.id !== queue.id));
+        }
+    });
 }
 
 /** 
@@ -375,13 +440,8 @@ function insertTitle(e) {
  * Show\hide datetime picker and send options
  * */
 function showDeliverAt() {
-    //["#eliverAt", "sendAt", "sendNowAt"]
     qa(".toggle").forEach((el) => {
         el.classList.toggle('hide');
-        //if (q("#sendSelect").classList.contains('hide'))
-        //    q(".button.sendImg").classList.remove('disable')
-        //else
-        //    q(".button.sendImg").classList.add('disable')
     });
     q("#showDeliverAt").classList.toggle('insetBtn');
     q(".button.sendImg").classList.toggle('disable');
@@ -393,10 +453,6 @@ function deliverAtSend(val) {
     if (val == "sendBoth")
         send();
 }
-//function sendBoth() {
-//    send();
-//    send(true);
-//}
 
 /** 
  * Show\hide datetime picker and send options
@@ -407,8 +463,8 @@ function displayStatus(msg, error) {
         q("#errorModel").showModal();
     }
 
-    //all the rest is hidden and waiting for a futuer option to see the log
     let div = document.createElement('div');
+    div.classList.add('statItem');
 
     let textSpan = document.createElement('span');
     textSpan.append(msg);
@@ -416,16 +472,17 @@ function displayStatus(msg, error) {
         textSpan.classList.add('error');
 
     let timeSpan = document.createElement('span');
+    timeSpan.dir = 'rtl';
     timeSpan.append(getTimestamp());
 
     div.append(timeSpan);
     div.append(textSpan);
-    q("#statusPan p").prepend(div);
+    q("#statusPan #statusList").prepend(div);
 }
-function getTimestamp() {
+function getTimestamp(d) {
     const pad = (n, s = 2) => (`${new Array(s).fill(0)}${n}`).slice(-s);
-    const d = new Date();
-
+    if (typeof d === 'undefined')
+        d = new Date();
     return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${pad(d.getMinutes())}`;
     //return `${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
