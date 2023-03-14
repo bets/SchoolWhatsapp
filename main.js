@@ -88,7 +88,7 @@ async function getSchool() {
     //return;
 
     displayStatus("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
-    const response = await fetch(Make.getSchool);
+    const response = await fetch(Make.getSchool + "/?type=groups");
 
     if (response.status != 200) {
         displayStatus(response, true);
@@ -302,7 +302,52 @@ function sendOne(wid, hasTime) {
     console.log("Sending message through Bulldog");
     //displayStatus('שליחה מצריכה פתיחת חשבון בולדוג', true);
     //return;
-    return fetch(Make.sendOne, options);
+    return fetch(Make.sendOne + "/?type=send", options);
+}
+/** 
+ * Delete queued message and remove from dom list
+ * */
+async function deleteQueued(e) {
+    let groupMsgLocalId = e.target.closest('details').id;
+    let queuedMsgs = JSON.parse(localStorage.queuedMsgs);
+    let msgIds = queuedMsgs.find(x => x.id == groupMsgLocalId)?.msgIds;
+    let removedIds = [];
+    displayStatus("ביטול הודעות החל");
+
+    for await (const msgId of msgIds) {
+        let body = {
+            "msgId": msgId
+        };
+        const options = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+        };
+        const response = await fetch(Make.sendOne + "/?type=delete", options);
+        let jsonRe = await response.json();
+        if (response.status != 200) {
+            displayStatus(jsonRe.message, true);
+            break;
+        }
+        else {
+            //console.log(jsonRe);
+            removedIds.push(msgId);
+        }
+    }
+
+    if (msgIds.length != removedIds.length) {
+        displayStatus(`בוטלו ${removedIds.length}/${msgIds.length} הודעות, נא לנסות שוב`, true);
+        msgIds = msgIds.filter(id => !removedIds.includes(id));
+    }
+    else {
+        displayStatus(`בוטלו ${removedIds.length}/${msgIds.length} הודעות`);
+        queuedMsgs = queuedMsgs.filter(queued => queued.id != groupMsgLocalId);
+    }
+
+    localStorage.queuedMsgs = JSON.stringify(queuedMsgs);
+    displayQueued();
 }
 /** 
  * After send empty msg and close deliverAt
@@ -364,7 +409,7 @@ function displayQueued() {
             queueItem.querySelector("quTime").innerHTML = getTimestamp(new Date(queue.deliverAt));
             queueItem.querySelector("quGroups").innerHTML = "מען: " + queue.groupNames.join(', ');
             queueItem.querySelector("quMsg").innerHTML = queue.msg.replace(/(?:\r\n|\r|\n)/g, "<br>");
-
+            queueItem.querySelector("qucancel").addEventListener("click", deleteQueued);
             q("#queueList").append(queueItem);
         } else {
             //remove item that date passed
@@ -481,10 +526,11 @@ function displayStatus(msg, error) {
 }
 function getTimestamp(d) {
     const pad = (n, s = 2) => (`${new Array(s).fill(0)}${n}`).slice(-s);
-    if (typeof d === 'undefined')
+    if (typeof d === 'undefined') {
         d = new Date();
-    return `${d.getMonth() + 1}/${d.getDate()} ${d.getHours()}:${pad(d.getMinutes())}`;
-    //return `${pad(d.getMonth() + 1)}/${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+        return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;//13:04:05
+    }
+    return `${pad(d.getDate())}/${pad(d.getMonth() + 1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`; // 13/04 13:04
 }
 
 /** 

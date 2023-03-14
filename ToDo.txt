@@ -1,10 +1,11 @@
 TODO
+
 When send both if error on time schdual, it will still send the immedet one. so need to cancel both 
 Clear group selection after send !
-Save a list of scheduled messages and have option to cancel them.
 Attach image or file to message
 
 TODO UPSCALE
+
 Build a whatsapp web server
 Save session info of client by saving browser with session info or just session itself and loading to browser as needed.
 option to choose relevant groups and save 
@@ -15,6 +16,9 @@ User and access manager
 
 DONE
 
+Save a list of scheduled messages and have option to cancel them.
+Remove date from status, add seconds to status.
+Fix date format in time stamp
 fix Make to deal with message with/out schdual
 Add small status that that updates as group messages are recived at bulldog (2/3...) and "sent succsesful" when done. | ~
 Removed status line again (to messey, will add something else)
