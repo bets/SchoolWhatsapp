@@ -1,6 +1,5 @@
 TODO
 
-When send both if error on time schdual, it will still send the immedet one. so need to cancel both 
 Clear group selection after send !
 Attach image or file to message
 
@@ -16,6 +15,7 @@ User and access manager
 
 DONE
 
+When send both if error on time schdual, it will still send the immedet one. so need to cancel both | did not test fix
 Save a list of scheduled messages and have option to cancel them.
 Remove date from status, add seconds to status.
 Fix date format in time stamp

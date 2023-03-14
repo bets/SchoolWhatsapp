@@ -227,26 +227,26 @@ function checkParents(s, boxes) {
 async function send(hasTime) {
     if (q("#msg").value.length < 4) {
         displayStatus("נא להוסיף תוכן להודעה", true);
-        return;
+        return false;
     }
     if (hasTime) {
         let inputDate = new Date(q("#deliverAt").value);
         let timestamp = Date.parse(inputDate);
         if (isNaN(timestamp) == true) {
             displayStatus("נא להוסיף זמן לתזמון", true);
-            return;
+            return false;
         }
         let currentDate = new Date();
         if (inputDate.getTime() < currentDate.getTime() + 5 * 60000) {
             displayStatus("התזמון חייב להיות לפחות 5 דקות מעכשיו ולא בעבר", true);
-            return;
+            return false;
         }
     }
 
     let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
     if (checkedIds.length == 0) {
         displayStatus("נא לבחור כיתה", true);
-        return;
+        return false;
     }
     displayStatus("קליטת הודעות מתבצעת");
     let groupMsgLocalId = new Date().getTime();
@@ -268,15 +268,13 @@ async function send(hasTime) {
         }
     }
 
-    if (sentNum > 0) {
-        displayStatus(`${sentNum} הודעות נקלטו לשליחה`);
-        resetMsg();
+    if (sentNum != checkedIds.length) {
+        displayStatus(`נקלטו ${sentNum}/${checkedIds.length} הודעות, נא לנסות שוב`, true);
+        return false;
     }
-    if (sentNum == 0)
-        displayStatus("שגיאה - לא נקלטו ההודעות", true);
-    else if (sentNum != checkedIds.length) {
-        displayStatus(`שגיאה - לא נקלטו כל ההודעת`, true);
-    }
+    displayStatus(`${sentNum}/${checkedIds.length} הודעות נקלטו לשליחה`);
+    resetMsg();
+    return true;
 }
 /** 
  * Send one group message
@@ -491,12 +489,16 @@ function showDeliverAt() {
     q("#showDeliverAt").classList.toggle('insetBtn');
     q(".button.sendImg").classList.toggle('disable');
 }
+/** 
+ * Scheduled send
+ * */
 function deliverAtSend(val) {
-    q("#sendSelect").value = "";//clear select for next time
-
-    send(true);
-    if (val == "sendBoth")
-        send();
+    let sentOk = send(true);
+    if (sentOk) {
+        if (val == "sendBoth")
+            send();
+        q("#sendSelect").value = "";//clear select for next time
+    }
 }
 
 /** 
