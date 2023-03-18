@@ -1,7 +1,5 @@
 TODO
 
-Clear group selection after send !
-Attach image or file to message
 
 TODO UPSCALE
 
@@ -12,9 +10,18 @@ Edit chossen groups even if group list\names change.
 Option to group the groups
 User and access manager
 
+WIP
+Get refresh token, app id, secert from Make (remove from code)
+
+
 
 DONE
 
+Attach image or file to message
+>Need to find a way to recive bool from startSend() to know if to be able to send 2nd message (now and schdualed).
+Already have it for send() but not for startFileUpload() cus fetch not using await.
+So need to switch all fetch to awaits or think of something else
+Clear group selection after send
 When send both if error on time schdual, it will still send the immedet one. so need to cancel both | did not test fix
 Save a list of scheduled messages and have option to cancel them.
 Remove date from status, add seconds to status.

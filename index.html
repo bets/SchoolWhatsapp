@@ -41,7 +41,7 @@
                 <span class="button" onclick="emojiModel()">😉</span>
                 <div>
                     <span id="showDeliverAt" class="button" onclick="showDeliverAt()" title="תזמון שליחה">🕑</span>
-                    <span class="button sendImg" onclick="send()" title="שליחת הודעה"></span>
+                    <span class="button sendImg" onclick="startSend()" title="שליחת הודעה"></span>
                 </div>
             </div>
 
@@ -72,9 +72,9 @@
     <dialog id="loginModel">
         <div class="sectionTitle">כניסה עם סיסמה</div>
         <div><input type="password" value="" /></div>
-        <div class="sendCon">
+        <p class="sendCon">
             <span class="button" onclick="getBasics()">כניסה</span>
-        </div>
+        </p>
     </dialog>
 
     <dialog id="emojiModel" onclick="event.target==this && this.close()">
@@ -137,10 +137,11 @@
             </details>
         </div>
     </div>
-
+    <input id="uploadFile" type="file" name="uploadFile" value="" />
     <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->
     <script src="./main.js"></script>
     <script src="./Emoji.js"></script>
+    <script src="./uploadFile.js"></script>
 </body>
 </html>

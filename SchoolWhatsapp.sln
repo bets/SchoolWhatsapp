@@ -9,6 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{345C327A-2
 		index.html = index.html
 		main.css = main.css
 		main.js = main.js
+		uploadFile.js = uploadFile.js
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{20CD8526-5BDD-4473-935B-8EC2143C0D17}"

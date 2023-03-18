@@ -156,10 +156,6 @@ summary {
     align-content: center;
 }
 
-.sendCon span:first-child {
-    margin-left: auto;
-}
-
 .sendCon {
     justify-content: space-between;
 }
@@ -233,7 +229,8 @@ dialog {
 
 
     #loginModel .sendCon {
-        justify-content: space-around
+        display:flex;
+        justify-content: space-around;
     }
 
 #settingsModel #settingsList {

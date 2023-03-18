@@ -220,11 +220,8 @@ function checkParents(s, boxes) {
     if (s != "all") checkParents("all", boxes);
     return;
 }
-
-/** 
- * Get all checked ids and send to each group
- * */
-async function send(hasTime) {
+/**Start send porcess*/
+async function startSend(hasTime) {
     if (q("#msg").value.length < 4) {
         displayStatus("נא להוסיף תוכן להודעה", true);
         return false;
@@ -248,23 +245,37 @@ async function send(hasTime) {
         displayStatus("נא לבחור כיתה", true);
         return false;
     }
+    let hasFile = false;
+    if (document.querySelector('#uploadFile').files.length > 0) {
+        hasFile = true;
+        if (!await startFileUpload())
+            return false;
+    }
+    return await send(hasTime, hasFile, checkedIds);
+}
+/** 
+ * Get all checked ids and send to each group
+ * */
+async function send(hasTime, hasFile, checkedIds) {
     displayStatus("קליטת הודעות מתבצעת");
     let groupMsgLocalId = new Date().getTime();
     let schoolFlat = JSON.parse(localStorage.schoolFlat);
     let sentNum = 0;
-
+    //let MakeOperation;
     for await (const groupIdName of checkedIds) {
         let wid = schoolFlat.find(x => x.class == groupIdName).wid;
-        const response = await sendOne(wid, hasTime);
+        console.log('at sendOne');
+        const response = await sendOne(wid, hasTime, hasFile);
         let jsonRe = await response.json();
+        //console.log("Make opirations left: ", jsonRe.media.filename);
+        //MakeOperation = jsonRe.media.filename
         if (response.status != 200) {
             displayStatus(jsonRe.message, true);
             break;
         }
         else {
-            //console.log(jsonRe);
             sentNum++;
-            if (hasTime) addQueuedToList(groupMsgLocalId, groupIdName, q("#deliverAt").value, jsonRe.message, jsonRe.id);
+            if (hasTime) addQueuedToList(groupMsgLocalId, groupIdName, q("#deliverAt").value, jsonRe.id, hasFile);//jsonRe.message, 
         }
     }
 
@@ -273,21 +284,27 @@ async function send(hasTime) {
         return false;
     }
     displayStatus(`${sentNum}/${checkedIds.length} הודעות נקלטו לשליחה`);
-    resetMsg();
+    //displayStatus(`${sentNum}/${checkedIds.length} הודעות נקלטו לשליחה | הודעות במלאי: ${}`);
+    if (!hasTime && sentNum > 0)//when sending also now, only reset at end of both
+        resetMsg();
     return true;
 }
 /** 
  * Send one group message
  * */
-function sendOne(wid, hasTime) {
+function sendOne(wid, hasTime, hasFile) {
     let body = {
         "message": JSON.stringify(q("#msg").value),
+        //"message": q("#msg").value,
         "group": wid
     };
+    //console.log(body.message);
     if (hasTime) {
         let time = new Date(q("#deliverAt").value);
         body.deliverAt = time.toISOString();
     }
+    if (hasFile)
+        body.fileLink = LinkToFile;
 
     const options = {
         method: 'POST',
@@ -296,6 +313,7 @@ function sendOne(wid, hasTime) {
         },
         body: JSON.stringify(body)
     };
+
 
     console.log("Sending message through Bulldog");
     //displayStatus('שליחה מצריכה פתיחת חשבון בולדוג', true);
@@ -351,16 +369,25 @@ async function deleteQueued(e) {
  * After send empty msg and close deliverAt
  * */
 function resetMsg() {
+    console.log('reset stat');
     q('#msg').value = "";
     if (!q("#sendSelect").classList.contains('hide'))
         showDeliverAt();
     displayQueued();
+
+    let boxes = document.querySelectorAll("#groupSelector input");
+    boxes.forEach((el) => {
+        el.indeterminate = false;
+        el.checked = false;
+    });
+    
+    q("#uploadFile").value = null;
 }
 /** 
  * Add one message to local queue list.
  * If this is part of a cluster so add msg id to it
  * */
-function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msg, msgId) {
+function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msgId, hasFile) {// msg,
     let queuedMsgs;
     if (localStorage.queuedMsgs == null)
         localStorage.queuedMsgs = JSON.stringify([]);
@@ -372,10 +399,11 @@ function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msg, msgId) {
         queued = {};
         queued.id = groupMsgLocalId;
         queued.deliverAt = deliverAt;
-        queued.msg = msg;
+        queued.msg = q("#msg").value;
         queued.msgIds = [msgId];
         queued.groupNames = [groupName];
         queuedMsgs.push(queued);
+        //if (hasFile)
     }
     else {
         queued.msgIds.push(msgId);
@@ -492,13 +520,23 @@ function showDeliverAt() {
 /** 
  * Scheduled send
  * */
-function deliverAtSend(val) {
-    let sentOk = send(true);
+async function deliverAtSend(val) {
+    let sentOk = await new Promise((resolve) => {
+        resolve(startSend(true));
+    });
+
+    //let sentOk = await startSend(true);
+    //console.log('going on');
+    //console.log(sentOk);
     if (sentOk) {
         if (val == "sendBoth")
-            send();
-        q("#sendSelect").value = "";//clear select for next time
+            sentOk = await new Promise((resolve) => {
+                resolve(startSend());
+            });
+        if (sentOk)
+            resetMsg();
     }
+    q("#sendSelect").value = "";//removes text on Scheduled send button that shows after click
 }
 
 /** 
