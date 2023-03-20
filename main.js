@@ -220,7 +220,11 @@ function checkParents(s, boxes) {
     if (s != "all") checkParents("all", boxes);
     return;
 }
-/**Start send porcess*/
+/**
+ * Start send porcess
+ * @param {bool} hasTime True if is scheduled message
+ * @returns {bool} True if send is success
+ */
 async function startSend(hasTime) {
     if (q("#msg").value.length < 4) {
         displayStatus("נא להוסיף תוכן להודעה", true);
@@ -246,7 +250,7 @@ async function startSend(hasTime) {
         return false;
     }
     let hasFile = false;
-    if (document.querySelector('#uploadFile').files.length > 0) {
+    if (q('#uploadFile').files.length > 0) {
         hasFile = true;
         if (!await startFileUpload())
             return false;
@@ -380,7 +384,7 @@ function resetMsg() {
         el.indeterminate = false;
         el.checked = false;
     });
-    
+
     q("#uploadFile").value = null;
 }
 /** 
@@ -403,7 +407,7 @@ function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msgId, hasFile) 
         queued.msgIds = [msgId];
         queued.groupNames = [groupName];
         queuedMsgs.push(queued);
-        //if (hasFile)
+        queued.filePath = hasFile ? FilePath : "";
     }
     else {
         queued.msgIds.push(msgId);
@@ -436,6 +440,15 @@ function displayQueued() {
             queueItem.querySelector("quGroups").innerHTML = "מען: " + queue.groupNames.join(', ');
             queueItem.querySelector("quMsg").innerHTML = queue.msg.replace(/(?:\r\n|\r|\n)/g, "<br>");
             queueItem.querySelector("qucancel").addEventListener("click", deleteQueued);
+            if (checkIfImage(queue.filePath)) {
+                queueItem.querySelector("quImg").innerHTML = '&nbsp;&nbsp;&nbsp;תמונה בטעינה...';
+                queueItem.addEventListener("toggle", async () => {
+                    if (queueItem.querySelector('img') == null)
+                        await addDropboxThumbnail(queue.filePath, queueItem.querySelector("quImg"));
+                });
+            } else if (queue.filePath != "")
+                queueItem.querySelector("quImg").insertAdjacentHTML('afterbegin', `<span class="attachImg"></span><span>${decodeURIComponent(queue.filePath.split("--")[1])}</span>`);
+
             q("#queueList").append(queueItem);
         } else {
             //remove item that date passed
@@ -443,6 +456,27 @@ function displayQueued() {
         }
     });
 }
+/**
+ * Check if file name (or path) has an image extention
+ * @param {string} fileName File path or name
+ * @returns {bool}
+ */
+function checkIfImage(fileName) {
+    const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'tiff', 'tif', 'ppm', 'bmp'];
+    const fileExtension = fileName.split('.').pop();
+    return validExtensions.includes(fileExtension.toLowerCase());
+}
+
+/** Keyboard shortcut for bold or italic */
+q('#msg').addEventListener('keydown', function (event) {
+    if (event.ctrlKey && event.code === 'KeyB') {
+        event.preventDefault();
+        strEdit('*');
+    } else if (event.ctrlKey && event.keyCode === 73) {
+        event.preventDefault();
+        strEdit('_');
+    }
+});
 
 /** 
  * Add bold or italic char to selected text

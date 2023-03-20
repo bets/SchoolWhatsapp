@@ -229,7 +229,7 @@ dialog {
 
 
     #loginModel .sendCon {
-        display:flex;
+        display: flex;
         justify-content: space-around;
     }
 
@@ -337,6 +337,27 @@ dialog {
     /*min-width: 1em;*/
     padding-left: 23px;
     height: 23px;
+}
+
+.attachImg {
+    background-image: url("./resources/attachment-svgrepo-com.svg");
+    background-position: center;
+    background-size: 22px;
+    background-repeat: no-repeat;
+    display: inline-block;
+    /*min-width: 1em;*/
+    padding-left: 23px;
+    height: 23px;
+    position:relative;
+}
+
+.isAttachImg:after {
+    position: absolute;
+    content: "⭐";
+    opacity: 0.7;
+    font-size: 13px;
+    right: -4px;
+    top: -6px;
 }
 
 .disable {
@@ -464,6 +485,20 @@ quMsg {
     margin: 9px;
     padding: 9px;
 }
+
+quimg {
+    display: flex;
+}
+
+    quimg span {
+        padding-right: 20px
+    }
+
+    quImg img {
+        display: block;
+        margin: 0 auto;
+        border-radius: 4px;
+    }
 /*.queueItem details {
     grid-column: 1/3;
     grid-row: 3;

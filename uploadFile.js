@@ -1,4 +1,23 @@
 ﻿var LinkToFile;
+var FilePath;
+
+/** Add indicaton that file is attached*/
+q('#uploadFile').addEventListener("change", () => {
+    if (q('#uploadFile').files.length > 0) {
+        q('.button.attachImg').classList.add('isAttachImg');
+        q('.button.attachImg').title = "הסרת קובץ או תמונה";
+    }
+});
+
+q(".button.attachImg").addEventListener('click', (e) => {
+    if (q('#uploadFile').files.length > 0) {
+        e.preventDefault();
+        q('#uploadFile').value = "";
+        e.target.classList.remove('isAttachImg');
+        e.target.title = "צרוף קובץ או תמונה";
+
+    }
+})
 
 /** Start file upload process
  * 1- get new access token with refresh token
@@ -13,6 +32,7 @@ async function startFileUpload() {
         const fileData = await uploadDropbox(tokenData.access_token);
         const linkData = await getTempLink(fileData.path_display, tokenData.access_token);
         LinkToFile = linkData.link;
+        FilePath = fileData.path_display;
         return true;
     } catch (e) {
         return false;
@@ -50,13 +70,14 @@ async function getNewAccessToken() {
 async function uploadDropbox(token) {
     console.log('uploading');
     const fileInput = q('input[type="file"]').files[0];
+    const fileName = `${new Date().getTime()}--${encodeURIComponent(fileInput.name)}`;
 
     const response = await fetch('https://content.dropboxapi.com/2/files/upload', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/octet-stream',
             'Authorization': 'Bearer ' + token,
-            'Dropbox-API-Arg': `{"path":"/groupease/${fileInput.name}"}`
+            'Dropbox-API-Arg': `{"path":"/groupease/${fileName}"}`
         },
         body: fileInput
     });
@@ -66,8 +87,7 @@ async function uploadDropbox(token) {
         throw new Error('Error');
         //return false;
     }
-    const data = await response.json();
-    return await getTempLink(data.path_display, token);
+    return await response.json();
     //const data = await response.json();
     //return await getTempLink(data.path_display, token);
 }
@@ -86,6 +106,7 @@ async function uploadDropbox(token) {
 
 /** Get temp link to dropbox based on path
  *  Good for 4 hours
+ * https://www.codemzy.com/blog/dropbox-long-lived-access-refresh-token
  */
 async function getTempLink(path, token) {
     const response = await fetch('https://api.dropboxapi.com/2/files/get_temporary_link', {
@@ -124,23 +145,28 @@ async function getTempLink(path, token) {
 //    "link": "https://ucbe0a6954e22b.dl.dropboxusercontent.com/cd/0/get/B4QdfAWoEPk1R5OE/file"
 //}
 
-//GET THUMBNAIL // not yet in use
-async function getDropboxThumbnail(path) {
+/**
+ * Get img thumbnail from dropbox and append it to target element
+ * @param {string} path Path to image at dropbox
+ * @param {string} target Target element for image
+ */
+async function addDropboxThumbnail(path, target) {
     const tokenData = await getNewAccessToken();
+
     fetch(`https://content.dropboxapi.com/2/files/get_thumbnail`, {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${tokenData.access_token}`,
-            'Dropbox-API-Arg': `{"path": "/${path}","format":"jpeg","size":"w256h256"}`,
+            'Dropbox-API-Arg': `{"path": "${path}","format":"jpeg","size":"w256h256"}`,
         },
     })
         .then(response => response.blob()) // Get the response as a blob
         .then(blob => {
-            // Create an image element to display the thumbnail
             const img = document.createElement('img');
             img.src = URL.createObjectURL(blob);
-            img.alt = 'הקובץ שנשלח עם ההודעה';
-            document.body.appendChild(img); // Add the image to the page
+            img.alt = 'תמונה שנשלחה עם ההודעה';
+            target.innerHTML = "";
+            target.append(img);
         })
         .catch(error => console.error(error));
 
@@ -162,10 +188,9 @@ async function getDropboxThumbnail(path) {
     //        img.src = URL.createObjectURL(blob);
     //        document.body.appendChild(img); // Add the image to the page
     //    }).catch(error => console.error(error));
-
-
 }
 
+// FIRST TIME SET UP
 //first get auth code with this url:
 //https://www.dropbox.com/oauth2/authorize?client_id=<APP_KEY>&token_access_type=offline&response_type=code
 //Now get refresh token here (only needed once)

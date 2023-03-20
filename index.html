@@ -38,6 +38,9 @@
                 <span class="button" onclick="titleModel()" title="הוספה מכתרות קבועות">כותרת</span>
                 <span class="button" onclick="strEdit('*')" style="font-weight:bold" title="הדגשת הטקסט המסומן">B</span>
                 <span class="button" onclick="strEdit('_')" title="הטהיית הטקסט המסומן">𝑰</span>
+                <label class="button attachImg" title="צרוף תמונה או קובץ">
+                    <input id="uploadFile" type="file" name="uploadFile" style="display:none" value="" />
+                </label>
                 <span class="button" onclick="emojiModel()">😉</span>
                 <div>
                     <span id="showDeliverAt" class="button" onclick="showDeliverAt()" title="תזמון שליחה">🕑</span>
@@ -134,10 +137,10 @@
                     אם ראיתם הודעה זו, *אנא* דווחו למפתח.
                     יום נעים 😎
                 </quMsg>
+                <quImg></quImg>
             </details>
         </div>
     </div>
-    <input id="uploadFile" type="file" name="uploadFile" value="" />
     <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->
     <script src="./main.js"></script>
