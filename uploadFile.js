@@ -2,22 +2,21 @@
 var FilePath;
 
 /** Add indicaton that file is attached*/
-q('#uploadFile').addEventListener("change", () => {
-    if (q('#uploadFile').files.length > 0) {
-        q('.button.attachImg').classList.add('isAttachImg');
-        q('.button.attachImg').title = "הסרת קובץ או תמונה";
-    }
-});
+q('#uploadFile').addEventListener("change", showFileAttached);
 
-q(".button.attachImg").addEventListener('click', (e) => {
+function showFileAttached() {
+        q("#attachment").replaceChildren();
     if (q('#uploadFile').files.length > 0) {
-        e.preventDefault();
-        q('#uploadFile').value = "";
-        e.target.classList.remove('isAttachImg');
-        e.target.title = "צרוף קובץ או תמונה";
-
+        let attachment = document.querySelector("#templates .attachment").cloneNode(true);
+        attachment.querySelector('.fileName').innerHTML = q('#uploadFile').files[0].name;
+        q("#attachment").append(attachment);
+        /** remove indicaton that file is attached*/
+        q("#attachment .xBtn").addEventListener('click', () => {
+            q('#uploadFile').value = "";
+            q("#attachment").replaceChildren();
+        })
     }
-})
+}
 
 /** Start file upload process
  * 1- get new access token with refresh token
@@ -25,7 +24,7 @@ q(".button.attachImg").addEventListener('click', (e) => {
  * 3- get temp link
  */
 async function startFileUpload() {
-    displayStatus("העלאת הקובץ החלה");
+    showStatus("העלאת הקובץ החלה");
     //return await getNewAccessToken();
     try {
         const tokenData = await getNewAccessToken();
@@ -57,7 +56,7 @@ async function getNewAccessToken() {
         body: body
     });
     if (!response.ok) {
-        displayStatus("שגיאת העלאת קובץ בקבלת טוקן", true);
+        showStatus("שגיאת העלאת קובץ בקבלת טוקן", true);
         console.error('Error refreshing access token:', error);
         throw new Error('Error');
         //return false;
@@ -82,7 +81,7 @@ async function uploadDropbox(token) {
         body: fileInput
     });
     if (!response.ok) {
-        displayStatus("שגיאה בהעלאת הקובץ לדרופבוקס", true);
+        showStatus("שגיאה בהעלאת הקובץ לדרופבוקס", true);
         console.error('Error uploading file:', error);
         throw new Error('Error');
         //return false;
@@ -118,7 +117,7 @@ async function getTempLink(path, token) {
         body: JSON.stringify({ path: `${path}` }) // '/groupease/first.jpg'
     });
     if (!response.ok) {
-        displayStatus("שגיאה בקבלת קישור לקובץ", true);
+        showStatus("שגיאה בקבלת קישור לקובץ", true);
         console.error('Error getting temp link:', error);
         throw new Error('Error');
         //return false;

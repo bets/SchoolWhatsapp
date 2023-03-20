@@ -33,7 +33,7 @@
         <div id="msgPan" class="section">
             <div class="sectionTitle">תוכן ההודעה</div>
             <textarea id="msg" rows="5" cols="33"></textarea>
-
+            <div id="attachment"></div>
             <div class="btnCon msgActions">
                 <span class="button" onclick="titleModel()" title="הוספה מכתרות קבועות">כותרת</span>
                 <span class="button" onclick="strEdit('*')" style="font-weight:bold" title="הדגשת הטקסט המסומן">B</span>
@@ -127,7 +127,7 @@
             <details>
                 <summary>
                     <div class="queueGrid">
-                        <quTitle>הודעת מזכירות</quTitle><quTime>4/5/2027 13:00</quTime><quCancel>ביטול</quCancel>
+                        <quTitle>הודעת מזכירות</quTitle><quTime>4/5/2027 13:00</quTime><quCancel class="xBtn">ביטול</quCancel>
                     </div>
                 </summary>
                 <quGroups>מען: א1, ב2, ג3</quGroups>
@@ -140,11 +140,12 @@
                 <quImg></quImg>
             </details>
         </div>
+        <div class="attachment"><span class="attachImg"></span><span class="fileName"></span><span title="הסרת הקובץ" class="xBtn">X</span></div>
     </div>
     <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->
     <script src="./main.js"></script>
-    <script src="./Emoji.js"></script>
     <script src="./uploadFile.js"></script>
+    <script src="./Emoji.js"></script>
 </body>
 </html>

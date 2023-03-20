@@ -133,13 +133,31 @@ summary {
     font-family: alef;
     padding: 8px;
     height: 150px;
-    margin-bottom: 9px;
+    margin-bottom: 4px;
     /*display: block;*/
     box-sizing: border-box;
 }
 
+.attachment {
+    width:100%;
+    display: flex;
+    background-color: #dafaff;
+    border-radius: 5px;
+}
+
+    .attachment span:last-child {
+        margin-right: auto;
+        padding:0 10px;
+    }
+
+    .attachment span:first-child {
+        margin-left: 25px;
+        margin-right: 5px;
+    }
+
+
 .btnCon {
-    margin-bottom: 9px;
+    margin: 4px;
     display: flex;
     align-items: center;
     width: 100%;
@@ -194,6 +212,15 @@ summary {
     .button:hover, #sendSelect:hover {
         filter: brightness(105%);
         border-color: white;
+    }
+
+.xBtn {
+    text-shadow: 0px 0px 2px #ff3b3b;
+    cursor: pointer;
+}
+
+    .xBtn:hover {
+        text-shadow: 0px 0px 4px red;
     }
 
 dialog {
@@ -348,17 +375,17 @@ dialog {
     /*min-width: 1em;*/
     padding-left: 23px;
     height: 23px;
-    position:relative;
+    position: relative;
 }
 
-.isAttachImg:after {
+/*.isAttachImg:after {
     position: absolute;
     content: "⭐";
     opacity: 0.7;
     font-size: 13px;
     right: -4px;
     top: -6px;
-}
+}*/
 
 .disable {
     background-color: lightgray;
@@ -467,9 +494,6 @@ quCancel {
     cursor: pointer;
 }
 
-    quCancel:hover {
-        text-shadow: 0px 0px 4px red;
-    }
 
 quGroups {
     /*    grid-column: 1/3;

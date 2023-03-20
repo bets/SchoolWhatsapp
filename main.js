@@ -1,6 +1,6 @@
-﻿start();
+﻿//start();
 var Make;
-function start() {
+window.onload = function start() {
     if (localStorage.basics == null) {
         q("#loginModel").showModal();
         return;
@@ -21,7 +21,8 @@ async function continueStart() {
 
     createSchool(school);
     setSelectEvents();
-    displayQueued();
+    showQueued();
+    showFileAttached();
 }
 
 //If press enter send password too
@@ -43,18 +44,18 @@ async function getBasics() {
         body: JSON.stringify(body)
     };
 
-    displayStatus("בדיקת סיסמה");
+    showStatus("בדיקת סיסמה");
     const response = await fetch('https://hook.eu1.make.com/byeoipdssunukstesd153infg5s3v2f5', options);
     let jsonRe = await response.json();
     if (response.status == 401) {
-        displayStatus(response, true);
+        showStatus(response, true);
         q("#loginModel input").style.borderColor = "red";
     } else if (response.status != 200) {
-        displayStatus("שגיאה בכניסה לחשבון", true);
-        displayStatus(response, true);
+        showStatus("שגיאה בכניסה לחשבון", true);
+        showStatus(response, true);
     }
     else {
-        displayStatus("סיסמה תקינה");
+        showStatus("סיסמה תקינה");
         //console.log(jsonRe);
         localStorage.basics = JSON.stringify(jsonRe);
         q("#loginModel").close();
@@ -68,7 +69,7 @@ async function getBasics() {
  * Sign off by removing basics
  * */
 function signOff() {
-    displayStatus("יציאת משתמש");
+    showStatus("יציאת משתמש");
     localStorage.removeItem('basics');
     location.reload();
 }
@@ -87,12 +88,12 @@ async function getSchool() {
     //displayStatus('משיכת קבוצות מצריכה פתיחת חשבון בולדוג', true);
     //return;
 
-    displayStatus("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
+    showStatus("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
     const response = await fetch(Make.getSchool + "/?type=groups");
 
     if (response.status != 200) {
-        displayStatus(response, true);
-        displayStatus("שגיאה בקבלת הקבוצות מבולדוג", true);
+        showStatus(response, true);
+        showStatus("שגיאה בקבלת הקבוצות מבולדוג", true);
         return false;
     }
     let groups = await response.json();
@@ -227,26 +228,26 @@ function checkParents(s, boxes) {
  */
 async function startSend(hasTime) {
     if (q("#msg").value.length < 4) {
-        displayStatus("נא להוסיף תוכן להודעה", true);
+        showStatus("נא להוסיף תוכן להודעה", true);
         return false;
     }
     if (hasTime) {
         let inputDate = new Date(q("#deliverAt").value);
         let timestamp = Date.parse(inputDate);
         if (isNaN(timestamp) == true) {
-            displayStatus("נא להוסיף זמן לתזמון", true);
+            showStatus("נא להוסיף זמן לתזמון", true);
             return false;
         }
         let currentDate = new Date();
         if (inputDate.getTime() < currentDate.getTime() + 5 * 60000) {
-            displayStatus("התזמון חייב להיות לפחות 5 דקות מעכשיו ולא בעבר", true);
+            showStatus("התזמון חייב להיות לפחות 5 דקות מעכשיו ולא בעבר", true);
             return false;
         }
     }
 
     let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
     if (checkedIds.length == 0) {
-        displayStatus("נא לבחור כיתה", true);
+        showStatus("נא לבחור כיתה", true);
         return false;
     }
     let hasFile = false;
@@ -261,7 +262,7 @@ async function startSend(hasTime) {
  * Get all checked ids and send to each group
  * */
 async function send(hasTime, hasFile, checkedIds) {
-    displayStatus("קליטת הודעות מתבצעת");
+    showStatus("קליטת הודעות מתבצעת");
     let groupMsgLocalId = new Date().getTime();
     let schoolFlat = JSON.parse(localStorage.schoolFlat);
     let sentNum = 0;
@@ -274,7 +275,7 @@ async function send(hasTime, hasFile, checkedIds) {
         //console.log("Make opirations left: ", jsonRe.media.filename);
         //MakeOperation = jsonRe.media.filename
         if (response.status != 200) {
-            displayStatus(jsonRe.message, true);
+            showStatus(jsonRe.message, true);
             break;
         }
         else {
@@ -284,10 +285,10 @@ async function send(hasTime, hasFile, checkedIds) {
     }
 
     if (sentNum != checkedIds.length) {
-        displayStatus(`נקלטו ${sentNum}/${checkedIds.length} הודעות, נא לנסות שוב`, true);
+        showStatus(`נקלטו ${sentNum}/${checkedIds.length} הודעות, נא לנסות שוב`, true);
         return false;
     }
-    displayStatus(`${sentNum}/${checkedIds.length} הודעות נקלטו לשליחה`);
+    showStatus(`${sentNum}/${checkedIds.length} הודעות נקלטו לשליחה`);
     //displayStatus(`${sentNum}/${checkedIds.length} הודעות נקלטו לשליחה | הודעות במלאי: ${}`);
     if (!hasTime && sentNum > 0)//when sending also now, only reset at end of both
         resetMsg();
@@ -332,7 +333,7 @@ async function deleteQueued(e) {
     let queuedMsgs = JSON.parse(localStorage.queuedMsgs);
     let msgIds = queuedMsgs.find(x => x.id == groupMsgLocalId)?.msgIds;
     let removedIds = [];
-    displayStatus("ביטול הודעות החל");
+    showStatus("ביטול הודעות החל");
 
     for await (const msgId of msgIds) {
         let body = {
@@ -348,7 +349,7 @@ async function deleteQueued(e) {
         const response = await fetch(Make.sendOne + "/?type=delete", options);
         let jsonRe = await response.json();
         if (response.status != 200) {
-            displayStatus(jsonRe.message, true);
+            showStatus(jsonRe.message, true);
             break;
         }
         else {
@@ -358,16 +359,16 @@ async function deleteQueued(e) {
     }
 
     if (msgIds.length != removedIds.length) {
-        displayStatus(`בוטלו ${removedIds.length}/${msgIds.length} הודעות, נא לנסות שוב`, true);
+        showStatus(`בוטלו ${removedIds.length}/${msgIds.length} הודעות, נא לנסות שוב`, true);
         msgIds = msgIds.filter(id => !removedIds.includes(id));
     }
     else {
-        displayStatus(`בוטלו ${removedIds.length}/${msgIds.length} הודעות`);
+        showStatus(`בוטלו ${removedIds.length}/${msgIds.length} הודעות`);
         queuedMsgs = queuedMsgs.filter(queued => queued.id != groupMsgLocalId);
     }
 
     localStorage.queuedMsgs = JSON.stringify(queuedMsgs);
-    displayQueued();
+    showQueued();
 }
 /** 
  * After send empty msg and close deliverAt
@@ -377,7 +378,7 @@ function resetMsg() {
     q('#msg').value = "";
     if (!q("#sendSelect").classList.contains('hide'))
         showDeliverAt();
-    displayQueued();
+    showQueued();
 
     let boxes = document.querySelectorAll("#groupSelector input");
     boxes.forEach((el) => {
@@ -386,6 +387,7 @@ function resetMsg() {
     });
 
     q("#uploadFile").value = null;
+    showFileAttached();
 }
 /** 
  * Add one message to local queue list.
@@ -419,7 +421,7 @@ function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msgId, hasFile) 
 /** 
  * Check if queued messages are storad localy and display them if deliver time has not passed
  * */
-function displayQueued() {
+function showQueued() {
     q("#queueList").replaceChildren();
     let queuedMsgs;
     if (localStorage.queuedMsgs != null)
@@ -576,7 +578,7 @@ async function deliverAtSend(val) {
 /** 
  * Show\hide datetime picker and send options
  * */
-function displayStatus(msg, error) {
+function showStatus(msg, error) {
     if (error) {
         q("#errorModel .error").innerHTML = msg;
         q("#errorModel").showModal();
