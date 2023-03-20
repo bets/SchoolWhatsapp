@@ -17,6 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{
 		resources\attachment-svgrepo-com.svg = resources\attachment-svgrepo-com.svg
 		class names regex.txt = class names regex.txt
 		resources\group-refresh.svg = resources\group-refresh.svg
+		resources\send-svgrepo-com.png = resources\send-svgrepo-com.png
 		resources\send-svgrepo-com.svg = resources\send-svgrepo-com.svg
 		resources\session-leave-svgrepo-com.svg = resources\session-leave-svgrepo-com.svg
 		resources\settings-svgrepo-com.svg = resources\settings-svgrepo-com.svg

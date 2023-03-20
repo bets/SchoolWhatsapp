@@ -369,7 +369,7 @@ dialog {
 .attachImg {
     background-image: url("./resources/attachment-svgrepo-com.svg");
     background-position: center;
-    background-size: 22px;
+    background-size: 20px;
     background-repeat: no-repeat;
     display: inline-block;
     /*min-width: 1em;*/
