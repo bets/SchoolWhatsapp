@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Main", "Main", "{345C327A-2
 		index.html = index.html
 		main.css = main.css
 		main.js = main.js
+		models.css = models.css
+		models.js = models.js
 		uploadFile.js = uploadFile.js
 	EndProjectSection
 EndProject
@@ -16,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resources", "resources", "{
 	ProjectSection(SolutionItems) = preProject
 		resources\attachment-svgrepo-com.svg = resources\attachment-svgrepo-com.svg
 		class names regex.txt = class names regex.txt
+		resources\contactL.jpg = resources\contactL.jpg
+		resources\contactR.jpg = resources\contactR.jpg
 		resources\group-refresh.svg = resources\group-refresh.svg
 		resources\send-svgrepo-com.png = resources\send-svgrepo-com.png
 		resources\send-svgrepo-com.svg = resources\send-svgrepo-com.svg

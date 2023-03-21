@@ -1,0 +1,147 @@
+﻿dialog {
+    border: 1px solid lightgray;
+    border-radius: 5px;
+    padding: 0;
+    max-width: 580px;
+}
+
+    dialog::backdrop {
+        background: rgba(0,0,0,0.6);
+    }
+
+    dialog:not(#loginModel):after {
+        content: "×";
+        font-size: 2.6em;
+        position: absolute;
+        right: 10px;
+        top: -8px;
+        color: gray;
+    }
+
+#loginModel {
+    padding: 0 1em;
+}
+
+    #loginModel input {
+        border-radius: 5px;
+        padding: 4px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    #loginModel .sendCon {
+        display: flex;
+        justify-content: space-around;
+    }
+
+#faqModel details {
+    min-width: 300px;
+    padding: 5px 9px;
+}
+
+    #faqModel details div {
+        margin-right: 2em;
+    }
+
+#faqModel summary {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#settingsModel #settingsList {
+    padding: 0 1em 1em 1em;
+    min-width: 200px;
+}
+
+.settItem {
+    display: flex;
+    align-items: center;
+    /*justify-content: space-between;*/
+}
+
+    .settItem div:first-child {
+        /*white-space: nowrap;*/
+        width: 130px;
+        color: black;
+    }
+
+    .settItem img {
+        height: 30px;
+        padding: 7px;
+        border-radius: 4px;
+        background-color: #f9f9f9;
+    }
+
+        .settItem img:hover {
+            /*background-color: #ffdfdf;*/
+            background-color: #fbfadf;
+        }
+
+
+    .settItem > * {
+        margin: 0.5em;
+    }
+
+    .settItem div {
+        color: gray;
+        width: 100%;
+    }
+
+#emojiModel {
+    width: 310px;
+    margin: 4em auto;
+    position: relative;
+    height: 500px;
+}
+
+    #emojiModel:after {
+        top: -13px !important;
+    }
+
+    #emojiModel grid {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 1px;
+        margin: 4px 9px;
+    }
+
+    #emojiModel div {
+        text-align: center;
+        padding: 0.4em;
+        font-weight: bold;
+        background: #f8f9fc;
+    }
+
+    #emojiModel span, #msgTitles div {
+        padding: 2px;
+        /*margin: 3px;*/
+        font-size: 1.2em;
+        cursor: pointer;
+        border-radius: 3px;
+        text-align: center;
+    }
+
+        #emojiModel span:hover, #msgTitles div:hover {
+            background: lightgray;
+        }
+
+#titleModel .sectionTitle {
+    background: #f8f9fc;
+    padding: 0.5em;
+}
+
+#msgTitles {
+    margin: 5px;
+}
+
+    #msgTitles div {
+        padding: 2px 1em;
+    }
+
+#errorModel .error {
+    padding: 0 1em 1em 1em;
+    min-width: 200px;
+    text-align: center;
+    color: #ff2f2f;
+}

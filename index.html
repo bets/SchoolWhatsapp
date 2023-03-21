@@ -3,13 +3,17 @@
 <head>
     <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="./resources/send-svgrepo-com.png">
+    <link rel="stylesheet" href="./main.css">
+    <link rel="stylesheet" href="./models.css">
     <title>Whatsapp Group Control</title>
 </head>
 <body>
     <div id="testIndicator" class="hide"></div>
     <header class="">
         <a href="javascript:void(0)" onclick="settingsModel()" title="הגדרות"><img src="./resources/settings-svgrepo-com.svg" alt="הגדרות" /></a>
+        <span></span>
         <div class="pageTitle">Whatsapp Group Control</div>
+        <a id="faqBtn" href="javascript:void(0)" onclick="faqModel()" title="עזרה"><img src="./resources/help-square-svgrepo-com.svg" alt="עזרה" /></a>
         <a href="javascript:void(0)" onclick="signOff()" title="יצאה מהחשבון"><img src="./resources/session-leave-svgrepo-com.svg" alt="יציאת משתמש" /></a>
     </header>
     <div id="main">
@@ -80,10 +84,10 @@
         </p>
     </dialog>
 
-    <dialog id="emojiModel" onclick="event.target==this && this.close()">
+    <dialog id="emojiModel">
     </dialog>
 
-    <dialog id="titleModel" onclick="event.target==this && this.close()">
+    <dialog id="titleModel">
         <div class="sectionTitle">הוספת כותרת</div>
         <div id="msgTitles">
             <div>הודעת מנהל</div>
@@ -95,12 +99,12 @@
         </div>
     </dialog>
 
-    <dialog id="errorModel" onclick="event.target==this && this.close()">
+    <dialog id="errorModel">
         <div class="sectionTitle">שגיאה</div>
         <div class="error"></div>
     </dialog>
 
-    <dialog id="settingsModel" onclick="event.target==this && this.close()">
+    <dialog id="settingsModel">
         <div class="sectionTitle">הגדרות</div>
         <div id="settingsList">
             <div class="settItem">
@@ -114,6 +118,42 @@
                 <a href="javascript:void(0)" onclick=""></a>
             </div>
         </div>
+    </dialog>
+
+    <dialog id="faqModel">
+        <!--onclick="event.target==this && this.close()"-->
+        <div class="sectionTitle">שאלות נפוצות</div>
+        <details>
+            <summary>שאלה? חסר משהו?</summary>
+            <div>
+                אפשר לפנות לבצלאל מרכוס
+                <div style="position: relative;">
+                    <img src="./resources/contactR.jpg" alt="פרטי קשר זמני" /><img src="./resources/contactL.jpg" alt="פרטי קשר זמני" style="position: absolute; top: 2px;" />
+                </div>
+            </div>
+        </details>
+        <details>
+            <summary>כתוב שההודעה התקבלה אך בפועל לא נשלחה לקבוצה</summary>
+            <div>
+                בדרך כלל תוך 10 דקות ההודעה תופיע בקבוצה.
+            </div>
+        </details>
+        <details>
+            <summary>תיזמנתי הודעה לשעה מסוימת אך היא לא נשלחה</summary>
+            <div>
+                בדרך כלל תוך 15 דקות משעת התזמון ההודעה תופיע בקבוצה.
+            </div>
+        </details>
+        <details>
+            <summary>תיזמנתי הודעה והיא לא מופיע ברשימת ההודעות המתוזמנות</summary>
+            <div>
+                - הודעה מתוזמנת נשמרת רק על הדפדפן (המחשב) בו נשלחה. <br />
+                לכן ניתן לבטל הודעה מתוזמנת רק מאותו דפדפן גם כן. <br />
+                - אם כן נשלחה מהמחשב הזה אפשר לנסות לרענן את העמוד <br />
+                ואם עדיין אינה ברשימה, יתכן שהשליחה נכשלה וכדאי לנסות ושב <br />
+                - ניסתם שוב ועדיין לא רואים? נא לפנות לבצלאל (פרטים בשאלה הראשונה)
+            </div>
+        </details>
     </dialog>
 
     <div id="templates">
@@ -142,9 +182,9 @@
         </div>
         <div class="attachment"><span class="attachImg"></span><span class="fileName"></span><span title="הסרת הקובץ" class="xBtn">X</span></div>
     </div>
-    <link rel="stylesheet" href="./main.css">
     <!--<script src='https://www.gstatic.com/charts/loader.js'></script>-->
     <script src="./main.js"></script>
+    <script src="./models.js"></script>
     <script src="./uploadFile.js"></script>
     <script src="./Emoji.js"></script>
 </body>

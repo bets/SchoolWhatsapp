@@ -23,46 +23,7 @@ async function continueStart() {
     setSelectEvents();
     showQueued();
     showFileAttached();
-}
-
-//If press enter send password too
-q("#loginModel input[type=password]").addEventListener("keyup", (e) => { if (e.keyCode == 13) getBasics(); });
-
-/** 
- * Get webhooks from Make after password check
- * */
-async function getBasics() {
-    let body = {
-        "password": q('input[type=password]').value,
-    };
-
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body)
-    };
-
-    showStatus("בדיקת סיסמה");
-    const response = await fetch('https://hook.eu1.make.com/byeoipdssunukstesd153infg5s3v2f5', options);
-    let jsonRe = await response.json();
-    if (response.status == 401) {
-        showStatus(response, true);
-        q("#loginModel input").style.borderColor = "red";
-    } else if (response.status != 200) {
-        showStatus("שגיאה בכניסה לחשבון", true);
-        showStatus(response, true);
-    }
-    else {
-        showStatus("סיסמה תקינה");
-        //console.log(jsonRe);
-        localStorage.basics = JSON.stringify(jsonRe);
-        q("#loginModel").close();
-        continueStart();
-        return true;
-    }
-    return false;
+    closeModels();
 }
 
 /** 
@@ -524,26 +485,6 @@ function savePosition(e) {
 }
 
 /** 
- * Open predefined title model
- * */
-function titleModel() {
-    q("#titleModel").showModal();
-}
-
-qa("#msgTitles div").forEach((el) => {
-    el.addEventListener("click", insertTitle);
-});
-/** 
- * Add bold predefined title to text message
- * */
-function insertTitle(e) {
-    let title = `*${e.target.innerText}*\r\n\r\n`;
-    q("#msg").value = title + q("#msg").value;
-    q("#titleModel").close();
-    q('#msg').focus();
-}
-
-/** 
  * Show\hide datetime picker and send options
  * */
 function showDeliverAt() {
@@ -560,10 +501,6 @@ async function deliverAtSend(val) {
     let sentOk = await new Promise((resolve) => {
         resolve(startSend(true));
     });
-
-    //let sentOk = await startSend(true);
-    //console.log('going on');
-    //console.log(sentOk);
     if (sentOk) {
         if (val == "sendBoth")
             sentOk = await new Promise((resolve) => {
@@ -575,9 +512,11 @@ async function deliverAtSend(val) {
     q("#sendSelect").value = "";//removes text on Scheduled send button that shows after click
 }
 
-/** 
- * Show\hide datetime picker and send options
- * */
+/**
+ * Show user a status message in status bar
+ * @param {string} msg Message to display
+ * @param {bool} error True if error
+ */
 function showStatus(msg, error) {
     if (error) {
         q("#errorModel .error").innerHTML = msg;
@@ -600,6 +539,11 @@ function showStatus(msg, error) {
     div.append(textSpan);
     q("#statusPan #statusList").prepend(div);
 }
+/**
+ * Get date string of now (13/04 13:04) or of specified date and just get time (13:04:05)
+ * @param {Date} d Optional date will result with 13/04 13:04
+ * @returns {string}
+ */
 function getTimestamp(d) {
     const pad = (n, s = 2) => (`${new Array(s).fill(0)}${n}`).slice(-s);
     if (typeof d === 'undefined') {
@@ -607,13 +551,6 @@ function getTimestamp(d) {
         return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;//13:04:05
     }
     return `${pad(d.getDate())}/${pad(d.getMonth() + 1)} ${pad(d.getHours())}:${pad(d.getMinutes())}`; // 13/04 13:04
-}
-
-/** 
- * Open settings model
- * */
-function settingsModel() {
-    q("#settingsModel").showModal();
 }
 
 function q(selector) {
