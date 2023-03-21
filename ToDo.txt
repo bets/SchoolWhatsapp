@@ -11,12 +11,14 @@ Option to group the groups
 User and access manager
 
 WIP
-Get refresh token, app id, secert from Make (remove from code)
 
 
 
 DONE
 
+Add other groups by name
+add FAQ
+Get refresh token, app id, secert from Make (remove from code)
 Attach image or file to message
 >Need to find a way to recive bool from startSend() to know if to be able to send 2nd message (now and schdualed).
 Already have it for send() but not for startFileUpload() cus fetch not using await.

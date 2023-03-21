@@ -18,11 +18,15 @@
     </header>
     <div id="main">
         <div id="groupSelector" class="section">
-            <div class="sectionTitle">בחירת כיתות</div>
-            <div id="allCon" class="slot">
-                <label for="all"><input id="all" type="checkbox">כל ביה"ס</label>
+            <div class="sectionTitle">בחירת קבוצות</div>
+            <!--<div id="allCon" class="slot">
+                <label for="all"><input id="all" type="checkbox">כל הכיתות</label>
+            </div>-->
+            <div id="allGrades">
+                <div id="allCon" class="slot">
+                    <label for="all"><input id="all" type="checkbox">כל הכיתות</label>
+                </div>
             </div>
-            <div id="allGrades"></div>
             <!--
             Example of a grade
             <details>
@@ -31,7 +35,7 @@
                  <label for="a2"><input id="a2" type="checkbox">a2</label>
                  <label for="a3"><input id="a3" type="checkbox">a3</label>
             </details> -->
-
+            <div id="groups"></div>
         </div>
 
         <div id="msgPan" class="section">
@@ -93,9 +97,9 @@
             <div>הודעת מנהל</div>
             <div>הודעת מזכירות</div>
             <div>הודעת צהרון</div>
-            <div>הודעה לכיתות א'</div>
-            <div>הודעה לכיתות ב'</div>
-            <div>הודעה מהמורה של א'2</div>
+            <div>הודעה לשכבת א'</div>
+            <div>הודעה לשכבת ב'</div>
+            <div>הודעה מהמורה</div>
         </div>
     </dialog>
 
@@ -108,9 +112,9 @@
         <div class="sectionTitle">הגדרות</div>
         <div id="settingsList">
             <div class="settItem">
-                <div class="bold">ריענון כיתות</div>
+                <div class="bold">רענון קבוצות</div>
                 <div>אם נוספה קבוצה או שונה שם הקבוצה ניתן לרענן כאן (יתכן שיקחו כמה שעות שעד השינוי יחלחל)</div>
-                <a href="javascript:void(0)" onclick="refetchSchool()"><img src="./resources/group-refresh.svg" alt="ריענון קבוצות" /></a>
+                <a href="javascript:void(0)" onclick="refetchGroups()"><img src="./resources/group-refresh.svg" alt="רענון קבוצות" /></a>
             </div>
             <div class="settItem">
                 <div class="bold">הגדרה נוספת</div>
@@ -139,19 +143,46 @@
             </div>
         </details>
         <details>
-            <summary>תיזמנתי הודעה לשעה מסוימת אך היא לא נשלחה</summary>
+            <summary>תזמנתי הודעה לשעה מסוימת אך היא לא נשלחה</summary>
             <div>
                 בדרך כלל תוך 15 דקות משעת התזמון ההודעה תופיע בקבוצה.
             </div>
         </details>
         <details>
-            <summary>תיזמנתי הודעה והיא לא מופיע ברשימת ההודעות המתוזמנות</summary>
+            <summary>תזמנתי הודעה והיא לא מופיע ברשימת ההודעות המתוזמנות</summary>
             <div>
-                - הודעה מתוזמנת נשמרת רק על הדפדפן (המחשב) בו נשלחה. <br />
-                לכן ניתן לבטל הודעה מתוזמנת רק מאותו דפדפן גם כן. <br />
-                - אם כן נשלחה מהמחשב הזה אפשר לנסות לרענן את העמוד <br />
-                ואם עדיין אינה ברשימה, יתכן שהשליחה נכשלה וכדאי לנסות ושב <br />
-                - ניסתם שוב ועדיין לא רואים? נא לפנות לבצלאל (פרטים בשאלה הראשונה)
+                <ul>
+                    <li>
+                        הודעה מתוזמנת נשמרת רק על הדפדפן (המחשב) בו נשלחה. <br />
+                        לכן ניתן לבטל הודעה מתוזמנת רק מאותו דפדפן גם כן.
+                    </li>
+                    <li>
+                        אם ההודעה נשלחה מהמחשב הזה ולא רואים אותה, אפשר לנסות לרענן את העמוד. <br />
+                        עדיין אינה ברשימה? יתכן שהשליחה נכשלה וכדאי לנסות שוב.
+                    </li>
+                    <li>ניסתם שוב ועדיין לא רואים? נא לפנות לבצלאל (פרטים בשאלה הראשונה).</li>
+                </ul>
+            </div>
+        </details>
+        <details>
+            <summary>יצרתי כיתה/קבוצה ואני לא רואה אותה</summary>
+            <div>
+                יכול לקחת כמה שעות עד שהכיתה תסתנכרן עם המערכת החיצונית איתה אנו עובדים. <br />
+                לאחר שהיא מסונכרנת שם, צריך להכנס כאן להגדרות (למעלה מימין) וללחוץ על הסמליל של "רענון קבוצות". <br />
+                במקרה שלא מדובר בכיתה, צריך לבקש מבצלאל להוסיף (פרטים בשאלה הראשונה).
+            </div>
+        </details>
+        <details>
+            <summary>אותו שם קבוצה פעמיים או אותה כיתה פעמיים</summary>
+            <div>
+                זה יעשה בעיות. צריך להימנע.
+            </div>
+        </details>
+        <details>
+            <summary>יצירה אוטמטית של מבנה ביה"ס</summary>
+            <div>
+                התוכנה מזהה לבד שמות של כיתות ומכניסה אותם למבנה. <br />
+                לכן אם תיהיה קבוצת "כיתה א1 אלופים", וגם קבוצת "זקס א' 1 תרפט". התוכנה תכניס את 2 הכיתות למבנה של ביה"ס ותווצר בעיה בשליחת הודעות.
             </div>
         </details>
     </dialog>
@@ -161,6 +192,9 @@
             <details class="slot">
                 <summary><input type="checkbox" class="grade"></summary>
             </details>
+            <label><input type="checkbox"></label>
+        </div>
+        <div class="otherGroupSelector slot">
             <label><input type="checkbox"></label>
         </div>
         <div class="queuePan">

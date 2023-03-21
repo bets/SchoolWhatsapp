@@ -15,11 +15,11 @@ window.onload = function start() {
 async function continueStart() {
     Make = JSON.parse(localStorage.basics);
 
-    if (localStorage.school == null)
-        await getSchool();
-    let school = JSON.parse(localStorage.school);
+    if (localStorage.groups == null)
+        await getWAGroups();
 
-    createSchool(school);
+    createSchool();
+    createGroups();
     setSelectEvents();
     showQueued();
     showFileAttached();
@@ -37,19 +37,19 @@ function signOff() {
 /** 
  * When school is saved but groups chaged, clear storage and fetch groups
  * */
-function refetchSchool() {
+function refetchGroups() {
     localStorage.removeItem('school');
-    localStorage.removeItem('schoolFlat');
+    localStorage.removeItem('groups');
     location.reload();
 }
 /** 
  * Get class groups from bulldog whatsapp through Make
  * */
-async function getSchool() {
+async function getWAGroups() {
     //displayStatus('משיכת קבוצות מצריכה פתיחת חשבון בולדוג', true);
     //return;
 
-    showStatus("נשלחה בקשה לקבלת קבוצות הוואטסאפ של בית הספר מבולדוג");
+    showStatus("משיכת קבוצות מהנייד החלה");
     const response = await fetch(Make.getSchool + "/?type=groups");
 
     if (response.status != 200) {
@@ -57,10 +57,10 @@ async function getSchool() {
         showStatus("שגיאה בקבלת הקבוצות מבולדוג", true);
         return false;
     }
-    let groups = await response.json();
+    let allGroups = await response.json();
     //console.table(groups);
 
-    var cls = groups.reduce((accu, curr) => {
+    var groups = allGroups.reduce((accu, curr, i) => {
         const queryString = new URLSearchParams(window.location.search);
         if (queryString.has('test')) {
             if (!curr.name.includes('טסט')) return accu;
@@ -69,64 +69,94 @@ async function getSchool() {
         }
 
         let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?\s?(\d)/);
-        if (m == null) return accu;
-        let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
+        if (m != null) {
+            let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
 
-        accu.push({
-            class: letter + m[1],
-            letter: letter,
-            num: m[1],
-            wid: curr.wid
-        });
-        return accu;
-    }, []).sort((a, b) => a.class.localeCompare(b.class));
-
-    localStorage.schoolFlat = JSON.stringify(cls);
-    //console.table(cls);
-
-    let school = cls.reduce((accu, curr, i) => {
-        var grp = {
-            num: curr.num
-        };
-        if (i == 0 || curr.letter != cls[i - 1].letter) {
             accu.push({
-                grade: curr.letter,
-                groups: [grp]
+                id: "g" + i,
+                type: "class",
+                name: letter + m[1],
+                letter: letter,
+                num: m[1],
+                wid: curr.wid
             });
-        } else {
-            accu[accu.length - 1].groups.push(grp);
+        } else if (['הסעה לבית אלישבע'].some(name => curr.name.includes(name))) {
+            accu.push({
+                id: "g" + i,
+                type: "group",
+                name: curr.name,
+                wid: curr.wid
+            });
         }
         return accu;
     }, []);
 
+    localStorage.groups = JSON.stringify(groups);
+    //console.table(cls);
+
+    let school = groups.filter((g) => g.type == "class")
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .reduce((accu, curr, i) => {
+            var grp = {
+                num: curr.num,
+                id: curr.id
+            };
+            if (i == 0 || curr.letter != accu[accu.length - 1].grade) {
+                accu.push({
+                    grade: curr.letter,
+                    groups: [grp]
+                });
+            } else {
+                accu[accu.length - 1].groups.push(grp);
+            }
+            return accu;
+        }, []);
+
     localStorage.school = JSON.stringify(school);
     //console.table(school);
+    showStatus("הקבוצות התקבלו בהצלחה");
 }
 
 /** 
  * Create class selector UI
  * */
-function createSchool(school) {
+function createSchool() {
+    let school = JSON.parse(localStorage.school);
     [...school].forEach((shichva) => {
         let gradeTemplate = document.querySelector("#templates .groupSelector details").cloneNode(true);
         let labelTemplate = document.querySelector("#templates .groupSelector label").cloneNode(true);
         gradeTemplate.querySelector("summary input").id = shichva.grade;
-        gradeTemplate.querySelector("summary").innerHTML += "כיתות " + shichva.grade + "'";
+        gradeTemplate.querySelector("summary").innerHTML += "שיכבת " + shichva.grade + "'";
         shichva.groups.forEach((cls) => {
             let labelClone = labelTemplate.cloneNode(true);
             labelClone.innerHTML += `${shichva.grade}' <sub>${cls.num}</sub>`;
-            labelClone.querySelector("input").id = shichva.grade + cls.num;
+            labelClone.querySelector("input").id = cls.id;
+            labelClone.querySelector("input").classList.add('group');
             gradeTemplate.append(labelClone);
         });
         document.querySelector("#allGrades").append(gradeTemplate);
     });
-    //document.querySelector("#template").remove();
 }
+
+/** 
+ * Create group selector UI
+ * */
+function createGroups() {
+    let groups = JSON.parse(localStorage.groups);
+    [...groups].filter((g) => g.type == "group").forEach((group) => {
+        let groupEl = document.querySelector("#templates .otherGroupSelector").cloneNode(true);
+        groupEl.querySelector("label").appendChild(document.createTextNode(group.name));
+        groupEl.querySelector("input").id = group.id;
+        groupEl.querySelector("input").classList.add('group');
+        q('#groups').append(groupEl);
+    });
+}
+
 /** 
  * Attach events to class selector UI
  * */
 function setSelectEvents() {
-    let boxes = document.querySelectorAll("#groupSelector input");
+    let boxes = document.querySelectorAll("#groupSelector #allGrades input");
     boxes.forEach((el) => {
         el.addEventListener("click", (e) => {
             // console.log("click " + e.target.className);
@@ -139,7 +169,7 @@ function setSelectEvents() {
                 let gradeClasses = e.target.closest("details").querySelectorAll("input");
                 gradeClasses.forEach((el) => {
                     el.checked = e.target.checked;
-                })
+                });
                 //If marking all school
             } else if (e.target.id == "all") {
                 boxes.forEach((el) => {
@@ -155,33 +185,30 @@ function setSelectEvents() {
 /** 
  * Update grade if a class was marked or All School if it was marked
  * */
-function checkParents(s, boxes) {
-    let boxes2check =
-        s != "all"
-            ? [...boxes].filter(
-                (box) =>
-                    box.id.includes(s) && box.id != s && box.id != "all"
-            )
-            : [...boxes].filter((box) => box.id != s);
+function checkParents(grade, boxes) {
+    let boxes2check = grade == "all"
+        ? [...boxes].filter((box) => box.id != grade)// all boxes but #all
+        : [...q(`#${grade}`).closest("details").querySelectorAll(".group")];//only grade classes
     // console.log(boxes2check);
     let checkedCount = boxes2check.filter((box) => box.checked).length;
     // console.log(`${s} - ${checkedCount}/${boxes2check.length}`);
 
-    document.querySelector("#" + s).indeterminate = false;
+    document.querySelector("#" + grade).indeterminate = false;
     switch (checkedCount) {
         case boxes2check.length:
-            document.querySelector("#" + s).checked = true;
+            document.querySelector("#" + grade).checked = true;
             break;
         case 0:
-            document.querySelector("#" + s).checked = false;
+            document.querySelector("#" + grade).checked = false;
             break;
         default:
-            document.querySelector("#" + s).indeterminate = true;
+            document.querySelector("#" + grade).indeterminate = true;
     }
 
-    if (s != "all") checkParents("all", boxes);
+    if (grade != "all") checkParents("all", boxes);
     return;
 }
+
 /**
  * Start send porcess
  * @param {bool} hasTime True if is scheduled message
@@ -201,14 +228,14 @@ async function startSend(hasTime) {
         }
         let currentDate = new Date();
         if (inputDate.getTime() < currentDate.getTime() + 5 * 60000) {
-            showStatus("התזמון חייב להיות לפחות 5 דקות מעכשיו ולא בעבר", true);
+            showStatus("תזמון חייב להיות לפחות 5 דקות מעכשיו", true);
             return false;
         }
     }
 
-    let checkedIds = [...qa("details input:checked:not(.grade)")].map(x => x.id);
+    let checkedIds = [...qa("#groupSelector input:checked.group")].map(x => x.id);
     if (checkedIds.length == 0) {
-        showStatus("נא לבחור כיתה", true);
+        showStatus("נא לבחור קבוצה", true);
         return false;
     }
     let hasFile = false;
@@ -225,13 +252,12 @@ async function startSend(hasTime) {
 async function send(hasTime, hasFile, checkedIds) {
     showStatus("קליטת הודעות מתבצעת");
     let groupMsgLocalId = new Date().getTime();
-    let schoolFlat = JSON.parse(localStorage.schoolFlat);
+    let groups = JSON.parse(localStorage.groups);
     let sentNum = 0;
     //let MakeOperation;
-    for await (const groupIdName of checkedIds) {
-        let wid = schoolFlat.find(x => x.class == groupIdName).wid;
-        console.log('at sendOne');
-        const response = await sendOne(wid, hasTime, hasFile);
+    for await (const groupId of checkedIds) {
+        let group = groups.find(x => x.id == groupId);
+        const response = await sendOne(group.wid, hasTime, hasFile);
         let jsonRe = await response.json();
         //console.log("Make opirations left: ", jsonRe.media.filename);
         //MakeOperation = jsonRe.media.filename
@@ -241,7 +267,7 @@ async function send(hasTime, hasFile, checkedIds) {
         }
         else {
             sentNum++;
-            if (hasTime) addQueuedToList(groupMsgLocalId, groupIdName, q("#deliverAt").value, jsonRe.id, hasFile);//jsonRe.message, 
+            if (hasTime) addQueuedToList(groupMsgLocalId, group.name, q("#deliverAt").value, jsonRe.id, hasFile);//jsonRe.message, 
         }
     }
 
@@ -354,7 +380,7 @@ function resetMsg() {
  * Add one message to local queue list.
  * If this is part of a cluster so add msg id to it
  * */
-function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msgId, hasFile) {// msg,
+function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msgId, hasFile) {
     let queuedMsgs;
     if (localStorage.queuedMsgs == null)
         localStorage.queuedMsgs = JSON.stringify([]);

@@ -81,5 +81,3 @@ function settingsModel() {
 function faqModel() {
     q("#faqModel").showModal();
 }
-
-
