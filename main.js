@@ -126,7 +126,7 @@ function createSchool() {
         let gradeTemplate = document.querySelector("#templates .groupSelector details").cloneNode(true);
         let labelTemplate = document.querySelector("#templates .groupSelector label").cloneNode(true);
         gradeTemplate.querySelector("summary input").id = shichva.grade;
-        gradeTemplate.querySelector("summary").innerHTML += "שיכבת " + shichva.grade + "'";
+        gradeTemplate.querySelector("summary").innerHTML += "שכבת " + shichva.grade + "'";
         shichva.groups.forEach((cls) => {
             let labelClone = labelTemplate.cloneNode(true);
             labelClone.innerHTML += `${shichva.grade}' <sub>${cls.num}</sub>`;
