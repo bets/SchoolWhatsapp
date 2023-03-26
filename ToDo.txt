@@ -3,7 +3,7 @@ TODO
 
 TODO UPSCALE
 
-Build a whatsapp web server
+Build a whatsapp web server?
 Save session info of client by saving browser with session info or just session itself and loading to browser as needed.
 option to choose relevant groups and save 
 Edit chossen groups even if group list\names change.
@@ -34,3 +34,8 @@ Removed status line again (to messey, will add something else)
 Readd status line to get feedback that messages are ecccepted etc.
 Status line (/box/popup) to display feedback, error, etc.
 Moved signOff and make settings model
+
+
+INFO
+
+https://docs.google.com/document/d/1aTpGK_s5TjxzggiG6KBCbTznA3J0oFvWav2mT8b2Lvw/edit

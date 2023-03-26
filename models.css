@@ -126,13 +126,17 @@
             background: lightgray;
         }
 
-#titleModel .sectionTitle {
-    background: #f8f9fc;
-    padding: 0.5em;
+#titleModel {
+    min-width: 250px;
 }
 
+    #titleModel .sectionTitle {
+        background: #f8f9fc;
+        padding: 0.5em;
+    }
+
 #msgTitles {
-    margin: 5px;
+    margin: 10px;
 }
 
     #msgTitles div {
