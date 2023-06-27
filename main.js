@@ -471,7 +471,7 @@ q('#msg').addEventListener('keydown', function (event) {
  * Add bold or italic char to selected text
  * */
 function strEdit(char, isEmoji) {
-    let textarea = document.querySelector("#msg");
+    let textarea = q("#msg");
     let textAr = [...textarea.value];
 
     textAr.splice(selectionStart, 0, char);
@@ -479,14 +479,14 @@ function strEdit(char, isEmoji) {
         textAr.splice(selectionEnd, 0, char);
 
     // console.log(textAr.join(''));
-    textarea.value = textAr.join("");
-    
-    let position = selectionEnd + (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
-    q('#msg').focus();
-    if (isEmoji) position++;
-    if (selectionStart == selectionEnd) position++;
-    
-    q('#msg').selectionEnd = position;
+    textarea.value = textAr.join(""); 
+    textarea.focus();
+
+    let position = selectionEnd + (textarea.value.substring(0, selectionEnd).match(regexExp) || []).length;
+    if (textarea.value[position]=='*' && textarea.value[position-1]!='*') position++;//after word
+    if (isEmoji) position = position+2;//after emoji
+
+    textarea.selectionEnd = position;
 }
 
 ["click", "select", "keyup"].forEach((eventType) => {
