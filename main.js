@@ -80,7 +80,7 @@ async function getWAGroups() {
                 num: m[1],
                 wid: curr.wid
             });
-        } else if (['הסעה לבית אלישבע'].some(name => curr.name.includes(name))) {
+        } else if (['הסעה לבית אלישבע','יונתן זקס - מחזור ג'].some(name => curr.name.includes(name))) {
             accu.push({
                 id: "g" + i,
                 type: "group",
@@ -480,12 +480,12 @@ function strEdit(char, isEmoji) {
 
     // console.log(textAr.join(''));
     textarea.value = textAr.join("");
+    let position = selectionEnd + (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
     q('#msg').focus();
-    if (selectionStart + 1 == selectionEnd) {
-        let position = selectionEnd + (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
-        if (isEmoji) position++;
-        q('#msg').selectionEnd = position;
+    if (selectionStart == selectionEnd) {
+        position++;
     }
+    q('#msg').selectionEnd = position++;
 }
 
 ["click", "select", "keyup"].forEach((eventType) => {
@@ -501,13 +501,22 @@ function savePosition(e) {
     selectionStart = document.activeElement.selectionStart;
     selectionEnd = document.activeElement.selectionEnd + 1;
 
-    //fix position when emoji exits (it addes a fake char to position)
-    // Regular expression to match emoji
+    //When white space at end go one back
+    if (q('#msg').value[selectionEnd-2]==' ')
+        selectionEnd -= 1;
+
+    //fix position when emoji exist (it addes a fake char to position)
+    // Count number of emoji by matching with regular expression
     selectionStart -= (q('#msg').value.substring(0, selectionStart).match(regexExp) || []).length;
     selectionEnd -= (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
 
     //console.log(selectionStart);
     //console.log(selectionEnd);
+    //console.log(`'${q('#msg').value[selectionEnd]}'`);
+    //if (q('#msg').value[selectionEnd-2]==' '){
+    //    console.log(`'${q('#msg').value[selectionEnd-2]}'`);
+    //}
+    //console.log("---");
 }
 
 /** 
