@@ -482,9 +482,11 @@ function strEdit(char, isEmoji) {
     textarea.value = textAr.join("");
     let position = selectionEnd + (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
     q('#msg').focus();
-    if (selectionStart == selectionEnd) {
+    if (selectionStart == selectionEnd){ 
         position++;
-    }
+        if (isEmoji) position++;
+    } else  position++;
+    
     q('#msg').selectionEnd = position++;
 }
 
