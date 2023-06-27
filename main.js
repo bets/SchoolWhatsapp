@@ -480,14 +480,13 @@ function strEdit(char, isEmoji) {
 
     // console.log(textAr.join(''));
     textarea.value = textAr.join("");
+    
     let position = selectionEnd + (q('#msg').value.substring(0, selectionEnd).match(regexExp) || []).length;
     q('#msg').focus();
-    if (selectionStart == selectionEnd){ 
-        position++;
-        if (isEmoji) position++;
-    } else  position++;
+    if (isEmoji) position++;
+    if (selectionStart == selectionEnd) position++;
     
-    q('#msg').selectionEnd = position++;
+    q('#msg').selectionEnd = position;
 }
 
 ["click", "select", "keyup"].forEach((eventType) => {
