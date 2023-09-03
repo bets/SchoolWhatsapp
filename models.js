@@ -43,6 +43,15 @@ async function getBasics() {
     return false;
 }
 
+/**
+ * Open model for notifications  
+ */
+function noteModel(note, title) {
+    q("#noteModel .sectionTitle").innerHTML = title ? title : "הודעה";
+    q("#noteModel .note").innerHTML = note;
+    q("#noteModel").showModal();
+}
+
 /** 
 * Open predefined title model
 * */

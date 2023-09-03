@@ -1,4 +1,5 @@
 ﻿//start();
+var Version = '2023-09-03--1524';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -15,15 +16,38 @@ window.onload = function start() {
 async function continueStart() {
     Make = JSON.parse(localStorage.basics);
 
+    await checkVersion();
     if (localStorage.groups == null)
         await getWAGroups();
-
     createSchool();
     createGroups();
     setSelectEvents();
     showQueued();
     showFileAttached();
     closeModels();
+    openingNote();
+}
+async function checkVersion() {
+    let storedVersion = localStorage.version;
+    if (storedVersion == null)
+        await getWAGroups();
+    if (storedVersion != Version) {
+        showStatus("עודכנה גירסה חדשה: " + Version);
+        localStorage.openNoteDisplayed = null;
+        localStorage.version = Version;
+    }
+}
+
+function openingNote() {
+    let openNoteDisplayed = localStorage.openNoteDisplayed;
+    if (openNoteDisplayed != null && openNoteDisplayed == '2')
+        return;
+    let note = `מספר הודעות שניתן לשלוח מהמערכת בחודש מוגבל.<br />
+    אנא השתדלו לוודא שהכל תקין לפני השליחה, ואם ניתן, לצרף מספר הודעות יחד.<br />
+    אנו ננסה לשדרג למערכת אחרת כשיתאפשר.<br />
+    תודה.`;
+    noteModel(note, 'שימו לב!');
+    localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
 }
 
 /** 
@@ -68,7 +92,9 @@ async function getWAGroups() {
             if (curr.name.includes('טסט')) return accu;
         }
 
-        let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?\s?(\d)/);
+
+        //added support for ׳ [\u05F3] גרש:
+        let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?[\u05F3]?\s?(\d)/);
         if (m != null) {
             let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
 
@@ -80,7 +106,7 @@ async function getWAGroups() {
                 num: m[1],
                 wid: curr.wid
             });
-        } else if (['הסעה לבית אלישבע','יונתן זקס - מחזור ג'].some(name => curr.name.includes(name))) {
+        } else if (['הסעה לבית אלישבע'].some(name => curr.name.includes(name))) {//,'יונתן זקס - מחזור ג'
             accu.push({
                 id: "g" + i,
                 type: "group",
@@ -479,12 +505,12 @@ function strEdit(char, isEmoji) {
         textAr.splice(selectionEnd, 0, char);
 
     // console.log(textAr.join(''));
-    textarea.value = textAr.join(""); 
+    textarea.value = textAr.join("");
     textarea.focus();
-
+    //set curser position
     let position = selectionEnd + (textarea.value.substring(0, selectionEnd).match(regexExp) || []).length;
-    if (textarea.value[position]=='*' && textarea.value[position-1]!='*') position++;//after word
-    if (isEmoji) position = position+2;//after emoji
+    if (textarea.value[position] == '*' && textarea.value[position - 1] != '*') position++;//after word
+    if (isEmoji) position = position + 2;//after emoji
 
     textarea.selectionEnd = position;
 }
@@ -503,7 +529,7 @@ function savePosition(e) {
     selectionEnd = document.activeElement.selectionEnd + 1;
 
     //When white space at end go one back
-    if (q('#msg').value[selectionEnd-2]==' ')
+    if (q('#msg').value[selectionEnd - 2] == ' ')
         selectionEnd -= 1;
 
     //fix position when emoji exist (it addes a fake char to position)
