@@ -43,20 +43,20 @@
             <textarea id="msg" rows="5" cols="33"></textarea>
             <div id="attachment"></div>
             <div class="btnCon msgActions">
+                <span class="button" onclick="emojiModel()">😉</span>
                 <span class="button" onclick="titleModel()" title="הוספה מכתרות קבועות">כותרת</span>
                 <span class="button" onclick="strEdit('*')" style="font-weight:bold" title="הדגשת הטקסט המסומן">B</span>
                 <span class="button" onclick="strEdit('_')" title="הטהיית הטקסט המסומן">𝑰</span>
                 <label class="button attachImg" title="צרוף תמונה או קובץ">
                     <input id="uploadFile" type="file" name="uploadFile" style="display:none" value="" />
                 </label>
-                <span class="button" onclick="emojiModel()">😉</span>
                 <div>
-                    <span id="showDeliverAt" class="button" onclick="showDeliverAt()" title="תזמון שליחה">🕑</span>
+                    <!--<span id="showDeliverAt" class="button" onclick="showDeliverAt()" title="תזמון שליחה">🕑</span>-->
                     <span class="button sendImg" onclick="startSend()" title="שליחת הודעה"></span>
                 </div>
             </div>
 
-            <div class="btnCon sendCon">
+            <!--<div class="btnCon sendCon">
                 <input id="deliverAt" class="hide toggle" type="datetime-local" />
 
                 <select class="toggle hide sendImg" id="sendSelect" autocomplete="off" onchange="deliverAtSend(this.value);">
@@ -66,18 +66,18 @@
                         <option value="sendBoth" title="ישלחו 2 הודעות - עכשיו, ובזמן הנבחר">עכשיו ובתזמון</option>
                     </optgroup>
                 </select>
-            </div>
+            </div>-->
             <div id="statusPan" class="">
                 <div id="statusList"></div>
             </div>
         </div>
 
 
-        <div id="queuePan" class="section">
+        <!--<div id="queuePan" class="section">
             <div class="sectionTitle">הודעות מתוזמנות</div>
             <div id="queueList">
             </div>
-        </div>
+        </div>-->
     </div>
 
     <dialog id="loginModel">

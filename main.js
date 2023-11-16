@@ -1,5 +1,5 @@
 ﻿//start();
-var Version = '2023-09-03--1524';
+var Version = '2023-11-16--1742';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -22,7 +22,7 @@ async function continueStart() {
     createSchool();
     createGroups();
     setSelectEvents();
-    showQueued();
+    //showQueued();
     showFileAttached();
     closeModels();
     openingNote();
@@ -293,7 +293,7 @@ async function send(hasTime, hasFile, checkedIds) {
         }
         else {
             sentNum++;
-            if (hasTime) addQueuedToList(groupMsgLocalId, group.name, q("#deliverAt").value, jsonRe.id, hasFile);//jsonRe.message, 
+            //if (hasTime) addQueuedToList(groupMsgLocalId, group.name, q("#deliverAt").value, jsonRe.id, hasFile);//jsonRe.message, 
         }
     }
 
@@ -381,7 +381,7 @@ async function deleteQueued(e) {
     }
 
     localStorage.queuedMsgs = JSON.stringify(queuedMsgs);
-    showQueued();
+    //showQueued();
 }
 /** 
  * After send empty msg and close deliverAt
@@ -389,9 +389,9 @@ async function deleteQueued(e) {
 function resetMsg() {
     console.log('reset stat');
     q('#msg').value = "";
-    if (!q("#sendSelect").classList.contains('hide'))
-        showDeliverAt();
-    showQueued();
+    //if (!q("#sendSelect").classList.contains('hide'))
+    //    showDeliverAt();
+    //showQueued();
 
     let boxes = document.querySelectorAll("#groupSelector input");
     boxes.forEach((el) => {
@@ -406,71 +406,71 @@ function resetMsg() {
  * Add one message to local queue list.
  * If this is part of a cluster so add msg id to it
  * */
-function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msgId, hasFile) {
-    let queuedMsgs;
-    if (localStorage.queuedMsgs == null)
-        localStorage.queuedMsgs = JSON.stringify([]);
-    queuedMsgs = JSON.parse(localStorage.queuedMsgs);
-    //find groupMsgLocalId in queuedMsgs
-    let queued = queuedMsgs.find(x => x.id == groupMsgLocalId);
-    // if not found create an object in array with all params and empty msgIds array
-    if (queued == null) {
-        queued = {};
-        queued.id = groupMsgLocalId;
-        queued.deliverAt = deliverAt;
-        queued.msg = q("#msg").value;
-        queued.msgIds = [msgId];
-        queued.groupNames = [groupName];
-        queuedMsgs.push(queued);
-        queued.filePath = hasFile ? FilePath : "";
-    }
-    else {
-        queued.msgIds.push(msgId);
-        queued.groupNames.push(groupName);
-    }
-    localStorage.queuedMsgs = JSON.stringify(queuedMsgs);
-}
+//function addQueuedToList(groupMsgLocalId, groupName, deliverAt, msgId, hasFile) {
+//    let queuedMsgs;
+//    if (localStorage.queuedMsgs == null)
+//        localStorage.queuedMsgs = JSON.stringify([]);
+//    queuedMsgs = JSON.parse(localStorage.queuedMsgs);
+//    //find groupMsgLocalId in queuedMsgs
+//    let queued = queuedMsgs.find(x => x.id == groupMsgLocalId);
+//    // if not found create an object in array with all params and empty msgIds array
+//    if (queued == null) {
+//        queued = {};
+//        queued.id = groupMsgLocalId;
+//        queued.deliverAt = deliverAt;
+//        queued.msg = q("#msg").value;
+//        queued.msgIds = [msgId];
+//        queued.groupNames = [groupName];
+//        queuedMsgs.push(queued);
+//        queued.filePath = hasFile ? FilePath : "";
+//    }
+//    else {
+//        queued.msgIds.push(msgId);
+//        queued.groupNames.push(groupName);
+//    }
+//    localStorage.queuedMsgs = JSON.stringify(queuedMsgs);
+//}
 
 /** 
  * Check if queued messages are storad localy and display them if deliver time has not passed
  * */
-function showQueued() {
-    q("#queueList").replaceChildren();
-    let queuedMsgs;
-    if (localStorage.queuedMsgs != null)
-        queuedMsgs = JSON.parse(localStorage.queuedMsgs);
-    if (localStorage.queuedMsgs == null || queuedMsgs.length == 0) {
-        q("#queueList").insertAdjacentHTML('afterbegin', "<div style='text-align:center;color:gray;'>לא קיימות הודעות מתוזמנות</div>");
-        return;
-    }
+//function showQueued() {
+//    q("#queueList").replaceChildren();
+//    let queuedMsgs;
+//    if (localStorage.queuedMsgs != null)
+//        queuedMsgs = JSON.parse(localStorage.queuedMsgs);
+//    if (localStorage.queuedMsgs == null || queuedMsgs.length == 0) {
+//        q("#queueList").insertAdjacentHTML('afterbegin', "<div style='text-align:center;color:gray;'>לא קיימות הודעות מתוזמנות</div>");
+//        return;
+//    }
 
-    queuedMsgs.sort((a, b) => a.deliverAt.localeCompare(b.deliverAt)).forEach((queue) => {
-        if (new Date(queue.deliverAt).getTime() > new Date().getTime()) {
-            let queueItem = document.querySelector("#templates .queuePan details").cloneNode(true);
-            queueItem.id = queue.id;
+//    queuedMsgs.sort((a, b) => a.deliverAt.localeCompare(b.deliverAt)).forEach((queue) => {
+//        if (new Date(queue.deliverAt).getTime() > new Date().getTime()) {
+//            let queueItem = document.querySelector("#templates .queuePan details").cloneNode(true);
+//            queueItem.id = queue.id;
 
-            let reg = /^\*(.+)\*/;
-            queueItem.querySelector("quTitle").innerHTML = reg.exec(queue.msg)?.[1] ?? "ללא כותרת";
-            queueItem.querySelector("quTime").innerHTML = getTimestamp(new Date(queue.deliverAt));
-            queueItem.querySelector("quGroups").innerHTML = "מען: " + queue.groupNames.join(', ');
-            queueItem.querySelector("quMsg").innerHTML = queue.msg.replace(/(?:\r\n|\r|\n)/g, "<br>");
-            queueItem.querySelector("qucancel").addEventListener("click", deleteQueued);
-            if (checkIfImage(queue.filePath)) {
-                queueItem.querySelector("quImg").innerHTML = '&nbsp;&nbsp;&nbsp;תמונה בטעינה...';
-                queueItem.addEventListener("toggle", async () => {
-                    if (queueItem.querySelector('img') == null)
-                        await addDropboxThumbnail(queue.filePath, queueItem.querySelector("quImg"));
-                });
-            } else if (queue.filePath != "")
-                queueItem.querySelector("quImg").insertAdjacentHTML('afterbegin', `<span class="attachImg"></span><span>${decodeURIComponent(queue.filePath.split("--")[1])}</span>`);
+//            let reg = /^\*(.+)\*/;
+//            queueItem.querySelector("quTitle").innerHTML = reg.exec(queue.msg)?.[1] ?? "ללא כותרת";
+//            queueItem.querySelector("quTime").innerHTML = getTimestamp(new Date(queue.deliverAt));
+//            queueItem.querySelector("quGroups").innerHTML = "מען: " + queue.groupNames.join(', ');
+//            queueItem.querySelector("quMsg").innerHTML = queue.msg.replace(/(?:\r\n|\r|\n)/g, "<br>");
+//            queueItem.querySelector("qucancel").addEventListener("click", deleteQueued);
+//            if (checkIfImage(queue.filePath)) {
+//                queueItem.querySelector("quImg").innerHTML = '&nbsp;&nbsp;&nbsp;תמונה בטעינה...';
+//                queueItem.addEventListener("toggle", async () => {
+//                    if (queueItem.querySelector('img') == null)
+//                        await addDropboxThumbnail(queue.filePath, queueItem.querySelector("quImg"));
+//                });
+//            } else if (queue.filePath != "")
+//                queueItem.querySelector("quImg").insertAdjacentHTML('afterbegin', `<span class="attachImg"></span><span>${decodeURIComponent(queue.filePath.split("--")[1])}</span>`);
 
-            q("#queueList").append(queueItem);
-        } else {
-            //remove item that date passed
-            localStorage.queuedMsgs = JSON.stringify(queuedMsgs.filter(item => item.id !== queue.id));
-        }
-    });
-}
+//            q("#queueList").append(queueItem);
+//        } else {
+//            //remove item that date passed
+//            localStorage.queuedMsgs = JSON.stringify(queuedMsgs.filter(item => item.id !== queue.id));
+//        }
+//    });
+//}
 /**
  * Check if file name (or path) has an image extention
  * @param {string} fileName File path or name
@@ -549,30 +549,30 @@ function savePosition(e) {
 /** 
  * Show\hide datetime picker and send options
  * */
-function showDeliverAt() {
-    qa(".toggle").forEach((el) => {
-        el.classList.toggle('hide');
-    });
-    q("#showDeliverAt").classList.toggle('insetBtn');
-    q(".button.sendImg").classList.toggle('disable');
-}
+//function showDeliverAt() {
+//    qa(".toggle").forEach((el) => {
+//        el.classList.toggle('hide');
+//    });
+//    q("#showDeliverAt").classList.toggle('insetBtn');
+//    q(".button.sendImg").classList.toggle('disable');
+//}
 /** 
  * Scheduled send
  * */
-async function deliverAtSend(val) {
-    let sentOk = await new Promise((resolve) => {
-        resolve(startSend(true));
-    });
-    if (sentOk) {
-        if (val == "sendBoth")
-            sentOk = await new Promise((resolve) => {
-                resolve(startSend());
-            });
-        if (sentOk)
-            resetMsg();
-    }
-    q("#sendSelect").value = "";//removes text on Scheduled send button that shows after click
-}
+//async function deliverAtSend(val) {
+//    let sentOk = await new Promise((resolve) => {
+//        resolve(startSend(true));
+//    });
+//    if (sentOk) {
+//        if (val == "sendBoth")
+//            sentOk = await new Promise((resolve) => {
+//                resolve(startSend());
+//            });
+//        if (sentOk)
+//            resetMsg();
+//    }
+//    q("#sendSelect").value = "";//removes text on Scheduled send button that shows after click
+//}
 
 /**
  * Show user a status message in status bar
