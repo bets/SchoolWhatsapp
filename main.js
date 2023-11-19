@@ -1,5 +1,5 @@
 ﻿//start();
-var Version = '2023-11-16--1742';
+var Version = '2023-11-19--1332';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -42,10 +42,10 @@ function openingNote() {
     let openNoteDisplayed = localStorage.openNoteDisplayed;
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
-    let note = `מספר הודעות שניתן לשלוח מהמערכת בחודש מוגבל.<br />
-    אנא השתדלו לוודא שהכל תקין לפני השליחה, ואם ניתן, לצרף מספר הודעות יחד.<br />
-    אנו ננסה לשדרג למערכת אחרת כשיתאפשר.<br />
-    תודה.`;
+    let note = `עדכון גירסה<br />
+    גודל הטקסט בממשק הוגדל.<br />
+    כפתור השליחה נחסם בלחיצה כפולה.<br />
+   `;
     noteModel(note, 'שימו לב!');
     localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
 }
@@ -241,36 +241,52 @@ function checkParents(grade, boxes) {
  * @returns {bool} True if send is success
  */
 async function startSend(hasTime) {
+    if (q('.sendImg').classList.contains('sending')) {
+        alert("לחיצה אחת מספיקה.\n נא להסתכל על שורת העדכונים מתחת לכפתור השליחה.")
+        return;
+    }
+    q('.sendImg').classList.add('sending');
+
     if (q("#msg").value.length < 4) {
         showStatus("נא להוסיף תוכן להודעה", true);
-        return false;
+        return sendEnd(false);
     }
     if (hasTime) {
         let inputDate = new Date(q("#deliverAt").value);
         let timestamp = Date.parse(inputDate);
         if (isNaN(timestamp) == true) {
             showStatus("נא להוסיף זמן לתזמון", true);
-            return false;
+            return sendEnd(false);
         }
         let currentDate = new Date();
         if (inputDate.getTime() < currentDate.getTime() + 5 * 60000) {
             showStatus("תזמון חייב להיות לפחות 5 דקות מעכשיו", true);
-            return false;
+            return sendEnd(false);
         }
     }
 
     let checkedIds = [...qa("#groupSelector input:checked.group")].map(x => x.id);
     if (checkedIds.length == 0) {
         showStatus("נא לבחור קבוצה", true);
-        return false;
+        return sendEnd(false);
     }
     let hasFile = false;
     if (q('#uploadFile').files.length > 0) {
         hasFile = true;
         if (!await startFileUpload())
-            return false;
+            return sendEnd(false);
     }
-    return await send(hasTime, hasFile, checkedIds);
+    return sendEnd(await send(hasTime, hasFile, checkedIds));
+}
+/**
+ * Reanble send buttton
+ * @param {any} bool
+ * @param {any} rtn
+ * @returns
+ */
+function sendEnd(rtn) {
+    q('.sendImg').classList.remove('sending');
+    return rtn;
 }
 /** 
  * Get all checked ids and send to each group

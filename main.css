@@ -245,6 +245,9 @@ summary {
     padding-left: 23px;
     height: 23px;
 }
+.sending {
+    background-color: #ededed;
+}
 
 .attachImg {
     background-image: url("./resources/attachment-svgrepo-com.svg");
