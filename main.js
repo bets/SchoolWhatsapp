@@ -1,5 +1,5 @@
 ﻿//start();
-var Version = '2023-12-17--2033';
+var Version = '2023-12-17--2045';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -43,8 +43,8 @@ function openingNote() {
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
     let note = `עדכון גירסה<br />
-    גודל הטקסט בממשק הוגדל.<br />
-    כפתור השליחה נחסם בלחיצה כפולה.<br />
+    הודעות מתוזמנות הוחזרו (סליחה חגי).<br />
+    הצגת הכיתות אליהן נשלח בשורת הסטאטוס ונסיון תיקון השגיאה שלא נשלח לכולם (שירה, אשמח לדעת אם זה עזר).<br />
    `;
     noteModel(note, 'שימו לב!');
     localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
