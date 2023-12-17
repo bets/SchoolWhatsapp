@@ -249,6 +249,10 @@ summary {
     background-color: #ededed;
 }
 
+#showDeliverAt {
+    font-size: 17px;
+}
+
 .attachImg {
     background-image: url("./resources/attachment-svgrepo-com.svg");
     background-position: center;
@@ -292,7 +296,7 @@ summary {
 
     #statusPan #statusList {
         /*max-height: 4em; 3 rows*/
-        max-height: 1.6em;
+        max-height: 3em;
         background-color: #ffffffa8;
         overflow-y: scroll;
         -ms-overflow-style: none;
