@@ -1,5 +1,5 @@
 ﻿//start();
-var Version = '2023-12-17--2045';
+var Version = '2024-06-07--1043';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -42,9 +42,9 @@ function openingNote() {
     let openNoteDisplayed = localStorage.openNoteDisplayed;
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
-    let note = `עדכון גירסה<br />
-    הודעות מתוזמנות הוחזרו (סליחה חגי).<br />
-    הצגת הכיתות אליהן נשלח בשורת הסטאטוס ונסיון תיקון השגיאה שלא נשלח לכולם (שירה, אשמח לדעת אם זה עזר).<br />
+    let note = `<b>עדכון גירסה - 7-6-24</b><br />
+    קבוצות - מחזור ד, הודעות צוות.<br />
+    להוספת הקבוצות נא להכנס לגלגל השיניים מימין למעלה, ואז ללחוץ על הכפתור משמאל ל "רענון קבוצות".<br />
    `;
     noteModel(note, 'שימו לב!');
     localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
@@ -84,6 +84,13 @@ async function getWAGroups() {
     let allGroups = await response.json();
     //console.table(groups);
 
+    let nonClassGroups = [
+        'הסעה לבית אלישבע',
+        'זקס מידע למתעניינים',
+        'יונתן זקס - הודעות',
+        'יונתן זקס הורי מחזור ד'
+    ];
+
     var groups = allGroups.reduce((accu, curr, i) => {
         const queryString = new URLSearchParams(window.location.search);
         if (queryString.has('test')) {
@@ -106,7 +113,7 @@ async function getWAGroups() {
                 num: m[1],
                 wid: curr.wid
             });
-        } else if (['הסעה לבית אלישבע','זקס מידע למתעניינים'].some(name => curr.name.includes(name))) {//,'יונתן זקס - מחזור ג'
+        } else if (nonClassGroups.some(name => curr.name.includes(name))) {
             accu.push({
                 id: "g" + i,
                 type: "group",
