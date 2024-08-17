@@ -8,6 +8,15 @@
     <title>Whatsapp Group Control</title>
 </head>
 <body>
+    <div style="position:fixed;top:0;bottom:0;left:0;right:0;background-color:rgb(21, 98, 9, 0.74);z-index:3;text-align:center;">
+        <div style="margin-top: 5em; background-color: white;padding:1em;">
+            <h1 >
+                המערכת סגורה עד להתייצבות מבנה כיתות בית הספר.
+            </h1>
+            <h2 >ניתן לשלוח הודעות על ידי פניה לשיינה מהוועד.</h2>
+        </div>
+    </div>
+
     <div id="testIndicator" class="hide"></div>
     <header class="">
         <a href="javascript:void(0)" onclick="settingsModel()" title="הגדרות"><img src="./resources/settings-svgrepo-com.svg" alt="הגדרות" /></a>
@@ -113,13 +122,18 @@
         <div class="sectionTitle">הגדרות</div>
         <div id="settingsList">
             <div class="settItem">
-                <div class="bold">רענון קבוצות</div>
-                <div>אם נוספה קבוצה או שונה שם הקבוצה ניתן לרענן כאן (יתכן שיקחו כמה שעות שעד שהשינוי יחלחל, ורק אז ניתן לרענן כאן)</div>
+
+                <div>
+                    <div class="itemTitle">רענון קבוצות</div>
+                    אם נוספה קבוצה או שונה שם הקבוצה ניתן לרענן כאן (יתכן שיקחו כמה שעות שעד שהשינוי יחלחל, ורק אז ניתן לרענן כאן)
+                </div>
                 <a href="javascript:void(0)" onclick="refetchGroups()"><img src="./resources/group-refresh.svg" alt="רענון קבוצות" /></a>
             </div>
             <div class="settItem">
-                <div class="bold">הגדרה נוספת</div>
-                <div>הגדרות נוספות יהיו בהמשך</div>
+                <div>
+                    <div class="itemTitle">הגדרה נוספת</div>
+                    הגדרות נוספות יהיו בהמשך
+                </div>
                 <a href="javascript:void(0)" onclick=""></a>
             </div>
         </div>

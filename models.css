@@ -60,17 +60,16 @@
     /*justify-content: space-between;*/
 }
 
-    .settItem div:first-child {
-        /*white-space: nowrap;*/
-        width: 130px;
-        color: black;
-    }
-
+.itemTitle {
+    color: black !important;
+    font-weight:bold;
+}
     .settItem img {
         height: 30px;
         padding: 7px;
         border-radius: 4px;
         background-color: #f9f9f9;
+        border: 1px solid gray;
     }
 
         .settItem img:hover {

@@ -1,4 +1,5 @@
-﻿//start();
+﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ה
+
 var Version = '2024-06-07--1043';
 var Make;
 window.onload = function start() {
@@ -42,9 +43,9 @@ function openingNote() {
     let openNoteDisplayed = localStorage.openNoteDisplayed;
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
-    let note = `<b>עדכון גירסה - 7-6-24</b><br />
-    קבוצות - מחזור ד, הודעות צוות.<br />
-    להוספת הקבוצות נא להכנס לגלגל השיניים מימין למעלה, ואז ללחוץ על הכפתור משמאל ל "רענון קבוצות".<br />
+    let note = `<b>עדכון גירסה - 19-8-24</b><br />
+    כיתות תשפ"ה עודכנו ללא שיכבת א (מחזור ד), אליהם ניתן לשלוח בעזרת קבוצת מחזור ד' למטה.<br />
+    אם הכיתות החדשות לא מופיעות נא להכנס לגלגל השיניים מימין למעלה, ואז ללחוץ על הכפתור משמאל ל "רענון קבוצות".<br />
    `;
     noteModel(note, 'שימו לב!');
     localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
@@ -91,20 +92,20 @@ async function getWAGroups() {
         'יונתן זקס הורי מחזור ד'
     ];
 
+    const queryString = new URLSearchParams(window.location.search);
     var groups = allGroups.reduce((accu, curr, i) => {
-        const queryString = new URLSearchParams(window.location.search);
         if (queryString.has('test')) {
             if (!curr.name.includes('טסט')) return accu;
         } else {
             if (curr.name.includes('טסט')) return accu;
         }
 
-
         //added support for ׳ [\u05F3] גרש:
         let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?[\u05F3]?\s?(\d)/);
-        if (m != null) {
-            let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
 
+        // MUST UPDATE EVERY YEAR hebrew Year name
+        if (m != null && curr.name.includes('תשפ"ה')) {
+            let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
             accu.push({
                 id: "g" + i,
                 type: "class",
