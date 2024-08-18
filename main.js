@@ -1,6 +1,6 @@
 ﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ה
 
-var Version = '2024-06-07--1043';
+var Version = '2024-08-18--2236';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -44,7 +44,7 @@ function openingNote() {
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
     let note = `<b>עדכון גירסה - 19-8-24</b><br />
-    כיתות תשפ"ה עודכנו ללא שיכבת א (מחזור ד), אליהם ניתן לשלוח בעזרת קבוצת מחזור ד' למטה.<br />
+    כיתות תשפ"ה עודכנו ללא שיכבת א' (מחזור ד'), אליהם ניתן לשלוח בעזרת קבוצת מחזור ד' למטה.<br />
     אם הכיתות החדשות לא מופיעות נא להכנס לגלגל השיניים מימין למעלה, ואז ללחוץ על הכפתור משמאל ל "רענון קבוצות".<br />
    `;
     noteModel(note, 'שימו לב!');
