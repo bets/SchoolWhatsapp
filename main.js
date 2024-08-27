@@ -1,6 +1,6 @@
 ﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ה
 
-var Version = '2024-08-18--2236';
+var Version = '2024-08-27--1325';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -43,8 +43,9 @@ function openingNote() {
     let openNoteDisplayed = localStorage.openNoteDisplayed;
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
-    let note = `<b>עדכון גירסה - 19-8-24</b><br />
-    כיתות תשפ"ה עודכנו ללא שיכבת א' (מחזור ד'), אליהם ניתן לשלוח בעזרת קבוצת מחזור ד' למטה.<br />
+    let note = `<b>עדכון גירסה - 27-8-24</b><br />
+    כיתות א' תשפ"ה הוספו גם כן.<br />
+    כיתה א3 נמצאת ברשימה למטה ולא חלק מעץ ביה"ס כדי שההורים לא יקבלו הכל פעמים.<br />
     אם הכיתות החדשות לא מופיעות נא להכנס לגלגל השיניים מימין למעלה, ואז ללחוץ על הכפתור משמאל ל "רענון קבוצות".<br />
    `;
     noteModel(note, 'שימו לב!');
@@ -89,7 +90,7 @@ async function getWAGroups() {
         'הסעה לבית אלישבע',
         'זקס מידע למתעניינים',
         'יונתן זקס - הודעות',
-        'יונתן זקס הורי מחזור ד'
+        'כיתה א3, זקס, תשפ"ה'
     ];
 
     const queryString = new URLSearchParams(window.location.search);
@@ -103,8 +104,9 @@ async function getWAGroups() {
         //added support for ׳ [\u05F3] גרש:
         let m = curr.name.match(/(?:[\u05D0-\u05EA]")?[\u05D0-\u05EA]{1,2}'?[\u05F3]?\s?(\d)/);
 
-        // MUST UPDATE EVERY YEAR hebrew Year name
-        if (m != null && curr.name.includes('תשפ"ה')) {
+        // MUST UPDATE EVERY YEAR hebrew Year name in code
+        // To be in school tree must NOT be in nonClassGroup list, must have the heb year
+        if (m != null && curr.name.includes('תשפ"ה') && !nonClassGroups.some(name => curr.name.includes(name))) {
             let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
             accu.push({
                 id: "g" + i,
