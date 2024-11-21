@@ -148,6 +148,9 @@
     text-align: center;
     color: #ff2f2f;
 }
+#errorModel .txt {
+    padding: 0 1em 1em 1em;
+}
 
 #noteModel .note {
     padding: 0 1em 1em 1em;

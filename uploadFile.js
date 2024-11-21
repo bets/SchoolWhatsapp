@@ -12,10 +12,22 @@ function showFileAttached() {
         q("#attachment").append(attachment);
         /** remove indicaton that file is attached*/
         q("#attachment .xBtn").addEventListener('click', () => {
-            q('#uploadFile').value = "";
-            q("#attachment").replaceChildren();
-        })
+            removeFileAttached();
+            showStatus("הקובץ הוסר");
+        });
+        //check if file is larger than 1MB 
+        if (q('#uploadFile').files[0].size > (1024 * 1024)) {
+            showStatus("הקובץ גדול מדי לשליחה דרך המערכת", true, "הקובץ חייב להיות קטן מ- 1MB. <br/>ניתן לשלוח את הקובץ לעצמכם, בוואטסאפ רגיל. להוריד אותו, ואז לנסות שנית. זה מקטין את הקובץ.");
+            removeFileAttached();
+            showStatus("הקובץ הוסר");
+        } else showStatus("צורף קובץ");
     }
+}
+
+/** Remove indicaton that file is attached*/
+function removeFileAttached() {
+    q('#uploadFile').value = "";
+    q("#attachment").replaceChildren();
 }
 
 /** Start file upload process
@@ -23,7 +35,7 @@ function showFileAttached() {
  * 2- Upload file to dropbox
  * 3- get temp link
  */
-async function startFileUpload() {
+async function startFileUpload() {    
     showStatus("העלאת הקובץ החלה");
     //return await getNewAccessToken();
     try {

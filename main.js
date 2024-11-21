@@ -1,6 +1,6 @@
 ﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ה
 
-var Version = '2024-08-27--1325';
+var Version = '2024-11-21--1251';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -43,10 +43,10 @@ function openingNote() {
     let openNoteDisplayed = localStorage.openNoteDisplayed;
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
-    let note = `<b>עדכון גירסה - 27-8-24</b><br />
-    כיתות א' תשפ"ה הוספו גם כן.<br />
-    כיתה א3 נמצאת ברשימה למטה ולא חלק מעץ ביה"ס כדי שההורים לא יקבלו הכל פעמים.<br />
-    אם הכיתות החדשות לא מופיעות נא להכנס לגלגל השיניים מימין למעלה, ואז ללחוץ על הכפתור משמאל ל "רענון קבוצות".<br />
+    let note = `<b>עדכון גירסה - 21-11-24</b><br />
+    הוספה הודעת שגיאה כאשר קובץ מצורף גדול מידי.
+    <br />
+    הגודל המרבי לקובץ מצורף הוא 1MB.
    `;
     noteModel(note, 'שימו לב!');
     localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
@@ -610,9 +610,10 @@ async function deliverAtSend(val) {
  * @param {string} msg Message to display
  * @param {bool} error True if error
  */
-function showStatus(msg, error) {
+function showStatus(msg, error, txt = "") {
     if (error) {
         q("#errorModel .error").innerHTML = msg;
+        q("#errorModel .txt").innerHTML = txt;
         q("#errorModel").showModal();
     }
 
