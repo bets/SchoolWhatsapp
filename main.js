@@ -1,7 +1,10 @@
 ﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ה
 
-var Version = '2025-02-04--1125';
+const Version = '2025-02-04--1230';
 var Make;
+
+const LINE_HEIGHT = (() => { return calcLineHeight();})();
+
 window.onload = function start() {
     if (localStorage.basics == null) {
         q("#loginModel").showModal();
@@ -514,8 +517,23 @@ function checkIfImage(fileName) {
 
 /** Resize msg textarea as needed */
 function adjustMsgRows() {
-    const lines = q('#msg').value.split("\n").length;
-    q('#msg').rows = Math.max(lines + 1, 5);
+    //const lines = q('#msg').value.split("\n").length;
+    textarea = q('#msg');
+    if (textarea.value.trim().length == 0) return;
+    // Store current content and cursor position
+    const cursorPos = textarea.selectionStart;
+
+    // Reset to 1 row to get accurate scrollHeight
+    textarea.rows = 1;
+
+    // Calculate the number of rows needed
+    const contentRows = Math.floor(textarea.scrollHeight / LINE_HEIGHT);
+
+    // Set rows to content rows plus 1
+    textarea.rows = contentRows + 1;
+
+    // Restore cursor position
+    textarea.setSelectionRange(cursorPos, cursorPos);
 }
 adjustMsgRows();
 q('#msg').addEventListener('input', adjustMsgRows);
@@ -663,4 +681,29 @@ function q(selector) {
 }
 function qa(selector) {
     return document.querySelectorAll(selector);
+}
+
+function calcLineHeight() {
+    const textarea = document.getElementById('msg');
+    // Store original content
+    const temp = textarea.value;
+    const minHigh = textarea.style.minHeight;
+    textarea.style.minHeight = '0';
+
+    // Measure single line
+    textarea.value = 'x';
+    textarea.rows = 1;
+    const singleLineHeight = textarea.scrollHeight;
+
+    // Measure double line
+    textarea.value = 'x\nx';
+    textarea.rows = 2;
+    const doubleLineHeight = textarea.scrollHeight;
+
+    // Restore original content
+    textarea.value = temp;
+    textarea.style.minHeight = minHigh;
+
+    // Return the calculated line height
+    return doubleLineHeight - singleLineHeight;
 }
