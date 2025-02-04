@@ -1,6 +1,6 @@
 ﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ה
 
-var Version = '2024-12-25--2030';
+var Version = '2025-02-04--1125';
 var Make;
 window.onload = function start() {
     if (localStorage.basics == null) {
@@ -43,8 +43,8 @@ function openingNote() {
     let openNoteDisplayed = localStorage.openNoteDisplayed;
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
-    let note = `<b>עדכון גירסה - 25-12-24</b><br />
-הוספה הקבוצה "יונתן זקס מידע למתעניינים."
+    let note = `<b>עדכון גירסה - 04-02-25</b><br />
+תיבת הטקסט מתארכת לפי הצורך.
 `;
     noteModel(note, 'שימו לב!');
     localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
@@ -418,6 +418,7 @@ async function deleteQueued(e) {
 function resetMsg() {
     console.log('reset stat');
     q('#msg').value = "";
+    q('#msg').rows = 5;
     if (!q("#sendSelect").classList.contains('hide'))
         showDeliverAt();
     showQueued();
@@ -510,6 +511,14 @@ function checkIfImage(fileName) {
     const fileExtension = fileName.split('.').pop();
     return validExtensions.includes(fileExtension.toLowerCase());
 }
+
+/** Resize msg textarea as needed */
+function adjustMsgRows() {
+    const lines = q('#msg').value.split("\n").length;
+    q('#msg').rows = Math.max(lines + 1, 5);
+}
+adjustMsgRows();
+q('#msg').addEventListener('input', adjustMsgRows);
 
 /** Keyboard shortcut for bold or italic */
 q('#msg').addEventListener('keydown', function (event) {

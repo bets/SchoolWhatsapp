@@ -70,6 +70,7 @@ function insertTitle(e) {
     q("#msg").value = title + q("#msg").value;
     q("#titleModel").close();
     q('#msg').focus();
+    adjustMsgRows();
 }
 
 function closeModels() {
