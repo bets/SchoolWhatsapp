@@ -1,6 +1,6 @@
-﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ה
+﻿// MUST UPDATE EVERY YEAR hebrew Year name, current is תשפ"ו
 
-const Version = '2025-02-04--1230';
+const Version = '2025-08-19--2100';
 var Make;
 
 const LINE_HEIGHT = (() => { return calcLineHeight();})();
@@ -46,8 +46,9 @@ function openingNote() {
     let openNoteDisplayed = localStorage.openNoteDisplayed;
     if (openNoteDisplayed != null && openNoteDisplayed == '2')
         return;
-    let note = `<b>עדכון גירסה - 04-02-25</b><br />
-תיבת הטקסט מתארכת לפי הצורך.
+    let note = `<b>עדכון גירסה - 19-08-25</b><br />
+שמות הכיתות עלו כיתה לקראת תשפ"ו.<br />
+אם לא מופיעים כיתות ה', צריך לסנכרן מחדש דרך גלגל השינים למעלה.
 `;
     noteModel(note, 'שימו לב!');
     localStorage.openNoteDisplayed = openNoteDisplayed == null ? '1' : '2';
@@ -91,7 +92,7 @@ async function getWAGroups() {
         'הסעה לבית אלישבע',
         'יונתן זקס מידע למתעניינים',
         'יונתן זקס - הודעות',
-        'כיתה א3, זקס, תשפ"ה'
+        'כיתה ב3, זקס, תשפ"ו'
     ];
 
     const queryString = new URLSearchParams(window.location.search);
@@ -107,7 +108,7 @@ async function getWAGroups() {
 
         // MUST UPDATE EVERY YEAR hebrew Year name in code
         // To be in school tree must NOT be in nonClassGroup list, must have the heb year
-        if (m != null && curr.name.includes('תשפ"ה') && !nonClassGroups.some(name => curr.name.includes(name))) {
+        if (m != null && curr.name.includes('תשפ"ו') && !nonClassGroups.some(name => curr.name.includes(name))) {
             let letter = m[0].replace(/[^\u05D0-\u05EA]/g, '');//remove all but letters
             accu.push({
                 id: "g" + i,
